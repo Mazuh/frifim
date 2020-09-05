@@ -17,7 +17,7 @@ export default function App() {
 
   return (
     <div className="App">
-      <Navbar bg="dark" variant="dark">
+      <Navbar className="mb-3" bg="dark" variant="dark">
         <Navbar.Brand href="/">Moneycog</Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link href="/">Início</Nav.Link>

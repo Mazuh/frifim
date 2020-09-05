@@ -2,6 +2,9 @@
   "name": "moneycog",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "author": "Marcell 'Mazuh' Guilherme Costa da Silva",
+  "repository": "github:mazuh/moneycog",
   "dependencies": {
     "@reduxjs/toolkit": "^1.1.0",
     "@testing-library/jest-dom": "^4.2.4",

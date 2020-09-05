@@ -4,7 +4,7 @@ import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 
-function App() {
+export default function App() {
   return (
     <div className="App">
       <Navbar bg="dark" variant="dark">
@@ -20,5 +20,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

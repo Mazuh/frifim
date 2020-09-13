@@ -38,7 +38,7 @@ export default function CategoriesView() {
   }
 
   return (
-    <Container>
+    <Container as="main">
       <header>
         <h1>Categorias</h1>
       </header>
@@ -93,7 +93,7 @@ export default function CategoriesView() {
         </Form>
       </section>
       <section>
-        <h3>{INCOME_TYPE.pluralLabel}</h3>
+        <h2>{INCOME_TYPE.pluralLabel}</h2>
         <CategoriesTable
           items={categoriesState.items.filter(c => c.type === INCOME_TYPE.value)}
           onDelete={handleDelete}
@@ -101,7 +101,7 @@ export default function CategoriesView() {
         />
       </section>
       <section>
-        <h3>{EXPENSE_TYPE.pluralLabel}</h3>
+        <h2>{EXPENSE_TYPE.pluralLabel}</h2>
         <CategoriesTable
           items={categoriesState.items.filter(c => c.type === EXPENSE_TYPE.value)}
           onDelete={handleDelete}

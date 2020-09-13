@@ -88,7 +88,7 @@ export default function CategoriesView() {
   );
 }
 
-export function FlowTypeSelectionFieldset() {
+export function FlowTypeSelectionFieldset({ idPrefix='form', defaultValue = null }) {
   return (
     <fieldset>
       <Form.Group as={Row}>
@@ -101,7 +101,8 @@ export function FlowTypeSelectionFieldset() {
             name="type"
             label={INCOME_TYPE.label}
             value={INCOME_TYPE.value}
-            id="formCategoryIncome"
+            id={`${idPrefix}CategoryIncome`}
+            defaultChecked={defaultValue === INCOME_TYPE.value}
             required
           />
           <Form.Check
@@ -109,7 +110,8 @@ export function FlowTypeSelectionFieldset() {
             name="type"
             label={EXPENSE_TYPE.label}
             value={EXPENSE_TYPE.value}
-            id="formCategoryExpense"
+            id={`${idPrefix}CategoryExpense`}
+            defaultChecked={defaultValue === EXPENSE_TYPE.value}
             required
           />
         </Col>

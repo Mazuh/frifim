@@ -1,5 +1,6 @@
 import React from "react";
 import Decimal from "decimal.js";
+import get from "lodash.get";
 import Container from "react-bootstrap/Container";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
@@ -17,6 +18,7 @@ import { monthlyBudgetActions } from "./monthlyBudgetDuck";
 export default function MonthlyBudgetView() {
   const dispatch = useDispatch();
   const monthlyBudgetState = useSelector(state => state.monthlyBudget);
+  const [enabledUpdateUuid, setEnabledUpdateUuid] = React.useState(null);
 
   if (monthlyBudgetState.isReadingAll) {
     return <LoadingContainer />
@@ -24,7 +26,6 @@ export default function MonthlyBudgetView() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
 
     const creatingBudget = {
       name: event.target.name.value,
@@ -34,6 +35,10 @@ export default function MonthlyBudgetView() {
     dispatch(monthlyBudgetActions.create(creatingBudget));
 
     event.target.reset();
+  };
+
+  const handleUpdate = (budget) => {
+    setEnabledUpdateUuid(enabledUpdateUuid === budget.uuid ? null : budget.uuid);
   };
 
   const handleDelete = (budget) => {
@@ -49,47 +54,11 @@ export default function MonthlyBudgetView() {
       </header>
       <section>
         <h2>Criar</h2>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group as={Row} controlId="formMonthlyBudgetName">
-            <Form.Label column sm={2}>
-              Nome:
-            </Form.Label>
-            <Col sm={10}>
-              <Form.Control
-                placeholder="Para intitular uma entrada de orçamento."
-                name="name"
-                maxLength={50}
-                required
-              />
-            </Col>
-          </Form.Group>
-          <Row className="mb-2">
-            <Form.Label sm={2} column>
-              Quantia:
-            </Form.Label>
-            <InputGroup className="col-sm-10">
-              <InputGroup.Prepend>
-                <InputGroup.Text>R$</InputGroup.Text>
-              </InputGroup.Prepend>
-              <FormControl
-                type="number"
-                placeholder="Valor planejado (até 2 casas decimais para centavos)."
-                name="amount"
-                step=".01"
-                min={0}
-                required
-              />
-            </InputGroup>
-          </Row>
-          <FlowTypeSelectionFieldset />
-          <Form.Group as={Row}>
-            <Col sm={{ span: 10, offset: 2 }}>
-              <Button type="submit" disabled={monthlyBudgetState.isLoading}>
-                {monthlyBudgetState.isCreating ? 'Adicionando...' : 'Adicionar orçamento'}
-              </Button>
-            </Col>
-          </Form.Group>
-        </Form>
+        <MonthlyBudgetForm
+          onSubmit={handleSubmit}
+          isLoading={monthlyBudgetState.isLoading}
+          isCreating={monthlyBudgetState.isCreating}
+        />
       </section>
       <section>
         <h2>{INCOME_TYPE.pluralLabel}</h2>
@@ -97,6 +66,10 @@ export default function MonthlyBudgetView() {
           items={monthlyBudgetState.items.filter(c => c.type === INCOME_TYPE.value)}
           onDelete={handleDelete}
           deleting={monthlyBudgetState.deleting}
+          onUpdate={handleUpdate}
+          updating={monthlyBudgetState.updating}
+          extendedUuid={enabledUpdateUuid}
+          ExtendedComponent={MonthlyBudgetTableRowExtension}
         />
       </section>
       <section>
@@ -105,13 +78,104 @@ export default function MonthlyBudgetView() {
           items={monthlyBudgetState.items.filter(c => c.type === EXPENSE_TYPE.value)}
           onDelete={handleDelete}
           deleting={monthlyBudgetState.deleting}
+          onUpdate={handleUpdate}
+          updating={monthlyBudgetState.updating}
+          extendedUuid={enabledUpdateUuid}
+          ExtendedComponent={MonthlyBudgetTableRowExtension}
         />
       </section>
     </Container>
   );
 }
 
-function MonthlyBudgetTable({ items, onDelete, deleting }) {
+function MonthlyBudgetForm({ onSubmit, isLoading, isCreating, isUpdating, budget }) {
+  const isUpdateMode = !!(budget && budget.uuid);
+
+  const getSubmitLabel = () => {
+    if (isUpdateMode) {
+      return isUpdating ? 'Alterando...' : 'Alterar orçamento';
+    } else {
+      return isCreating ? 'Adicionando...' : 'Adicionar orçamento';
+    }
+  };
+
+  return (
+    <Form onSubmit={onSubmit}>
+      <Form.Group as={Row} controlId="formMonthlyBudgetName">
+        <Form.Label column sm={2}>
+          Nome:
+        </Form.Label>
+        <Col sm={10}>
+          <Form.Control
+            placeholder="Para intitular uma entrada de orçamento."
+            name="name"
+            maxLength={50}
+            defaultValue={get(budget, 'name')}
+            required
+          />
+        </Col>
+      </Form.Group>
+      <Row className="mb-2">
+        <Form.Label sm={2} column>
+          Quantia:
+        </Form.Label>
+        <InputGroup className="col-sm-10">
+          <InputGroup.Prepend>
+            <InputGroup.Text>R$</InputGroup.Text>
+          </InputGroup.Prepend>
+          <FormControl
+            type="number"
+            placeholder="Valor planejado (até 2 casas decimais para centavos)."
+            name="amount"
+            step=".01"
+            min={0}
+            defaultValue={get(budget, 'amount')}
+            required
+          />
+        </InputGroup>
+      </Row>
+      <FlowTypeSelectionFieldset
+        idPrefix={isUpdateMode ? budget.uuid : 'form'}
+        defaultValue={get(budget, 'type')}
+      />
+      <Form.Group as={Row}>
+        <Col sm={{ span: 10, offset: 2 }}>
+          <Button type="submit" variant={isUpdateMode ? 'warning' : 'success'} disabled={isLoading}>
+            {getSubmitLabel()}
+          </Button>
+        </Col>
+      </Form.Group>
+    </Form>
+  );
+}
+
+function MonthlyBudgetTableRowExtension({ budget }) {
+  const dispatch = useDispatch();
+  const isUpdating = useSelector(state => state.monthlyBudget.updating.includes(budget.uuid));
+  const isLoading = useSelector(state => state.monthlyBudget.isLoading);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const creatingBudget = {
+      name: event.target.name.value,
+      type: event.target.type.value,
+      amount: event.target.amount.value,
+    };
+    dispatch(monthlyBudgetActions.update(budget.uuid, creatingBudget));
+  };
+
+  return (
+    <MonthlyBudgetForm
+      budget={budget}
+      onSubmit={handleSubmit}
+      isLoading={isLoading}
+      isUpdating={isUpdating}
+    />
+  );
+}
+
+function MonthlyBudgetTable({ items, onDelete, deleting, onUpdate, updating, extendedUuid, ExtendedComponent }) {
   const total = items.reduce((acc, budget) => acc.plus(budget.amount), Decimal(0)).toFixed(2);
 
   return (
@@ -125,19 +189,38 @@ function MonthlyBudgetTable({ items, onDelete, deleting }) {
       </thead>
       <tbody>
         {items.map((budget) => (
-          <tr key={budget.uuid}>
-            <td>{budget.name}</td>
-            <td>R$ {budget.amount}</td>
-            <td>
-              <Button
-                variant="danger"
-                onClick={() => onDelete(budget)}
-                disabled={deleting.includes(budget.uuid)}
-              >
-                Apagar
-              </Button>
-            </td>
-          </tr>
+          <React.Fragment key={budget.uuid}>
+            <tr>
+              <td>{budget.name}</td>
+              <td>R$ {budget.amount}</td>
+              <td>
+                <Button
+                  onClick={() => onUpdate(budget)}
+                  disabled={updating.includes(budget.uuid)}
+                  size="sm"
+                  className="mb-1 mr-1"
+                >
+                  Alterar
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={() => onDelete(budget)}
+                  disabled={deleting.includes(budget.uuid)}
+                  size="sm"
+                  className="mb-1"
+                >
+                  Apagar
+                </Button>
+              </td>
+            </tr>
+            {extendedUuid === budget.uuid && (
+              <tr>
+                <td colSpan={3} className="bg-light">
+                  <ExtendedComponent budget={budget} />
+                </td>
+              </tr>
+            )}
+          </React.Fragment>
         ))}
         <tr>
           <td><strong>Total</strong></td>

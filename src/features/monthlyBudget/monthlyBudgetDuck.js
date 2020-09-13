@@ -26,6 +26,9 @@ const monthlyBudgetResource = makeReduxAssets({
     create: async (budget) => {
       return { uuid: uuidv4(), ...budget };
     },
+    update: async (uuid, budget) => {
+      return { ...budget, uuid };
+    },
     delete: async(uuid) => {
       return { uuid };
     },

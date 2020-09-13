@@ -8,6 +8,7 @@ import { categoriesActions } from "./features/categories/categoriesDuck";
 import MainMenu from "./features/navbar/MainMenu";
 import MonthlyBudgetView from "./features/monthlyBudget/MonthlyBudgetView";
 import { monthlyBudgetActions } from "./features/monthlyBudget/monthlyBudgetDuck";
+import Home from "./features/home/Home";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -31,6 +32,3 @@ export default function App() {
   );
 }
 
-const Home = () => (
-  <h1>Início.</h1>
-);

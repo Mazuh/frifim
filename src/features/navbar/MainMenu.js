@@ -27,8 +27,8 @@ export default function MainMenu() {
 
 const menuLinks = [
   { url: '/', label: 'Início' },
-  { url: 'not-implemented', label: 'Plano mensal' },
-  { url: 'not-implemented', label: 'Plano semanal' },
+  { url: '/orçamento-mensal', label: 'Orçamento mensal' },
+  { url: 'not-implemented', label: 'Orçamento semanal' },
   { url: 'not-implemented', label: 'Transações reais' },
   { url: '/categorias', label: 'Categorias' },
 ];

@@ -58,31 +58,7 @@ export default function CategoriesView() {
               />
             </Col>
           </Form.Group>
-          <fieldset>
-            <Form.Group as={Row}>
-              <Form.Label as="legend" column sm={2}>
-                Tipo:
-              </Form.Label>
-              <Col sm={10}>
-                <Form.Check
-                  type="radio"
-                  name="type"
-                  label={INCOME_TYPE.label}
-                  value={INCOME_TYPE.value}
-                  id="formCategoryIncome"
-                  required
-                />
-                <Form.Check
-                  type="radio"
-                  name="type"
-                  label={EXPENSE_TYPE.label}
-                  value={EXPENSE_TYPE.value}
-                  id="formCategoryExpense"
-                  required
-                />
-              </Col>
-            </Form.Group>
-          </fieldset>
+          <FlowTypeSelectionFieldset />
           <Form.Group as={Row}>
             <Col sm={{ span: 10, offset: 2 }}>
               <Button type="submit" disabled={categoriesState.isLoading}>
@@ -112,7 +88,41 @@ export default function CategoriesView() {
   );
 }
 
+export function FlowTypeSelectionFieldset() {
+  return (
+    <fieldset>
+      <Form.Group as={Row}>
+        <Form.Label as="legend" column sm={2}>
+          Tipo:
+        </Form.Label>
+        <Col sm={10}>
+          <Form.Check
+            type="radio"
+            name="type"
+            label={INCOME_TYPE.label}
+            value={INCOME_TYPE.value}
+            id="formCategoryIncome"
+            required
+          />
+          <Form.Check
+            type="radio"
+            name="type"
+            label={EXPENSE_TYPE.label}
+            value={EXPENSE_TYPE.value}
+            id="formCategoryExpense"
+            required
+          />
+        </Col>
+      </Form.Group>
+    </fieldset>
+  );
+}
+
 function CategoriesTable({ items, onDelete, deleting }) {
+  if (items.length === 0) {
+    return <p>Categorias não encontradas.</p>;
+  }
+
   return (
     <Table striped bordered hover>
       <thead>

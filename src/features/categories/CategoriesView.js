@@ -51,7 +51,7 @@ export default function CategoriesView() {
             </Form.Label>
             <Col sm={10}>
               <Form.Control
-                placeholder="Algo curto para etiquetar seus orçamentos e transações."
+                placeholder="Etiqueta curta para orçamentos e transações."
                 name="name"
                 maxLength={25}
                 required
@@ -62,7 +62,7 @@ export default function CategoriesView() {
           <Form.Group as={Row}>
             <Col sm={{ span: 10, offset: 2 }}>
               <Button type="submit" disabled={categoriesState.isLoading}>
-                {categoriesState.isCreating ? 'Criando...' : 'Criar categoria'}
+                {categoriesState.isCreating ? 'Adicionando...' : 'Adicionar categoria'}
               </Button>
             </Col>
           </Form.Group>
@@ -150,6 +150,7 @@ function CategoriesTable({ items, onDelete, deleting }) {
                 variant="danger"
                 onClick={() => onDelete(category)}
                 disabled={deleting.includes(category.uuid)}
+                size="sm"
               >
                 Apagar
               </Button>

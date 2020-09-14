@@ -9,15 +9,14 @@ export default function MainMenu() {
 
   return (
     <Navbar className="mb-3" bg="dark" variant="dark">
-      <Navbar.Brand href="#" onClick={() => history.push('/')}>Moneycog</Navbar.Brand>
+      <Navbar.Brand onClick={() => history.push('/')}>Moneycog</Navbar.Brand>
       <Nav className="mr-auto">
-        {menuLinks.map((it, index) => (
+        {menuLinks.map((link, index) => (
           <Nav.Link
-            href="#"
-            onClick={() => history.push(it.url)} key={index}
-            active={it.url === location.pathname}
+            onClick={() => history.push(link.url)} key={index}
+            active={link.url === location.pathname}
           >
-            {it.label}
+            {link.label}
           </Nav.Link>
         ))}
       </Nav>

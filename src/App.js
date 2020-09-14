@@ -6,8 +6,8 @@ import { useDispatch } from "react-redux";
 import CategoriesView from "./features/categories/CategoriesView";
 import { categoriesActions } from "./features/categories/categoriesDuck";
 import MainMenu from "./features/navbar/MainMenu";
-import MonthlyBudgetView from "./features/monthlyBudget/MonthlyBudgetView";
-import { monthlyBudgetActions } from "./features/monthlyBudget/monthlyBudgetDuck";
+import MonthlyBudgetView from "./features/monthly-budget/MonthlyBudgetView";
+import { monthlyBudgetActions } from "./features/monthly-budget/monthlyBudgetDuck";
 import Home from "./features/home/Home";
 
 export default function App() {

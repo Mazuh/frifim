@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import "izitoast/dist/css/iziToast.min.css";
 import "./App.css";
 import React from "react";
 import { Route, Switch, BrowserRouter, Redirect } from "react-router-dom";

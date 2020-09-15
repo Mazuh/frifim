@@ -14,11 +14,14 @@ import { FlowTypeSelectionFieldset } from "../categories/CategoriesView";
 import LoadingContainer from "../loading/LoadingContainer";
 import { EXPENSE_TYPE, INCOME_TYPE } from "../categories/constants";
 import { monthlyBudgetActions } from "./monthlyBudgetDuck";
+import useIzitoastForResource from "../izitoast-for-resources/useIzitoastForResource";
 
 export default function MonthlyBudgetView() {
   const dispatch = useDispatch();
   const monthlyBudgetState = useSelector(state => state.monthlyBudget);
   const [enabledUpdateUuid, setEnabledUpdateUuid] = React.useState(null);
+
+  useIzitoastForResource('monthlyBudget');
 
   if (monthlyBudgetState.isReadingAll) {
     return <LoadingContainer />

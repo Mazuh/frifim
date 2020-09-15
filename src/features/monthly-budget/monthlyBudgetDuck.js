@@ -1,10 +1,12 @@
 import { makeReduxAssets } from 'resource-toolkit';
 import { v4 as uuidv4 } from "uuid";
 import { INCOME_TYPE, EXPENSE_TYPE } from '../categories/constants';
+import makeResourceMessageTextFn from '../izitoast-for-resources/makeResourceMessageTextFn';
 
 const monthlyBudgetResource = makeReduxAssets({
   name: 'monthlyBudget',
   idKey: 'uuid',
+  makeMessageText: makeResourceMessageTextFn('orçamento', 'orçamentos'),
   gateway: {
     fetchMany: async () => {
       return [

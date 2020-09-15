@@ -1,10 +1,12 @@
 import { makeReduxAssets } from 'resource-toolkit';
 import { v4 as uuidv4 } from "uuid";
 import { TAG_COLORS, INCOME_TYPE, EXPENSE_TYPE } from './constants';
+import makeResourceMessageTextFn from '../izitoast-for-resources/makeResourceMessageTextFn';
 
 const categoriesResource = makeReduxAssets({
   name: 'categories',
   idKey: 'uuid',
+  makeMessageText: makeResourceMessageTextFn('categoria', 'categorias'),
   gateway: {
     fetchMany: async () => {
       return [

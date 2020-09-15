@@ -44,29 +44,11 @@ export default function CategoriesView() {
       </header>
       <section>
         <h2>Criar</h2>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group as={Row} controlId="formCategoryName">
-            <Form.Label column sm={2}>
-              Nome:
-            </Form.Label>
-            <Col sm={10}>
-              <Form.Control
-                placeholder="Etiqueta curta para orçamentos e transações."
-                name="name"
-                maxLength={25}
-                required
-              />
-            </Col>
-          </Form.Group>
-          <FlowTypeSelectionFieldset />
-          <Form.Group as={Row}>
-            <Col sm={{ span: 10, offset: 2 }}>
-              <Button type="submit" variant="success" disabled={categoriesState.isLoading}>
-                {categoriesState.isCreating ? 'Adicionando...' : 'Adicionar categoria'}
-              </Button>
-            </Col>
-          </Form.Group>
-        </Form>
+        <CategoryForm
+          onSubmit={handleSubmit}
+          isLoading={categoriesState.isLoading}
+          isCreating={categoriesState.isCreating}
+        />
       </section>
       <section>
         <h2>{INCOME_TYPE.pluralLabel}</h2>
@@ -117,6 +99,34 @@ export function FlowTypeSelectionFieldset({ idPrefix='form', defaultValue = null
         </Col>
       </Form.Group>
     </fieldset>
+  );
+}
+
+function CategoryForm({ onSubmit, isLoading, isCreating }) {
+  return (
+    <Form onSubmit={onSubmit}>
+      <Form.Group as={Row} controlId="formCategoryName">
+        <Form.Label column sm={2}>
+          Nome:
+        </Form.Label>
+        <Col sm={10}>
+          <Form.Control
+            placeholder="Etiqueta curta para orçamentos e transações."
+            name="name"
+            maxLength={25}
+            required
+          />
+        </Col>
+      </Form.Group>
+      <FlowTypeSelectionFieldset />
+      <Form.Group as={Row}>
+        <Col sm={{ span: 10, offset: 2 }}>
+          <Button type="submit" variant="success" disabled={isLoading}>
+            {isCreating ? 'Adicionando...' : 'Adicionar categoria'}
+          </Button>
+        </Col>
+      </Form.Group>
+    </Form>
   );
 }
 

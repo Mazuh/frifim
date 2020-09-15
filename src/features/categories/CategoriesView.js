@@ -61,7 +61,7 @@ export default function CategoriesView() {
           <FlowTypeSelectionFieldset />
           <Form.Group as={Row}>
             <Col sm={{ span: 10, offset: 2 }}>
-              <Button type="submit" disabled={categoriesState.isLoading}>
+              <Button type="submit" variant="success" disabled={categoriesState.isLoading}>
                 {categoriesState.isCreating ? 'Adicionando...' : 'Adicionar categoria'}
               </Button>
             </Col>

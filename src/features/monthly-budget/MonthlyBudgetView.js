@@ -65,7 +65,7 @@ export default function MonthlyBudgetView() {
       </section>
       <section>
         <h2>{INCOME_TYPE.pluralLabel}</h2>
-        <MonthlyBudgetTable
+        <BudgetTable
           items={monthlyBudgetState.items.filter(c => c.type === INCOME_TYPE.value)}
           onDelete={handleDelete}
           deleting={monthlyBudgetState.deleting}
@@ -77,7 +77,7 @@ export default function MonthlyBudgetView() {
       </section>
       <section>
         <h2>{EXPENSE_TYPE.pluralLabel}</h2>
-        <MonthlyBudgetTable
+        <BudgetTable
           items={monthlyBudgetState.items.filter(c => c.type === EXPENSE_TYPE.value)}
           onDelete={handleDelete}
           deleting={monthlyBudgetState.deleting}
@@ -88,6 +88,76 @@ export default function MonthlyBudgetView() {
         />
       </section>
     </Container>
+  );
+}
+
+export function BudgetTable({
+  items,
+  onDelete,
+  deleting,
+  onUpdate,
+  updating,
+  extendedUuid,
+  ExtendedComponent,
+  EmptyComponent = null,
+}) {
+  if (items.length === 0 && typeof EmptyComponent === 'function') {
+    return <EmptyComponent />
+  }
+
+  const total = items.reduce((acc, budget) => acc.plus(budget.amount), Decimal(0)).toFixed(2);
+
+  return (
+    <Table striped bordered hover>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Quantia</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {items.map((budget) => (
+          <React.Fragment key={budget.uuid}>
+            <tr>
+              <td>{budget.name}</td>
+              <td>R$ {budget.amount}</td>
+              <td>
+                <Button
+                  onClick={() => onUpdate(budget)}
+                  disabled={updating.includes(budget.uuid)}
+                  size="sm"
+                  className="mb-1 mr-1"
+                >
+                  Alterar
+                </Button>
+                <Button
+                  variant="danger"
+                  onClick={() => onDelete(budget)}
+                  disabled={deleting.includes(budget.uuid)}
+                  size="sm"
+                  className="mb-1"
+                >
+                  Apagar
+                </Button>
+              </td>
+            </tr>
+            {extendedUuid === budget.uuid && (
+              <tr>
+                <td colSpan={3} className="bg-light">
+                  <ExtendedComponent budget={budget} />
+                </td>
+              </tr>
+            )}
+          </React.Fragment>
+        ))}
+        <tr>
+          <td><strong>Total</strong></td>
+          <td><strong>R$ {total}</strong></td>
+          <td>{' '}</td>
+        </tr>
+      </tbody>
+    </Table>
   );
 }
 
@@ -175,62 +245,5 @@ function MonthlyBudgetTableRowExtension({ budget }) {
       isLoading={isLoading}
       isUpdating={isUpdating}
     />
-  );
-}
-
-function MonthlyBudgetTable({ items, onDelete, deleting, onUpdate, updating, extendedUuid, ExtendedComponent }) {
-  const total = items.reduce((acc, budget) => acc.plus(budget.amount), Decimal(0)).toFixed(2);
-
-  return (
-    <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Quantia</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {items.map((budget) => (
-          <React.Fragment key={budget.uuid}>
-            <tr>
-              <td>{budget.name}</td>
-              <td>R$ {budget.amount}</td>
-              <td>
-                <Button
-                  onClick={() => onUpdate(budget)}
-                  disabled={updating.includes(budget.uuid)}
-                  size="sm"
-                  className="mb-1 mr-1"
-                >
-                  Alterar
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={() => onDelete(budget)}
-                  disabled={deleting.includes(budget.uuid)}
-                  size="sm"
-                  className="mb-1"
-                >
-                  Apagar
-                </Button>
-              </td>
-            </tr>
-            {extendedUuid === budget.uuid && (
-              <tr>
-                <td colSpan={3} className="bg-light">
-                  <ExtendedComponent budget={budget} />
-                </td>
-              </tr>
-            )}
-          </React.Fragment>
-        ))}
-        <tr>
-          <td><strong>Total</strong></td>
-          <td><strong>R$ {total}</strong></td>
-          <td>{' '}</td>
-        </tr>
-      </tbody>
-    </Table>
   );
 }

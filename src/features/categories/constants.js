@@ -6,5 +6,6 @@ export const TAG_COLORS = Object.freeze([
 ]);
 
 export const INCOME_TYPE = Object.freeze({ value: 'income', label: 'Renda', pluralLabel: 'Rendas' });
-
 export const EXPENSE_TYPE = Object.freeze({ value: 'expense', label: 'Despesa', pluralLabel: 'Despesas' });
+
+export const FLOW_TYPES = Object.freeze([INCOME_TYPE, EXPENSE_TYPE]);

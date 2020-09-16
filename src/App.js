@@ -10,6 +10,8 @@ import MainMenu from "./features/navbar/MainMenu";
 import MonthlyBudgetView from "./features/monthly-budget/MonthlyBudgetView";
 import { monthlyBudgetActions } from "./features/monthly-budget/monthlyBudgetDuck";
 import Home from "./features/home/Home";
+import WeeklyBudgetView from "./features/weekly-budget/WeeklyBudgetView";
+import { weeklyBudgetActions } from "./features/weekly-budget/weeklyBudgetDuck";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -17,6 +19,7 @@ export default function App() {
   React.useEffect(() => {
     dispatch(categoriesActions.readAll());
     dispatch(monthlyBudgetActions.readAll());
+    dispatch(weeklyBudgetActions.readAll());
   }, [dispatch]);
 
   return (
@@ -29,6 +32,9 @@ export default function App() {
           </Route>
           <Route exact path="/orçamento-mensal">
             <MonthlyBudgetView />
+          </Route>
+          <Route exact path="/orçamento-semanal">
+            <WeeklyBudgetView />
           </Route>
           <Route exact path="/404">
             <NotFoundView />

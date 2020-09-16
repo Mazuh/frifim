@@ -11,7 +11,7 @@ const monthlyBudgetResource = makeReduxAssets({
     fetchMany: async () => {
       return [
         { uuid: uuidv4(), name: 'Salário (após IR e FGTS)', type: INCOME_TYPE.value, amount: '1500.00' },
-        { uuid: uuidv4(), name: 'Freelance', type: INCOME_TYPE.value, amount: '1000.00' },
+        { uuid: uuidv4(), name: 'Freelance Foo', type: INCOME_TYPE.value, amount: '1000.00' },
         { uuid: uuidv4(), name: 'Reserva de emergência', type: EXPENSE_TYPE.value, amount: '300.00' },
         { uuid: uuidv4(), name: 'Aluguel', type: EXPENSE_TYPE.value, amount: '200.00' },
         { uuid: uuidv4(), name: 'Energia', type: EXPENSE_TYPE.value, amount: '150.00' },

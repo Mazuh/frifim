@@ -45,7 +45,7 @@ export default function MonthlyBudgetView() {
   };
 
   const handleDelete = (budget) => {
-    if (window.confirm(`Deletar orçamento "${budget.name}"?`)) {
+    if (window.confirm(`Deletar do orçamento "${budget.name}"?`)) {
       dispatch(monthlyBudgetActions.delete(budget.uuid));
     }
   }
@@ -96,9 +96,9 @@ function MonthlyBudgetForm({ onSubmit, isLoading, isCreating, isUpdating, budget
 
   const getSubmitLabel = () => {
     if (isUpdateMode) {
-      return isUpdating ? 'Alterando...' : 'Alterar orçamento';
+      return isUpdating ? 'Alterando...' : 'Alterar no orçamento';
     } else {
-      return isCreating ? 'Adicionando...' : 'Adicionar orçamento';
+      return isCreating ? 'Adicionando...' : 'Adicionar ao orçamento';
     }
   };
 

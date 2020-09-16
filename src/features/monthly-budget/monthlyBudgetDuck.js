@@ -6,7 +6,7 @@ import makeResourceMessageTextFn from '../izitoast-for-resources/makeResourceMes
 const monthlyBudgetResource = makeReduxAssets({
   name: 'monthlyBudget',
   idKey: 'uuid',
-  makeMessageText: makeResourceMessageTextFn('orçamento', 'orçamentos'),
+  makeMessageText: makeResourceMessageTextFn('planejamento', 'planejamentos'),
   gateway: {
     fetchMany: async () => {
       return [

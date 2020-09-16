@@ -19,6 +19,7 @@ export default function useIzitoastForResource(resource) {
       onClosing: clearMessage,
       color: message.isError ? 'red' : 'green',
       position: 'topRight',
+      timeout: 2500,
     });
   }, [dispatch, message, resource]);
 }

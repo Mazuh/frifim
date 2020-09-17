@@ -1,21 +1,15 @@
 import React from "react";
-import Decimal from "decimal.js";
 import get from "lodash.get";
 import Container from "react-bootstrap/Container";
-import Table from "react-bootstrap/Table";
-import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup";
-import FormControl from "react-bootstrap/FormControl";
+import Form from "react-bootstrap/Form";
 import { useSelector, useDispatch } from "react-redux";
-import { FlowTypeSelectionFieldset } from "../categories/CategoriesView";
 import LoadingContainer from "../loading/LoadingContainer";
-import { EXPENSE_TYPE, INCOME_TYPE, FLOW_TYPES } from "../categories/constants";
+import { FLOW_TYPES } from "../categories/constants";
 import { weeklyBudgetActions } from "./weeklyBudgetDuck";
 import useIzitoastForResource from "../izitoast-for-resources/useIzitoastForResource";
-import { BudgetTable } from "../monthly-budget/MonthlyBudgetView";
+import { BudgetTable, BudgetForm } from "../monthly-budget/MonthlyBudgetView";
 import { WEEK_DAYS } from "./constants";
 
 export default function WeeklyBudgetView() {
@@ -28,6 +22,20 @@ export default function WeeklyBudgetView() {
   if (weeklyBudgetState.isReadingAll) {
     return <LoadingContainer />
   }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const creatingBudget = {
+      name: event.target.name.value,
+      type: event.target.type.value,
+      amount: event.target.amount.value,
+      day: parseInt(event.target.day.value, 10),
+    };
+    dispatch(weeklyBudgetActions.create(creatingBudget));
+
+    event.target.reset();
+  };
 
   const handleUpdate = (budget) => {
     setEnabledUpdateUuid(enabledUpdateUuid === budget.uuid ? null : budget.uuid);
@@ -46,7 +54,11 @@ export default function WeeklyBudgetView() {
       </header>
       <section>
         <h2>Criar</h2>
-        <p>TODO</p>
+        <WeeklyBudgetForm
+          onSubmit={handleSubmit}
+          isLoading={weeklyBudgetState.isLoading}
+          isCreating={weeklyBudgetState.isCreating}
+        />
       </section>
       {WEEK_DAYS.map(dayEntity => (
         <section key={dayEntity.value}>
@@ -61,7 +73,7 @@ export default function WeeklyBudgetView() {
                 onUpdate={handleUpdate}
                 updating={weeklyBudgetState.updating}
                 extendedUuid={enabledUpdateUuid}
-                // ExtendedComponent={MonthlyBudgetTableRowExtension}
+                ExtendedComponent={WeeklyBudgetTableRowExtension}
                 EmptyComponent={() => <p>Sem planejamentos aqui.</p>}
               />
             </section>
@@ -69,6 +81,64 @@ export default function WeeklyBudgetView() {
         </section>
       ))}
     </Container>
+  );
+}
+
+function WeeklyBudgetForm(props) {
+  const { budget, isUpdateMode } = props;
+
+  const idPrefix = isUpdateMode ? budget.uuid : 'form';
+
+  return (
+    <BudgetForm {...props}>
+      <Form.Group as={Row} controlId={`${idPrefix}WeekDay`}>
+        <Form.Label column sm={2}>
+          Dia:
+        </Form.Label>
+        <Col sm={10}>
+          <Form.Control
+            as="select"
+            name="day"
+            defaultValue={get(budget, 'day')}
+            required
+          >
+            <option value="">--- Escolha o dia da semana ---</option>
+            {WEEK_DAYS.map(dayEntity => (
+              <option key={dayEntity.value} value={dayEntity.value}>
+                {dayEntity.label}
+              </option>
+            ))}
+          </Form.Control>
+        </Col>
+      </Form.Group>
+    </BudgetForm>
+  );
+}
+
+function WeeklyBudgetTableRowExtension({ budget }) {
+  const dispatch = useDispatch();
+  const isUpdating = useSelector(state => state.weeklyBudget.updating.includes(budget.uuid));
+  const isLoading = useSelector(state => state.weeklyBudget.isLoading);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const creatingBudget = {
+      name: event.target.name.value,
+      type: event.target.type.value,
+      amount: event.target.amount.value,
+      day: parseInt(event.target.day.value, 10),
+    };
+    dispatch(weeklyBudgetActions.update(budget.uuid, creatingBudget));
+  };
+
+  return (
+    <WeeklyBudgetForm
+      budget={budget}
+      onSubmit={handleSubmit}
+      isLoading={isLoading}
+      isUpdating={isUpdating}
+    />
   );
 }
 

@@ -161,7 +161,7 @@ export function BudgetTable({
   );
 }
 
-function MonthlyBudgetForm({ onSubmit, isLoading, isCreating, isUpdating, budget }) {
+export function BudgetForm({ children, onSubmit, isLoading, isCreating, isUpdating, budget }) {
   const isUpdateMode = !!(budget && budget.uuid);
 
   const getSubmitLabel = () => {
@@ -192,25 +192,28 @@ function MonthlyBudgetForm({ onSubmit, isLoading, isCreating, isUpdating, budget
         <Form.Label sm={2} column>
           Quantia:
         </Form.Label>
-        <InputGroup className="col-sm-10">
-          <InputGroup.Prepend>
-            <InputGroup.Text>R$</InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl
-            type="number"
-            placeholder="Valor planejado (até 2 casas decimais para centavos)."
-            name="amount"
-            step=".01"
-            min={0}
-            defaultValue={get(budget, 'amount')}
-            required
-          />
-        </InputGroup>
+        <Col sm={10}>
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text>R$</InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl
+              type="number"
+              placeholder="Valor planejado (até 2 casas decimais para centavos)."
+              name="amount"
+              step=".01"
+              min={0}
+              defaultValue={get(budget, 'amount')}
+              required
+            />
+          </InputGroup>
+        </Col>
       </Row>
       <FlowTypeSelectionFieldset
         idPrefix={isUpdateMode ? budget.uuid : 'form'}
         defaultValue={get(budget, 'type')}
       />
+      {children}
       <Form.Group as={Row}>
         <Col sm={{ span: 10, offset: 2 }}>
           <Button type="submit" variant={isUpdateMode ? 'warning' : 'success'} disabled={isLoading}>
@@ -221,6 +224,8 @@ function MonthlyBudgetForm({ onSubmit, isLoading, isCreating, isUpdating, budget
     </Form>
   );
 }
+
+const MonthlyBudgetForm = BudgetForm;
 
 function MonthlyBudgetTableRowExtension({ budget }) {
   const dispatch = useDispatch();

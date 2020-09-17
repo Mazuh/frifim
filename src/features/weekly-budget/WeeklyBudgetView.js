@@ -85,8 +85,9 @@ export default function WeeklyBudgetView() {
 }
 
 function WeeklyBudgetForm(props) {
-  const { budget, isUpdateMode } = props;
+  const { budget } = props;
 
+  const isUpdateMode = !!(budget && budget.uuid);
   const idPrefix = isUpdateMode ? budget.uuid : 'form';
 
   return (

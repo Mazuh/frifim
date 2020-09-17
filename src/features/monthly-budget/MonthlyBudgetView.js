@@ -172,9 +172,11 @@ export function BudgetForm({ children, onSubmit, isLoading, isCreating, isUpdati
     }
   };
 
+  const idPrefix = isUpdateMode ? budget.uuid : 'form';
+
   return (
     <Form onSubmit={onSubmit}>
-      <Form.Group as={Row} controlId="formMonthlyBudgetName">
+      <Form.Group as={Row} controlId={`${idPrefix}budgetName`}>
         <Form.Label column sm={2}>
           Nome:
         </Form.Label>
@@ -188,7 +190,7 @@ export function BudgetForm({ children, onSubmit, isLoading, isCreating, isUpdati
           />
         </Col>
       </Form.Group>
-      <Row className="mb-2">
+      <Form.Group as={Row} controlId={`${idPrefix}budgetNumber`} className="mb-2">
         <Form.Label sm={2} column>
           Quantia:
         </Form.Label>
@@ -208,9 +210,9 @@ export function BudgetForm({ children, onSubmit, isLoading, isCreating, isUpdati
             />
           </InputGroup>
         </Col>
-      </Row>
+      </Form.Group>
       <FlowTypeSelectionFieldset
-        idPrefix={isUpdateMode ? budget.uuid : 'form'}
+        idPrefix={idPrefix}
         defaultValue={get(budget, 'type')}
       />
       {children}

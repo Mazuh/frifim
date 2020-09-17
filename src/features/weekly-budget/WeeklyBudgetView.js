@@ -61,26 +61,34 @@ export default function WeeklyBudgetView() {
           isCreating={weeklyBudgetState.isCreating}
         />
       </section>
-      {WEEK_DAYS.map(dayEntity => (
-        <section key={dayEntity.value}>
-          <h2>{dayEntity.label}</h2>
-          {FLOW_TYPES.map(flowType => (
-            <section key={flowType.value}>
-              <h3>{flowType.pluralLabel}</h3>
-              <BudgetTable
-                items={weeklyBudgetState.items.filter(isThisBudgetSectionFn(dayEntity, flowType))}
-                onDelete={(handleDelete)}
-                deleting={weeklyBudgetState.deleting}
-                onUpdate={handleUpdate}
-                updating={weeklyBudgetState.updating}
-                extendedUuid={enabledUpdateUuid}
-                ExtendedComponent={WeeklyBudgetTableRowExtension}
-                EmptyComponent={() => <p>Sem planejamentos aqui.</p>}
-              />
-            </section>
-          ))}
-        </section>
-      ))}
+      {!weeklyBudgetState.items.length && (
+        <p>Nenhum planejamento semanal encontrado.</p>
+      )}
+      {WEEK_DAYS.map((dayEntity) => {
+        const itemsByDay = weeklyBudgetState.items.filter(it => it.day === dayEntity.value);
+        return !!itemsByDay.length && (
+          <section key={dayEntity.value}>
+            <h2>{dayEntity.label}</h2>
+            {FLOW_TYPES.map((flowType) => {
+              const itemsByDayAndFlow = itemsByDay.filter(it => it.type === flowType.value);
+              return !!itemsByDayAndFlow.length && (
+                <section key={flowType.value}>
+                  <h3>{flowType.pluralLabel}</h3>
+                  <BudgetTable
+                    items={itemsByDayAndFlow}
+                    onDelete={(handleDelete)}
+                    deleting={weeklyBudgetState.deleting}
+                    onUpdate={handleUpdate}
+                    updating={weeklyBudgetState.updating}
+                    extendedUuid={enabledUpdateUuid}
+                    ExtendedComponent={WeeklyBudgetTableRowExtension}
+                  />
+                </section>
+              );
+            })}
+          </section>
+        );
+      })}
     </Container>
   );
 }

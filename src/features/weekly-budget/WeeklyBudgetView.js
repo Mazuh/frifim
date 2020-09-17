@@ -9,7 +9,8 @@ import LoadingContainer from "../loading/LoadingContainer";
 import { FLOW_TYPES } from "../categories/constants";
 import { weeklyBudgetActions } from "./weeklyBudgetDuck";
 import useIzitoastForResource from "../izitoast-for-resources/useIzitoastForResource";
-import { BudgetTable, BudgetForm } from "../monthly-budget/MonthlyBudgetView";
+import BudgetTable from "../monthly-budget/BudgetTable";
+import BudgetForm from "../monthly-budget/BudgetForm";
 import { WEEK_DAYS } from "./constants";
 
 export default function WeeklyBudgetView() {

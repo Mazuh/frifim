@@ -151,9 +151,3 @@ function WeeklyBudgetTableRowExtension({ budget }) {
     />
   );
 }
-
-const isThisBudgetSectionFn = (
-  (dayEntity, flowType) =>
-    budget =>
-      budget.day === dayEntity.value && budget.type === flowType.value
-);

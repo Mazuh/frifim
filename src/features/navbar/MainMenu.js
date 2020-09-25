@@ -9,7 +9,9 @@ export default function MainMenu() {
 
   return (
     <Navbar className="mb-3" bg="dark" variant="dark">
-      <Navbar.Brand onClick={() => history.push('/')}>Moneycog</Navbar.Brand>
+      <Navbar.Brand className="cursor-pointer" onClick={() => history.push('/')}>
+        Moneycog
+      </Navbar.Brand>
       <Nav className="mr-auto">
         {menuLinks.map((link, index) => (
           <Nav.Link

@@ -31,28 +31,32 @@ export default function BudgetTable({
       <tbody>
         {items.map((budget) => (
           <React.Fragment key={budget.uuid}>
-            <tr>
+            <tr title={budget.tooltip ? budget.tooltip : null}>
               <td>{budget.name}</td>
               <td>R$ {budget.amount}</td>
-              <td>
-                <Button
-                  onClick={() => onUpdate(budget)}
-                  disabled={updating.includes(budget.uuid)}
-                  size="sm"
-                  className="mb-1 mr-1"
-                >
-                  Alterar
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={() => onDelete(budget)}
-                  disabled={deleting.includes(budget.uuid)}
-                  size="sm"
-                  className="mb-1"
-                >
-                  Apagar
-                </Button>
-              </td>
+              {budget.isReadOnly ? (
+                <td />
+              ) : (
+                <td>
+                  <Button
+                    onClick={() => onUpdate(budget)}
+                    disabled={updating.includes(budget.uuid)}
+                    size="sm"
+                    className="mb-1 mr-1"
+                  >
+                    Alterar
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => onDelete(budget)}
+                    disabled={deleting.includes(budget.uuid)}
+                    size="sm"
+                    className="mb-1"
+                  >
+                    Apagar
+                  </Button>
+                </td>
+              )}
             </tr>
             {extendedUuid === budget.uuid && (
               <tr>
@@ -66,7 +70,7 @@ export default function BudgetTable({
         <tr>
           <td><strong>Total</strong></td>
           <td><strong>R$ {total}</strong></td>
-          <td>{' '}</td>
+          <td />
         </tr>
       </tbody>
     </Table>

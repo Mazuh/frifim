@@ -51,7 +51,7 @@ export default function MonthlyBudgetView() {
 
   useIzitoastForResource('monthlyBudget');
 
-  if (monthlyBudgetState.isReadingAll) {
+  if (monthlyBudgetState.isReadingAll || weeklyBudgetState.isReadingAll) {
     return <LoadingContainer />
   }
 

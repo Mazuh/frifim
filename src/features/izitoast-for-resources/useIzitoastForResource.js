@@ -11,16 +11,16 @@ export default function useIzitoastForResource(resource) {
       return;
     }
 
-    const clearMessage = () => dispatch(makeClearMessageAction(resource));
-
     iziToast.show({
       title: message.isError ? 'Erro' : 'Notificação',
       message: message.text,
-      onClosing: clearMessage,
       color: message.isError ? 'red' : 'green',
       position: 'topRight',
       timeout: 2500,
     });
+
+    dispatch(makeClearMessageAction(resource));
+
   }, [dispatch, message, resource]);
 }
 

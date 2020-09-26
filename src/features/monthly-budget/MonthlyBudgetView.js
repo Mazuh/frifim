@@ -7,42 +7,31 @@ import { monthlyBudgetActions } from "./monthlyBudgetDuck";
 import useIzitoastForResource from "../izitoast-for-resources/useIzitoastForResource";
 import BudgetTable from "./BudgetTable";
 import BudgetForm from "./BudgetForm";
-import Decimal from "decimal.js";
+import useSelectorForMonthlySituation from './useSelectorForMonthlySituation';
 
 export default function MonthlyBudgetView() {
   const dispatch = useDispatch();
 
-  const monthlyBudgetState = useSelector(state => state.monthlyBudget);
-  const weeklyBudgetState = useSelector(state => state.weeklyBudget);
+  const monthlySituation = useSelectorForMonthlySituation();
 
-  const { weeklyIncome, weeklyExpense } = weeklyBudgetState.items.reduce((acc, weeklyBudget) => {
-    if (weeklyBudget.type === INCOME_TYPE.value) {
-      acc.weeklyIncome = acc.weeklyIncome.plus(weeklyBudget.amount);
-    } else if (weeklyBudget.type === EXPENSE_TYPE.value) {
-      acc.weeklyExpense = acc.weeklyExpense.plus(weeklyBudget.amount);
-    }
-
-    return acc;
-  }, { weeklyIncome: Decimal(0), weeklyExpense: Decimal(0) });
-
-  const monthlyIncomes = monthlyBudgetState.items.filter(c => c.type === INCOME_TYPE.value);
-  if (!weeklyIncome.isZero()) {
+  const monthlyIncomes = monthlySituation.onlyMonthlyIncomes;
+  if (!monthlySituation.totalWeeklyIncomes.isZero()) {
     monthlyIncomes.push({
       uuid: 'weekly-incomes-sum',
       name: `${INCOME_TYPE.pluralLabel} semanais`,
       tooltip: 'Somatório de 4 semanas do planejamento semanal.',
-      amount: weeklyIncome.times(4).toFixed(2),
+      amount: monthlySituation.totalWeeklyIncomes.times(4).toFixed(2),
       isReadOnly: true,
     });
   }
 
-  const monthlyExpenses = monthlyBudgetState.items.filter(c => c.type === EXPENSE_TYPE.value);
-  if (!weeklyExpense.isZero()) {
+  const monthlyExpenses = monthlySituation.onlyMonthlyExpenses;
+  if (!monthlySituation.totalWeeklyExpenses.isZero()) {
     monthlyExpenses.push({
       uuid: 'weekly-expenses-sum',
       name: `${EXPENSE_TYPE.pluralLabel} semanais`,
       tooltip: 'Somatório de 4 semanas do planejamento semanal.',
-      amount: weeklyExpense.times(4).toFixed(2),
+      amount: monthlySituation.totalWeeklyExpenses.times(4).toFixed(2),
       isReadOnly: true,
     });
   }
@@ -51,7 +40,7 @@ export default function MonthlyBudgetView() {
 
   useIzitoastForResource('monthlyBudget');
 
-  if (monthlyBudgetState.isReadingAll || weeklyBudgetState.isReadingAll) {
+  if (monthlySituation.isReadingAll) {
     return <LoadingContainer />
   }
 
@@ -87,8 +76,8 @@ export default function MonthlyBudgetView() {
         <h2>Criar</h2>
         <MonthlyBudgetForm
           onSubmit={handleSubmit}
-          isLoading={monthlyBudgetState.isLoading}
-          isCreating={monthlyBudgetState.isCreating}
+          isLoading={monthlySituation.isLoading}
+          isCreating={monthlySituation.isCreating}
         />
       </section>
       <section>
@@ -96,9 +85,9 @@ export default function MonthlyBudgetView() {
         <BudgetTable
           items={monthlyIncomes}
           onDelete={handleDelete}
-          deleting={monthlyBudgetState.deleting}
+          deleting={monthlySituation.deleting}
           onUpdate={handleUpdate}
-          updating={monthlyBudgetState.updating}
+          updating={monthlySituation.updating}
           extendedUuid={enabledUpdateUuid}
           ExtendedComponent={MonthlyBudgetTableRowExtension}
         />
@@ -108,9 +97,9 @@ export default function MonthlyBudgetView() {
         <BudgetTable
           items={monthlyExpenses}
           onDelete={handleDelete}
-          deleting={monthlyBudgetState.deleting}
+          deleting={monthlySituation.deleting}
           onUpdate={handleUpdate}
-          updating={monthlyBudgetState.updating}
+          updating={monthlySituation.updating}
           extendedUuid={enabledUpdateUuid}
           ExtendedComponent={MonthlyBudgetTableRowExtension}
         />

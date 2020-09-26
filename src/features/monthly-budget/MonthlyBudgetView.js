@@ -20,7 +20,7 @@ export default function MonthlyBudgetView() {
       uuid: 'weekly-incomes-sum',
       name: `${INCOME_TYPE.pluralLabel} semanais`,
       tooltip: 'Somatório de 4 semanas do planejamento semanal.',
-      amount: monthlySituation.totalWeeklyIncomes.times(4).toFixed(2),
+      amount: monthlySituation.totalWeeklyIncomes.toFixed(2),
       isReadOnly: true,
     });
   }
@@ -31,7 +31,7 @@ export default function MonthlyBudgetView() {
       uuid: 'weekly-expenses-sum',
       name: `${EXPENSE_TYPE.pluralLabel} semanais`,
       tooltip: 'Somatório de 4 semanas do planejamento semanal.',
-      amount: monthlySituation.totalWeeklyExpenses.times(4).toFixed(2),
+      amount: monthlySituation.totalWeeklyExpenses.toFixed(2),
       isReadOnly: true,
     });
   }

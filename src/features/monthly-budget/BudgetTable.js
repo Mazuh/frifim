@@ -2,6 +2,7 @@ import React from "react";
 import Decimal from "decimal.js";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
+import { BsPencilSquare, BsTrash } from "react-icons/bs";
 
 export default function BudgetTable({
   items,
@@ -44,7 +45,7 @@ export default function BudgetTable({
                     size="sm"
                     className="mb-1 mr-1"
                   >
-                    Alterar
+                    <BsPencilSquare /> Alterar
                   </Button>
                   <Button
                     variant="danger"
@@ -53,7 +54,7 @@ export default function BudgetTable({
                     size="sm"
                     className="mb-1"
                   >
-                    Apagar
+                    <BsTrash /> Apagar
                   </Button>
                 </td>
               )}

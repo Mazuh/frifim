@@ -4,6 +4,7 @@ import "./App.css";
 import React from "react";
 import { Route, Switch, BrowserRouter, Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { BsExclamationTriangle } from "react-icons/bs";
 import CategoriesView from "./features/categories/CategoriesView";
 import { categoriesActions } from "./features/categories/categoriesDuck";
 import MainMenu from "./features/navbar/MainMenu";
@@ -73,7 +74,7 @@ function NotFoundView() {
   return (
     <main className="container">
       <header>
-        <h1>Ops...<br /><small>Página não encontrada.</small></h1>
+        <h1><BsExclamationTriangle /> Ops...<br /><small>Página não encontrada.</small></h1>
       </header>
       <p>
         Navegue por outras páginas usando o menu principal.

@@ -1,6 +1,7 @@
 import React from "react";
 import Container from "react-bootstrap/Container";
 import { useSelector, useDispatch } from "react-redux";
+import { BsPlusSquare } from "react-icons/bs";
 import LoadingContainer from "../loading/LoadingContainer";
 import { EXPENSE_TYPE, INCOME_TYPE } from "../categories/constants";
 import { monthlyBudgetActions } from "./monthlyBudgetDuck";
@@ -73,7 +74,7 @@ export default function MonthlyBudgetView() {
         <h1>Orçamento mensal</h1>
       </header>
       <section>
-        <h2>Criar</h2>
+        <h2><BsPlusSquare /> Criar</h2>
         <MonthlyBudgetForm
           onSubmit={handleSubmit}
           isLoading={monthlySituation.isLoading}
@@ -81,7 +82,7 @@ export default function MonthlyBudgetView() {
         />
       </section>
       <section>
-        <h2>{INCOME_TYPE.pluralLabel}</h2>
+        <h2><INCOME_TYPE.Icon /> {INCOME_TYPE.pluralLabel}</h2>
         <BudgetTable
           items={monthlyIncomes}
           onDelete={handleDelete}
@@ -93,7 +94,7 @@ export default function MonthlyBudgetView() {
         />
       </section>
       <section>
-        <h2>{EXPENSE_TYPE.pluralLabel}</h2>
+        <h2><EXPENSE_TYPE.Icon /> {EXPENSE_TYPE.pluralLabel}</h2>
         <BudgetTable
           items={monthlyExpenses}
           onDelete={handleDelete}

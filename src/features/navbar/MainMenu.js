@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory, useLocation } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
+import { BsArrowLeftRight, BsCalendar, BsCalendarFill, BsFillHouseDoorFill, BsFillTagFill } from 'react-icons/bs';
 
 export default function MainMenu() {
   const history = useHistory();
@@ -18,7 +19,7 @@ export default function MainMenu() {
             onClick={() => history.push(link.url)} key={index}
             active={link.url === location.pathname}
           >
-            {link.label}
+            {link.icon} {link.label}
           </Nav.Link>
         ))}
       </Nav>
@@ -27,9 +28,9 @@ export default function MainMenu() {
 }
 
 const menuLinks = [
-  { url: '/', label: 'Início' },
-  { url: '/orçamento-mensal', label: 'Orçamento mensal' },
-  { url: '/orçamento-semanal', label: 'Orçamento semanal' },
-  { url: 'not-implemented', label: 'Transações reais' },
-  { url: '/categorias', label: 'Categorias' },
+  { url: '/', label: 'Início', icon: <BsFillHouseDoorFill /> },
+  { url: '/orçamento-mensal', label: 'Orçamento mensal', icon: <BsCalendarFill /> },
+  { url: '/orçamento-semanal', label: 'Orçamento semanal', icon: <BsCalendar /> },
+  { url: 'not-implemented', label: 'Transações reais', icon: <BsArrowLeftRight /> },
+  { url: '/categorias', label: 'Categorias', icon: <BsFillTagFill /> },
 ];

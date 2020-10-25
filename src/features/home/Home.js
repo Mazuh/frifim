@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Bar } from 'react-chartjs-2';
+import { Bar } from "react-chartjs-2";
+import { BsBarChart } from "react-icons/bs";
 import LoadingContainer from "../loading/LoadingContainer";
 import { INCOME_TYPE, EXPENSE_TYPE } from "../categories/constants";
 import useSelectorForMonthlySituation, { getMonthlyCalcs } from "../monthly-budget/useSelectorForMonthlySituation";
@@ -28,8 +29,8 @@ export default function Home() {
       },
       {
         label: EXPENSE_TYPE.pluralLabel,
-        backgroundColor: 'rgba(220, 53, 69, 0.5)',
-        hoverBackgroundColor: 'rgba(220, 53, 69, 0.7)',
+        backgroundColor: 'rgba(255, 193, 7, 0.5)',
+        hoverBackgroundColor: 'rgba(255, 193, 7, 0.7)',
         data: [monthlyCalcs.subtotalExpenses],
       }
     ]
@@ -41,13 +42,17 @@ export default function Home() {
         <h1>Página inicial</h1>
       </header>
       <section>
-        <h2>Resumo do mês</h2>
+        <h2><BsBarChart /> Resumo do mês</h2>
         <ul>
-          <li className="text-secondary"><strong>{INCOME_TYPE.label}: </strong>
-            R$ {monthlyCalcs.subtotalIncomes.toFixed(2)}
+          <li className="text-secondary">
+            <strong>{INCOME_TYPE.label}: </strong>
+            <span>R$ {monthlyCalcs.subtotalIncomes.toFixed(2)} </span>
+            <INCOME_TYPE.Icon className="text-primary" />
           </li>
-          <li className="text-secondary"><strong>{EXPENSE_TYPE.label}: </strong>
-            R$ {monthlyCalcs.subtotalExpenses.toFixed(2)}
+          <li className="text-secondary">
+            <strong>{EXPENSE_TYPE.label}: </strong>
+            <span>R$ {monthlyCalcs.subtotalExpenses.toFixed(2)} </span>
+            <EXPENSE_TYPE.Icon className="text-warning" />
           </li>
           <li>
             <strong>Total: </strong>

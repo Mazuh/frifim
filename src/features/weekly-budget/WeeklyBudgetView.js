@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import { useSelector, useDispatch } from "react-redux";
+import { BsBook, BsPlusSquare } from "react-icons/bs";
 import LoadingContainer from "../loading/LoadingContainer";
 import { FLOW_TYPES } from "../categories/constants";
 import { weeklyBudgetActions } from "./weeklyBudgetDuck";
@@ -54,7 +55,7 @@ export default function WeeklyBudgetView() {
         <h1>Orçamento semanal</h1>
       </header>
       <section>
-        <h2>Criar</h2>
+        <h2><BsPlusSquare /> Criar</h2>
         <WeeklyBudgetForm
           onSubmit={handleSubmit}
           isLoading={weeklyBudgetState.isLoading}
@@ -68,12 +69,12 @@ export default function WeeklyBudgetView() {
         const itemsByDay = weeklyBudgetState.items.filter(it => it.day === dayEntity.value);
         return !!itemsByDay.length && (
           <section key={dayEntity.value}>
-            <h2>{dayEntity.label}</h2>
+            <h2><BsBook /> {dayEntity.label}</h2>
             {FLOW_TYPES.map((flowType) => {
               const itemsByDayAndFlow = itemsByDay.filter(it => it.type === flowType.value);
               return !!itemsByDayAndFlow.length && (
                 <section key={flowType.value}>
-                  <h3>{flowType.pluralLabel}</h3>
+                  <h3><flowType.Icon /> {flowType.pluralLabel}</h3>
                   <BudgetTable
                     items={itemsByDayAndFlow}
                     onDelete={(handleDelete)}

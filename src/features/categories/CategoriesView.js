@@ -5,6 +5,7 @@ import Row from "react-bootstrap/Row";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { BsPlusSquare, BsTrash } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import { EXPENSE_TYPE, INCOME_TYPE } from "./constants";
 import LoadingContainer from "../loading/LoadingContainer";
@@ -46,7 +47,7 @@ export default function CategoriesView() {
         <h1>Categorias</h1>
       </header>
       <section>
-        <h2>Criar</h2>
+        <h2><BsPlusSquare /> Criar</h2>
         <CategoryForm
           onSubmit={handleSubmit}
           isLoading={categoriesState.isLoading}
@@ -54,7 +55,7 @@ export default function CategoriesView() {
         />
       </section>
       <section>
-        <h2>{INCOME_TYPE.pluralLabel}</h2>
+        <h2><INCOME_TYPE.Icon /> {INCOME_TYPE.pluralLabel}</h2>
         <CategoriesTable
           items={categoriesState.items.filter(c => c.type === INCOME_TYPE.value)}
           onDelete={handleDelete}
@@ -62,7 +63,7 @@ export default function CategoriesView() {
         />
       </section>
       <section>
-        <h2>{EXPENSE_TYPE.pluralLabel}</h2>
+        <h2><EXPENSE_TYPE.Icon /> {EXPENSE_TYPE.pluralLabel}</h2>
         <CategoriesTable
           items={categoriesState.items.filter(c => c.type === EXPENSE_TYPE.value)}
           onDelete={handleDelete}
@@ -165,7 +166,7 @@ function CategoriesTable({ items, onDelete, deleting }) {
                 disabled={deleting.includes(category.uuid)}
                 size="sm"
               >
-                Apagar
+                <BsTrash /> Apagar
               </Button>
             </td>
           </tr>

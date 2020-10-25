@@ -14,6 +14,8 @@ import { monthlyBudgetActions } from "./features/monthly-budget/monthlyBudgetDuc
 import Home from "./features/home/Home";
 import WeeklyBudgetView from "./features/weekly-budget/WeeklyBudgetView";
 import { weeklyBudgetActions } from "./features/weekly-budget/weeklyBudgetDuck";
+import TransactionsView from "./features/transactions/TransactionsView";
+import { transactionsActions } from "./features/transactions/transactionsDuck";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -22,6 +24,7 @@ export default function App() {
     dispatch(categoriesActions.readAll());
     dispatch(monthlyBudgetActions.readAll());
     dispatch(weeklyBudgetActions.readAll());
+    dispatch(transactionsActions.readAll());
   }, [dispatch]);
 
   return (
@@ -37,6 +40,9 @@ export default function App() {
           </Route>
           <Route exact path="/orçamento-semanal">
             <WeeklyBudgetView />
+          </Route>
+          <Route exact path="/transacoes">
+            <TransactionsView />
           </Route>
           <Route exact path="/404">
             <NotFoundView />

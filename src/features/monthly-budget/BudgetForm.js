@@ -7,9 +7,8 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { FlowTypeSelectionFieldset } from "../categories/CategoriesView";
-import { currentDatetimeValue } from "../transactions/dates";
 
-export default function BudgetForm({ children, onSubmit, isLoading, isCreating, isUpdating, budget }) {
+export default function BudgetForm({ children, onSubmit, isLoading, isCreating, isUpdating, budget, onBudgetRefChange }) {
   const formRef = React.useRef();
   const isUpdateMode = !!(budget && budget.uuid);
 
@@ -25,11 +24,16 @@ export default function BudgetForm({ children, onSubmit, isLoading, isCreating, 
 
   const budgetUUID = budget && budget.uuid;
   React.useEffect(() => {
-    if (formRef.current) {
-      formRef.current.reset();
-      formRef.current.datetime.value = currentDatetimeValue();
+    if (!formRef.current) {
+      return;
     }
-  }, [budgetUUID]);
+
+    formRef.current.reset();
+
+    if (typeof onBudgetRefChange === 'function') {
+      onBudgetRefChange(formRef);
+    }
+  }, [budgetUUID, onBudgetRefChange]);
 
   return (
     <Form ref={formRef} onSubmit={onSubmit}>

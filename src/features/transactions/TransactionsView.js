@@ -18,7 +18,7 @@ import LoadingContainer from "../loading/LoadingContainer";
 import useIzitoastForResource from "../izitoast-for-resources/useIzitoastForResource";
 import { transactionsActions } from "./transactionsDuck";
 import BudgetForm from "../monthly-budget/BudgetForm";
-import { humanizeDatetime } from "./dates";
+import { humanizeDatetime, currentDatetimeValue } from "./dates";
 
 export default function TransactionsView() {
   const dispatch = useDispatch();
@@ -88,6 +88,10 @@ function TransactionForm(props) {
     handleClose();
   };
 
+  const handleBudgetRefChange = (formRef) => {
+    formRef.current.datetime.value = currentDatetimeValue();
+  };
+
   const budget = props.budget || importedBudget;
   const isUpdateMode = !!(props.budget && props.budget.uuid);
   const idPrefix = isUpdateMode ? props.budget.uuid : 'form';
@@ -125,7 +129,11 @@ function TransactionForm(props) {
         </Modal.Footer>
       </Modal>
 
-      <BudgetForm {...props} budget={budget}>
+      <BudgetForm
+        {...props}
+        budget={budget}
+        onBudgetRefChange={handleBudgetRefChange}
+      >
         <Form.Group as={Row} controlId={`${idPrefix}budgetDate`}>
           <Form.Label column sm={2}>
             Data e hora:

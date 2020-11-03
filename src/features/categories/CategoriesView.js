@@ -85,7 +85,7 @@ export function FlowTypeSelectionFieldset({ idPrefix='form', defaultValue = null
           <Form.Check
             type="radio"
             name="type"
-            label={INCOME_TYPE.label}
+            label={<>{INCOME_TYPE.label} <INCOME_TYPE.Icon className="text-info" /> </>}
             value={INCOME_TYPE.value}
             id={`${idPrefix}CategoryIncome`}
             defaultChecked={defaultValue === INCOME_TYPE.value}
@@ -94,7 +94,7 @@ export function FlowTypeSelectionFieldset({ idPrefix='form', defaultValue = null
           <Form.Check
             type="radio"
             name="type"
-            label={EXPENSE_TYPE.label}
+            label={<>{EXPENSE_TYPE.label} <EXPENSE_TYPE.Icon className="text-danger" /> </>}
             value={EXPENSE_TYPE.value}
             id={`${idPrefix}CategoryExpense`}
             defaultChecked={defaultValue === EXPENSE_TYPE.value}

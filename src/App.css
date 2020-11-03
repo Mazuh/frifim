@@ -1,3 +1,8 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+.budgets-searcher .list-group {
+  max-height: 30vh;
+  overflow: auto;
+}

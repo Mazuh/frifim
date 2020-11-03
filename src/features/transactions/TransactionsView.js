@@ -1,5 +1,8 @@
 import React from "react";
 import orderBy from "lodash.orderby";
+import debounce from "lodash.debounce";
+import uniqBy from "lodash.uniqby";
+import { useSelector, useDispatch } from "react-redux";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -7,13 +10,15 @@ import Table from "react-bootstrap/Table";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Badge from "react-bootstrap/Badge";
+import ListGroup from "react-bootstrap/ListGroup";
 import { BsArrowDown, BsBoxArrowInDownRight, BsPlusSquare, BsTable, BsTrash } from "react-icons/bs";
-import { useSelector, useDispatch } from "react-redux";
 import { EXPENSE_TYPE, INCOME_TYPE } from "../categories/constants";
 import LoadingContainer from "../loading/LoadingContainer";
 import useIzitoastForResource from "../izitoast-for-resources/useIzitoastForResource";
 import { transactionsActions } from "./transactionsDuck";
 import BudgetForm from "../monthly-budget/BudgetForm";
+import { humanizeDatetime } from "./dates";
 
 export default function TransactionsView() {
   const dispatch = useDispatch();
@@ -72,13 +77,20 @@ export default function TransactionsView() {
 }
 
 function TransactionForm(props) {
-  const { budget } = props;
-  const isUpdateMode = !!(budget && budget.uuid);
-
   const [show, setShow] = React.useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [importedBudget, setImportedBudget] = React.useState(null);
+  const handleBudgeSelect = (importing) => {
+    setImportedBudget(importing);
+    handleClose();
+  };
+
+  const budget = props.budget || importedBudget;
+  const isUpdateMode = !!(props.budget && props.budget.uuid);
+  const idPrefix = isUpdateMode ? props.budget.uuid : 'form';
 
   return (
     <>
@@ -104,19 +116,29 @@ function TransactionForm(props) {
           <Modal.Title>Importe um orçamento</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Parte do nome do planejamento:</Form.Label>
-          <Form.Control type="search" placeholder="Pesquise aqui..." />
-        </Form.Group>
+          <BudgetsSearcher onBudgetSelect={handleBudgeSelect} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Fechar
+            Cancelar
           </Button>
         </Modal.Footer>
       </Modal>
 
-      <BudgetForm {...props} />
+      <BudgetForm {...props} budget={budget}>
+        <Form.Group as={Row} controlId={`${idPrefix}budgetDate`}>
+          <Form.Label column sm={2}>
+            Data e hora:
+          </Form.Label>
+          <Col sm={10}>
+            <Form.Control
+              type="datetime-local"
+              name="datetime"
+              required
+            />
+          </Col>
+        </Form.Group>
+      </BudgetForm>
     </>
   );
 }
@@ -133,7 +155,7 @@ function TransactionsTable({ items, onDelete, deleting }) {
       <thead>
         <tr>
           <th>Nome</th>
-          <th title="As datas mais recentes aparecem no topo da tabela.">Data <BsArrowDown /></th>
+          <th title="As datas mais recentes aparecem no topo da tabela.">Data e hora <BsArrowDown /></th>
           <th>Quantia</th>
           <th>Ações</th>
         </tr>
@@ -171,10 +193,79 @@ function TransactionsTable({ items, onDelete, deleting }) {
   );
 }
 
-function humanizeDatetime(isoDatetimeString, options = {}) {
-  return (new Date(isoDatetimeString)).toLocaleString(navigator.language, {
-    day: 'numeric',
-    month: 'short',
-    ...options,
-  });
+function BudgetsSearcher({ onBudgetSelect }) {
+  const [searchCriteria, unsafelySetSearchCriteria] = React.useState('');
+  const setSearchCriteria = React.useCallback(debounce((nextSearch) => {
+    unsafelySetSearchCriteria(nextSearch);
+  }, 200));
+
+  const weeklyBudgetItems = useSelector(state => state.weeklyBudget.items);
+  const monthlyBudgetItems = useSelector(state => state.monthlyBudget.items);
+
+  const loweredSearchCriteria = searchCriteria.toLowerCase();
+  const reduceToSearched = (anyBudgets, tag) => anyBudgets.reduce((acc, currentBudget) => (
+    currentBudget.name.toLowerCase().includes(loweredSearchCriteria)
+      ? [...acc, { ...currentBudget, tag }]
+      : acc
+  ), []);
+  const budgets = uniqBy([
+    ...reduceToSearched(weeklyBudgetItems, 'Semanal'),
+    ...reduceToSearched(monthlyBudgetItems, 'Mensal'),
+  ], it => [it.name, it.tag, it.type, it.value].join());
+
+  return (
+    <div className="budgets-searcher">
+      <Form.Group controlId="formBasicEmail">
+        <Form.Label>
+          Parte do nome do planejamento:
+        </Form.Label>
+        <Form.Control
+          type="search"
+          placeholder="Filtre a pesquisa..."
+          onChange={event => setSearchCriteria(event.target.value)}
+          autoComplete="off"
+        />
+        <Form.Text className="text-muted">
+          Deve existir nas tabelas semanal ou mensal.
+        </Form.Text>
+      </Form.Group>
+      {budgets.length > 0 ? (
+        <>
+          <p>
+            Escolha ({budgets.length} encontrados):
+          </p>
+          <ListGroup>
+            {budgets.map(budget => (
+              <ListGroup.Item
+                key={budget.uuid}
+                href="#"
+                onClick={() => onBudgetSelect(budget)}
+                action
+              >
+                <span title="Clique para selecionar">{budget.name}</span>
+                {' '}
+                <Badge variant="secondary" title="De qual planejamento essa sugestão veio">
+                  {budget.tag}
+                </Badge>
+                {' '}
+                {budget.type === INCOME_TYPE.value ? (
+                  <Badge variant="info" title={INCOME_TYPE.label}>
+                    R$ {budget.amount} <INCOME_TYPE.Icon />
+                  </Badge>
+                ) : (
+                  <Badge variant="danger" title={EXPENSE_TYPE.label}>
+                    R$ {budget.amount} <EXPENSE_TYPE.Icon />
+                  </Badge>
+                )}
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </>
+      ) : (
+        <p>
+          Nada encontrado.
+        </p>
+      )}
+    </div>
+  );
 }

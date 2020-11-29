@@ -3,6 +3,7 @@ import orderBy from "lodash.orderby";
 import debounce from "lodash.debounce";
 import uniqBy from "lodash.uniqby";
 import { useSelector, useDispatch } from "react-redux";
+import iziToast from "izitoast";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -33,14 +34,14 @@ export default function TransactionsView() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    const formElement = event.target;
     const creatingTransaction = {
-      name: event.target.name.value,
-      type: event.target.type.value,
-      amount: event.target.amount.value,
+      name: formElement.name.value,
+      type: formElement.type.value,
+      amount: formElement.amount.value,
+      datetime: formElement.datetime.value,
     };
     dispatch(transactionsActions.create(creatingTransaction));
-
-    event.target.reset();
   };
 
   const handleDelete = (transaction) => {
@@ -77,18 +78,28 @@ export default function TransactionsView() {
 }
 
 function TransactionForm(props) {
-  const [show, setShow] = React.useState(false);
+  const [isImportingVisible, setImportingVisible] = React.useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleClose = () => setImportingVisible(false);
+  const handleShow = () => setImportingVisible(true);
 
   const [importedBudget, setImportedBudget] = React.useState(null);
-  const handleBudgeSelect = (importing) => {
+  const clearBudgetSelect = () => setImportedBudget(null);
+  const handleBudgetSelect = (importing) => {
     setImportedBudget(importing);
+
     handleClose();
+
+    iziToast.show({
+      title: 'Importado!',
+      message: 'Finalize o formulário agora, ou faça adaptações.',
+      color: 'blue',
+      position: 'topRight',
+      timeout: 3500,
+    });
   };
 
-  const handleBudgetRefChange = (formRef) => {
+  const handleSelectedBudgetEffect = (formRef) => {
     formRef.current.datetime.value = currentDatetimeValue();
   };
 
@@ -123,12 +134,12 @@ function TransactionForm(props) {
         </Col>
       </Row>
 
-      <Modal show={show} onHide={handleClose} animation={false}>
+      <Modal show={isImportingVisible} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title>Importe um orçamento</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <BudgetsSearcher onBudgetSelect={handleBudgeSelect} />
+          <BudgetsSearcher onBudgetSelect={handleBudgetSelect} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -141,7 +152,8 @@ function TransactionForm(props) {
         {...props}
         budget={budget}
         getSubmitCustomLabel={getFormSubmitLabel}
-        onBudgetRefChange={handleBudgetRefChange}
+        onSelectedBudgetChange={handleSelectedBudgetEffect}
+        onSubmit={(...args) => props.onSubmit(...args) & clearBudgetSelect()}
       >
         <Form.Group as={Row} controlId={`${idPrefix}budgetDate`}>
           <Form.Label column sm={2}>

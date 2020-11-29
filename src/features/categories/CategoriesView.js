@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { BsPlusSquare, BsTrash, BsTagFill } from "react-icons/bs";
+import { BsPlusSquare, BsTrash, BsTable, BsTagFill } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import { EXPENSE_TYPE, INCOME_TYPE } from "./constants";
 import LoadingContainer from "../loading/LoadingContainer";
@@ -27,7 +27,6 @@ export default function CategoriesView() {
 
     const creatingCategory = {
       name: event.target.name.value,
-      type: event.target.type.value,
       color: event.target.color.value,
     };
     dispatch(categoriesActions.create(creatingCategory));
@@ -55,17 +54,9 @@ export default function CategoriesView() {
         />
       </section>
       <section>
-        <h2><INCOME_TYPE.Icon /> {INCOME_TYPE.pluralLabel}</h2>
+        <h2><BsTable/> Dados</h2>
         <CategoriesTable
-          items={categoriesState.items.filter(c => c.type === INCOME_TYPE.value)}
-          onDelete={handleDelete}
-          deleting={categoriesState.deleting}
-        />
-      </section>
-      <section>
-        <h2><EXPENSE_TYPE.Icon /> {EXPENSE_TYPE.pluralLabel}</h2>
-        <CategoriesTable
-          items={categoriesState.items.filter(c => c.type === EXPENSE_TYPE.value)}
+          items={categoriesState.items}
           onDelete={handleDelete}
           deleting={categoriesState.deleting}
         />
@@ -135,7 +126,6 @@ function CategoryForm({ onSubmit, isLoading, isCreating }) {
           />
         </Col>
       </Form.Group>
-      <FlowTypeSelectionFieldset />
       <Form.Group as={Row}>
         <Col sm={{ span: 10, offset: 2 }}>
           <Button type="submit" variant="success" disabled={isLoading}>

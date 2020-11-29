@@ -29,9 +29,8 @@ export default function CategorySelectorFieldset ({ idPrefix='form', defaultValu
           defaultValue={defaultValue}
           disabled={isLoading}
           onChange={handleChange}
-          required
         >
-          <option value="">--- Escolha a categoria ---</option>
+          <option value="">--- Sem categoria ---</option>
           {categories.map(category => (
             <option key={category.uuid} value={category.uuid}>
               {category.name}

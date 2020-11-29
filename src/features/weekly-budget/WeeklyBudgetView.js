@@ -113,7 +113,7 @@ function WeeklyBudgetForm(props) {
             defaultValue={get(budget, 'day')}
             required
           >
-            <option value="">--- Escolha o dia da semana ---</option>
+            <option value="">--- Escolha o dia da semana (obrigatório) ---</option>
             {WEEK_DAYS.map(dayEntity => (
               <option key={dayEntity.value} value={dayEntity.value}>
                 {dayEntity.label}

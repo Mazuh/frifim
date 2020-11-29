@@ -20,6 +20,7 @@ import useIzitoastForResource from "../izitoast-for-resources/useIzitoastForReso
 import { transactionsActions } from "./transactionsDuck";
 import BudgetForm from "../monthly-budget/BudgetForm";
 import { humanizeDatetime, currentDatetimeValue } from "./dates";
+import CategoryIndicator from "../categories/CategoryIndicator";
 
 export default function TransactionsView() {
   const dispatch = useDispatch();
@@ -37,8 +38,9 @@ export default function TransactionsView() {
     const formElement = event.target;
     const creatingTransaction = {
       name: formElement.name.value,
-      type: formElement.type.value,
       amount: formElement.amount.value,
+      type: formElement.type.value,
+      category: formElement.category.value,
       datetime: formElement.datetime.value,
     };
     dispatch(transactionsActions.create(creatingTransaction));
@@ -125,7 +127,7 @@ function TransactionForm(props) {
         </Col>
         <Col xs={10} sm={10}>
           <small className="text-muted">
-            Preencha o formulário sem digitar nada!
+            Sem digitar nada! <span role="img" aria-label="Blink emoji">😉</span>
           </small>
           <br />
           <Button variant="outline-secondary" onClick={handleShow}>
@@ -186,6 +188,7 @@ function TransactionsTable({ items, onDelete, deleting }) {
           <th>Nome</th>
           <th title="As datas mais recentes aparecem no topo da tabela.">Data e hora <BsArrowDown /></th>
           <th>Quantia</th>
+          <th>Categoria</th>
           <th>Ações</th>
         </tr>
       </thead>
@@ -205,6 +208,7 @@ function TransactionsTable({ items, onDelete, deleting }) {
               )}
               <span> R$ {transaction.amount} </span>
             </td>
+            <td><CategoryIndicator categoryUUID={transaction.category} /></td>
             <td>
               <Button
                 variant="danger"

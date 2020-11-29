@@ -1,5 +1,6 @@
 import { makeReduxAssets } from 'resource-toolkit';
 import { v4 as uuidv4 } from "uuid";
+import { CATEGORIES_FIXTURE } from '../categories/categoriesDuck';
 import { INCOME_TYPE, EXPENSE_TYPE } from '../categories/constants';
 import makeResourceMessageTextFn from '../izitoast-for-resources/makeResourceMessageTextFn';
 import { WEEK_DAYS } from './constants';
@@ -17,6 +18,7 @@ const weeklyBudgetResource = makeReduxAssets({
           type: EXPENSE_TYPE.value,
           day: WEEK_DAYS[0].value,
           amount: '65.00',
+          category: CATEGORIES_FIXTURE[4].uuid,
         },
         {
           uuid: uuidv4(),
@@ -24,27 +26,7 @@ const weeklyBudgetResource = makeReduxAssets({
           type: EXPENSE_TYPE.value,
           day: WEEK_DAYS[0].value,
           amount: '20.00',
-        },
-        {
-          uuid: uuidv4(),
-          name: 'Janta (delivery)',
-          type: EXPENSE_TYPE.value,
-          day: WEEK_DAYS[0].value,
-          amount: '20.00',
-        },
-        {
-          uuid: uuidv4(),
-          name: 'Janta (delivery)',
-          type: EXPENSE_TYPE.value,
-          day: WEEK_DAYS[2].value,
-          amount: '20.00',
-        },
-        {
-          uuid: uuidv4(),
-          name: 'Janta (delivery)',
-          type: EXPENSE_TYPE.value,
-          day: WEEK_DAYS[3].value,
-          amount: '20.00',
+          category: CATEGORIES_FIXTURE[3].uuid,
         },
         {
           uuid: uuidv4(),
@@ -59,6 +41,7 @@ const weeklyBudgetResource = makeReduxAssets({
           type: EXPENSE_TYPE.value,
           day: WEEK_DAYS[4].value,
           amount: '100.00',
+          category: CATEGORIES_FIXTURE[3].uuid,
         },
         {
           uuid: uuidv4(),
@@ -66,6 +49,7 @@ const weeklyBudgetResource = makeReduxAssets({
           type: EXPENSE_TYPE.value,
           day: WEEK_DAYS[5].value,
           amount: '150.00',
+          category: CATEGORIES_FIXTURE[1].uuid,
         },
         {
           uuid: uuidv4(),
@@ -73,6 +57,7 @@ const weeklyBudgetResource = makeReduxAssets({
           type: EXPENSE_TYPE.value,
           day: WEEK_DAYS[6].value,
           amount: '200.00',
+          category: CATEGORIES_FIXTURE[1].uuid,
         },
       ];
     },

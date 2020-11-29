@@ -3,6 +3,7 @@ import Decimal from "decimal.js";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import { BsPencilSquare, BsTrash } from "react-icons/bs";
+import CategoryIndicator from "../categories/CategoryIndicator";
 
 export default function BudgetTable({
   items,
@@ -26,6 +27,7 @@ export default function BudgetTable({
         <tr>
           <th>Nome</th>
           <th>Quantia</th>
+          <th>Categoria</th>
           <th>Ações</th>
         </tr>
       </thead>
@@ -34,7 +36,12 @@ export default function BudgetTable({
           <React.Fragment key={budget.uuid}>
             <tr title={budget.tooltip ? budget.tooltip : null}>
               <td>{budget.name}</td>
-              <td>R$ {budget.amount}</td>
+              <td><span className="text-muted">R$</span> {budget.amount}</td>
+              {budget.uuid === 'weekly-incomes-sum' || budget.uuid === 'weekly-expenses-sum' ? (
+                <td />
+              ) : (
+                <td><CategoryIndicator categoryUUID={budget.category} /></td>
+              )}
               {budget.isReadOnly ? (
                 <td />
               ) : (
@@ -61,7 +68,7 @@ export default function BudgetTable({
             </tr>
             {extendedUuid === budget.uuid && (
               <tr>
-                <td colSpan={3} className="bg-light">
+                <td colSpan={4} className="bg-light">
                   <ExtendedComponent budget={budget} />
                 </td>
               </tr>
@@ -70,7 +77,8 @@ export default function BudgetTable({
         ))}
         <tr>
           <td><strong>Total</strong></td>
-          <td><strong>R$ {total}</strong></td>
+          <td><strong><span className="text-muted">R$</span> {total}</strong></td>
+          <td />
           <td />
         </tr>
       </tbody>

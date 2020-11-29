@@ -10,7 +10,7 @@ export default function CategoryIndicator ({ categoryUUID }) {
 
   return (
     <span>
-      <BsTagFill style={{ color }} />
+      <BsTagFill style={{ color, opacity: foundCategory ? 1 : 0.6 }} />
       {' '}
       {name}
     </span>

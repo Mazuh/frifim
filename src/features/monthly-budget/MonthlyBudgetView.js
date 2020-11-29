@@ -52,6 +52,7 @@ export default function MonthlyBudgetView() {
       name: event.target.name.value,
       type: event.target.type.value,
       amount: event.target.amount.value,
+      category: event.target.category.value,
     };
     dispatch(monthlyBudgetActions.create(creatingBudget));
 
@@ -119,12 +120,13 @@ function MonthlyBudgetTableRowExtension({ budget }) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const creatingBudget = {
+    const updatingBudget = {
       name: event.target.name.value,
       type: event.target.type.value,
       amount: event.target.amount.value,
+      category: event.target.category.value,
     };
-    dispatch(monthlyBudgetActions.update(budget.uuid, creatingBudget));
+    dispatch(monthlyBudgetActions.update(budget.uuid, updatingBudget));
   };
 
   return (

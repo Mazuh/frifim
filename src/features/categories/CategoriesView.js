@@ -109,6 +109,7 @@ function CategoryForm({ onSubmit, isLoading, isCreating }) {
             placeholder="Etiqueta curta para orçamentos e transações."
             name="name"
             maxLength={25}
+            autoComplete="off"
             required
           />
         </Col>

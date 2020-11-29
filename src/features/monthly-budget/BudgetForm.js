@@ -51,6 +51,7 @@ export default function BudgetForm({ children, onSubmit, isLoading, isCreating, 
             name="name"
             maxLength={50}
             defaultValue={get(budget, 'name')}
+            autoComplete='off'
             required
           />
         </Col>

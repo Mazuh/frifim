@@ -32,6 +32,7 @@ export default function WeeklyBudgetView() {
       name: event.target.name.value,
       type: event.target.type.value,
       amount: event.target.amount.value,
+      category: event.target.category.value,
       day: parseInt(event.target.day.value, 10),
     };
     dispatch(weeklyBudgetActions.create(creatingBudget));
@@ -113,7 +114,6 @@ function WeeklyBudgetForm(props) {
             defaultValue={get(budget, 'day')}
             required
           >
-            <option value="">--- Escolha o dia da semana (obrigatório) ---</option>
             {WEEK_DAYS.map(dayEntity => (
               <option key={dayEntity.value} value={dayEntity.value}>
                 {dayEntity.label}
@@ -138,6 +138,7 @@ function WeeklyBudgetTableRowExtension({ budget }) {
       name: event.target.name.value,
       type: event.target.type.value,
       amount: event.target.amount.value,
+      category: event.target.category.value,
       day: parseInt(event.target.day.value, 10),
     };
     dispatch(weeklyBudgetActions.update(budget.uuid, creatingBudget));

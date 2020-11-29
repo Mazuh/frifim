@@ -154,7 +154,7 @@ function TransactionForm(props) {
         {...props}
         budget={budget}
         getSubmitCustomLabel={getFormSubmitLabel}
-        onSelectedBudgetChange={handleSelectedBudgetEffect}
+        onFormInit={handleSelectedBudgetEffect}
         onSubmit={(...args) => props.onSubmit(...args) & clearBudgetSelect()}
       >
         <Form.Group as={Row} controlId={`${idPrefix}budgetDate`}>
@@ -244,7 +244,7 @@ function BudgetsSearcher({ onBudgetSelect }) {
   const budgets = uniqBy([
     ...reduceToSearched(weeklyBudgetItems, 'Semanal'),
     ...reduceToSearched(monthlyBudgetItems, 'Mensal'),
-  ], it => [it.name, it.tag, it.type, it.value].join());
+  ], it => [it.name, it.tag, it.type, it.value, it.category].join());
 
   return (
     <div className="budgets-searcher">

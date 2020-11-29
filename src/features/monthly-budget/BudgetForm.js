@@ -9,7 +9,7 @@ import FormControl from "react-bootstrap/FormControl";
 import FlowTypeSelectionFieldset from "../categories/FlowTypeSelectionFieldset";
 import CategorySelectorFieldset from "../categories/CategorySelectorFieldset";
 
-export default function BudgetForm({ children, onSubmit, isLoading, isCreating, isUpdating, budget, onSelectedBudgetChange, getSubmitCustomLabel }) {
+export default function BudgetForm({ children, onSubmit, isLoading, isCreating, isUpdating, budget, onFormInit, getSubmitCustomLabel }) {
   const formRef = React.useRef();
   const isUpdateMode = !!(budget && budget.uuid);
 
@@ -34,10 +34,10 @@ export default function BudgetForm({ children, onSubmit, isLoading, isCreating, 
 
     formRef.current.reset();
 
-    if (typeof onSelectedBudgetChange === 'function') {
-      onSelectedBudgetChange(formRef);
+    if (typeof onFormInit === 'function') {
+      onFormInit(formRef);
     }
-  }, [onSelectedBudgetChange]);
+  }, [onFormInit]);
 
   return (
     <Form ref={formRef} onSubmit={onSubmit}>

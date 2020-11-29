@@ -10,11 +10,18 @@ export default function CategorySelectorFieldset ({ idPrefix='form', defaultValu
   const isLoading = useSelector(state => state.categories.isLoading);
   const [selectedColor, setSelecteColor] = React.useState('inherit');
 
+  const [value, setValue] = React.useState(defaultValue || '');
+
+  React.useEffect(() => {
+    setValue(defaultValue || '');
+  }, [defaultValue]);
+
   const handleChange = (event) => {
     const searching = event.target.value;
     const foundCategory = categories.find(it => it.uuid === searching);
     const foundColor = foundCategory ? foundCategory.color : 'inherit';
     setSelecteColor(foundColor || 'inherit');
+    setValue(foundCategory ? foundCategory.uuid : '');
   };
 
   return (
@@ -26,9 +33,9 @@ export default function CategorySelectorFieldset ({ idPrefix='form', defaultValu
         <Form.Control
           as="select"
           name="category"
-          defaultValue={defaultValue}
           disabled={isLoading}
           onChange={handleChange}
+          value={value}
         >
           <option value="">Sem categoria</option>
           {categories.map(category => (

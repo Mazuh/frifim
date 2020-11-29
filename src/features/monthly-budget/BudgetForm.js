@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { FlowTypeSelectionFieldset } from "../categories/CategoriesView";
+import CategorySelectorFieldset from "../categories/CategorySelectorFieldset";
 
 export default function BudgetForm({ children, onSubmit, isLoading, isCreating, isUpdating, budget, onSelectedBudgetChange, getSubmitCustomLabel }) {
   const formRef = React.useRef();
@@ -78,6 +79,10 @@ export default function BudgetForm({ children, onSubmit, isLoading, isCreating, 
       <FlowTypeSelectionFieldset
         idPrefix={idPrefix}
         defaultValue={get(budget, 'type')}
+      />
+      <CategorySelectorFieldset
+        idPrefix={idPrefix}
+        defaultValue={get(budget, 'category')}
       />
       {children}
       <Form.Group as={Row}>

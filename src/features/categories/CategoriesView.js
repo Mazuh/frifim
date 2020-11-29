@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { BsPlusSquare, BsTrash } from "react-icons/bs";
+import { BsPlusSquare, BsTrash, BsTagFill } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import { EXPENSE_TYPE, INCOME_TYPE } from "./constants";
 import LoadingContainer from "../loading/LoadingContainer";
@@ -28,7 +28,7 @@ export default function CategoriesView() {
     const creatingCategory = {
       name: event.target.name.value,
       type: event.target.type.value,
-      color: '#1277C0',
+      color: event.target.color.value,
     };
     dispatch(categoriesActions.create(creatingCategory));
 
@@ -122,6 +122,19 @@ function CategoryForm({ onSubmit, isLoading, isCreating }) {
           />
         </Col>
       </Form.Group>
+      <Form.Group as={Row} controlId="formColor">
+        <Form.Label column sm={2}>
+          Nome:
+        </Form.Label>
+        <Col sm={10}>
+          <Form.Control
+            type="color"
+            name="color"
+            className="w-25"
+            required
+          />
+        </Col>
+      </Form.Group>
       <FlowTypeSelectionFieldset />
       <Form.Group as={Row}>
         <Col sm={{ span: 10, offset: 2 }}>
@@ -153,10 +166,8 @@ function CategoriesTable({ items, onDelete, deleting }) {
           <tr key={category.uuid}>
             <td>{category.name}</td>
             <td>
-              <span
-                className="pl-2 pr-2 pt-1 pb-1 mr-3"
-                style={{ backgroundColor: category.color }}
-              />{" "}
+              <BsTagFill style={{ color: category.color }} />
+              {" "}
               {category.color}
             </td>
             <td>

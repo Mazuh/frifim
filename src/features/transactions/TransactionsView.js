@@ -92,9 +92,17 @@ function TransactionForm(props) {
     formRef.current.datetime.value = currentDatetimeValue();
   };
 
-  const budget = props.budget || importedBudget;
+  const { uuid, ...budget } = props.budget || importedBudget || {};
   const isUpdateMode = !!(props.budget && props.budget.uuid);
   const idPrefix = isUpdateMode ? props.budget.uuid : 'form';
+
+  const getFormSubmitLabel = (isUpdateMode, isUpdating, isCreating) => {
+    if (isUpdateMode) {
+      return isUpdating ? 'Alterando...' : 'Alterar transação';
+    } else {
+      return isCreating ? 'Adicionando...' : 'Adicionar transação';
+    }
+  };
 
   return (
     <>
@@ -115,7 +123,7 @@ function TransactionForm(props) {
         </Col>
       </Row>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title>Importe um orçamento</Modal.Title>
         </Modal.Header>
@@ -132,6 +140,7 @@ function TransactionForm(props) {
       <BudgetForm
         {...props}
         budget={budget}
+        getSubmitCustomLabel={getFormSubmitLabel}
         onBudgetRefChange={handleBudgetRefChange}
       >
         <Form.Group as={Row} controlId={`${idPrefix}budgetDate`}>

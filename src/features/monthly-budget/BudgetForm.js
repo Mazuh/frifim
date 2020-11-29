@@ -8,11 +8,15 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import { FlowTypeSelectionFieldset } from "../categories/CategoriesView";
 
-export default function BudgetForm({ children, onSubmit, isLoading, isCreating, isUpdating, budget, onBudgetRefChange }) {
+export default function BudgetForm({ children, onSubmit, isLoading, isCreating, isUpdating, budget, onBudgetRefChange, getSubmitCustomLabel }) {
   const formRef = React.useRef();
   const isUpdateMode = !!(budget && budget.uuid);
 
   const getSubmitLabel = () => {
+    if (getSubmitCustomLabel) {
+      return getSubmitCustomLabel(isUpdateMode, isUpdating, isCreating);
+    }
+
     if (isUpdateMode) {
       return isUpdating ? 'Alterando...' : 'Alterar no orçamento';
     } else {
@@ -22,7 +26,6 @@ export default function BudgetForm({ children, onSubmit, isLoading, isCreating, 
 
   const idPrefix = isUpdateMode ? budget.uuid : 'form';
 
-  const budgetUUID = budget && budget.uuid;
   React.useEffect(() => {
     if (!formRef.current) {
       return;
@@ -33,7 +36,7 @@ export default function BudgetForm({ children, onSubmit, isLoading, isCreating, 
     if (typeof onBudgetRefChange === 'function') {
       onBudgetRefChange(formRef);
     }
-  }, [budgetUUID, onBudgetRefChange]);
+  }, [onBudgetRefChange]);
 
   return (
     <Form ref={formRef} onSubmit={onSubmit}>

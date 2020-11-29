@@ -8,12 +8,12 @@ import { monthlyBudgetActions } from "./monthlyBudgetDuck";
 import useIzitoastForResource from "../izitoast-for-resources/useIzitoastForResource";
 import BudgetTable from "./BudgetTable";
 import BudgetForm from "./BudgetForm";
-import useSelectorForMonthlySituation from './useSelectorForMonthlySituation';
+import useSelectorForMonthlyBudgetStatus from './useSelectorForMonthlyBudgetStatus';
 
 export default function MonthlyBudgetView() {
   const dispatch = useDispatch();
 
-  const monthlySituation = useSelectorForMonthlySituation();
+  const monthlySituation = useSelectorForMonthlyBudgetStatus();
 
   const monthlyIncomes = monthlySituation.onlyMonthlyIncomes;
   if (!monthlySituation.totalWeeklyIncomes.isZero()) {

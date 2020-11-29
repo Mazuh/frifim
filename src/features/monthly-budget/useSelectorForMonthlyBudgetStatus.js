@@ -2,7 +2,7 @@ import Decimal from "decimal.js";
 import { useSelector } from "react-redux";
 import { EXPENSE_TYPE, INCOME_TYPE } from "../categories/constants";
 
-export default function useSelectorForMonthlySituation() {
+export default function useSelectorForMonthlyBudgetStatus() {
   const monthlyBudgetState = useSelector(state => state.monthlyBudget);
   const weeklyBudgetState = useSelector(state => state.weeklyBudget);
 

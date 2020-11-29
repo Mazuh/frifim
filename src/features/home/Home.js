@@ -4,11 +4,11 @@ import { Bar } from "react-chartjs-2";
 import { BsBarChart } from "react-icons/bs";
 import LoadingContainer from "../loading/LoadingContainer";
 import { INCOME_TYPE, EXPENSE_TYPE } from "../categories/constants";
-import useSelectorForMonthlySituation, { getMonthlyCalcs } from "../monthly-budget/useSelectorForMonthlySituation";
+import useSelectorForMonthlyBudgetStatus, { getMonthlyCalcs } from "../monthly-budget/useSelectorForMonthlyBudgetStatus";
 
 export default function Home() {
   const isLoading = useSelector(state => Object.keys(state).some(slice => state[slice].isLoading));
-  const monthlySituation = useSelectorForMonthlySituation();
+  const monthlySituation = useSelectorForMonthlyBudgetStatus();
 
   if (isLoading) {
     return <LoadingContainer />
@@ -42,7 +42,7 @@ export default function Home() {
         <h1>Página inicial</h1>
       </header>
       <section>
-        <h2><BsBarChart /> Resumo do mês</h2>
+        <h2><BsBarChart /> Resumo do orçamento do mês</h2>
         <ul>
           <li className="text-secondary">
             <strong>{INCOME_TYPE.label}: </strong>

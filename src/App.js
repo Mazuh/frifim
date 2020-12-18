@@ -31,30 +31,38 @@ export default function App() {
     <ErrorGuard>
       <BrowserRouter>
         <MainMenu />
-        <Switch>
-          <Route exact path="/categorias">
-            <CategoriesView />
-          </Route>
-          <Route exact path="/orçamento-mensal">
-            <MonthlyBudgetView />
-          </Route>
-          <Route exact path="/orçamento-semanal">
-            <WeeklyBudgetView />
-          </Route>
-          <Route exact path="/transacoes">
-            <TransactionsView />
-          </Route>
-          <Route exact path="/404">
-            <NotFoundView />
-          </Route>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Redirect to="/404" />
-        </Switch>
+        <Page>
+          <Switch>
+            <Route exact path="/categorias">
+              <CategoriesView />
+            </Route>
+            <Route exact path="/orçamento-mensal">
+              <MonthlyBudgetView />
+            </Route>
+            <Route exact path="/orçamento-semanal">
+              <WeeklyBudgetView />
+            </Route>
+            <Route exact path="/transacoes">
+              <TransactionsView />
+            </Route>
+            <Route exact path="/404">
+              <NotFoundView />
+            </Route>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Redirect to="/404" />
+          </Switch>
+        </Page>
         <MainFooter />
       </BrowserRouter>
     </ErrorGuard>
+  );
+}
+
+function Page(props) {
+  return (
+    <div className="mt-4 pt-5" {...props} />
   );
 }
 

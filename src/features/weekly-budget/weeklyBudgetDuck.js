@@ -18,7 +18,7 @@ const weeklyBudgetResource = makeReduxAssets({
           type: EXPENSE_TYPE.value,
           day: WEEK_DAYS[0].value,
           amount: '65.00',
-          category: CATEGORIES_FIXTURE[4].uuid,
+          category: CATEGORIES_FIXTURE[3].uuid,
         },
         {
           uuid: uuidv4(),

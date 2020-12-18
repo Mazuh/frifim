@@ -8,21 +8,36 @@ export default function MainMenu() {
   const history = useHistory();
   const location = useLocation();
 
+  const [isExpanded, setExpanded] = React.useState(false);
+
+  const handleSelect = (url) => {
+    history.push(url);
+    setExpanded(false);
+  };
+
   return (
-    <Navbar className="mb-3" bg="dark" variant="dark">
+    <Navbar
+      className="vw-100"
+      bg="dark"
+      variant="dark"
+      fixed="top"
+      expand="lg"
+      expanded={isExpanded}
+      onSelect={handleSelect}
+    >
       <Navbar.Brand className="cursor-pointer" onClick={() => history.push('/')}>
         Moneycog
       </Navbar.Brand>
-      <Nav className="mr-auto">
-        {menuLinks.map((link, index) => (
-          <Nav.Link
-            onClick={() => history.push(link.url)} key={index}
-            active={link.url === location.pathname}
-          >
-            {link.icon} {link.label}
-          </Nav.Link>
-        ))}
-      </Nav>
+      <Navbar.Toggle aria-controls="main-navbar-collase" onClick={() => setExpanded(!isExpanded)} />
+      <Navbar.Collapse id="main-navbar-collase">
+        <Nav className="mr-auto">
+          {menuLinks.map((link, index) => (
+            <Nav.Link key={index} eventKey={link.url} active={link.url === location.pathname}>
+              {link.icon} {link.label}
+            </Nav.Link>
+          ))}
+        </Nav>
+      </Navbar.Collapse>
     </Navbar>
   );
 }

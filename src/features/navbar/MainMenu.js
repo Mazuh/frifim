@@ -44,8 +44,8 @@ export default function MainMenu() {
 
 const menuLinks = [
   { url: '/', label: 'Início', icon: <BsFillHouseDoorFill /> },
+  { url: '/transacoes', label: 'Transações reais', icon: <BsArrowLeftRight /> },
   { url: '/orçamento-mensal', label: 'Orçamento mensal', icon: <BsCalendarFill /> },
   { url: '/orçamento-semanal', label: 'Orçamento semanal', icon: <BsCalendar /> },
-  { url: '/transacoes', label: 'Transações reais', icon: <BsArrowLeftRight /> },
   { url: '/categorias', label: 'Categorias', icon: <BsFillTagFill /> },
 ];

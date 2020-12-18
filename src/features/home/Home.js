@@ -1,7 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Pie } from "react-chartjs-2";
-import { BsPieChart } from "react-icons/bs";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import { BsArrowLeftRight, BsCalendarFill } from "react-icons/bs";
 import LoadingContainer from "../loading/LoadingContainer";
 import { INCOME_TYPE, EXPENSE_TYPE } from "../categories/constants";
 import useSelectorForMonthlyBudgetStatus, { getMonthlyCalcs } from "../monthly-budget/useSelectorForMonthlyBudgetStatus";
@@ -47,60 +50,64 @@ export default function Home() {
   };
 
   return (
-    <main className="container">
+    <Container as="main">
       <header>
         <h1>
-          Página inicial <small className="text-muted">Resumos do mês</small>
+          Página inicial
+          <br />
+          <small className="text-muted">Resumos do mês</small>
         </h1>
       </header>
-      <section>
-        <h2><BsPieChart /> Transações</h2>
-        <ul>
-          <li className="text-secondary">
-            <strong>{INCOME_TYPE.label}: </strong>
-            <span>R$ {transactionsCalcs.totalIncomes.toFixed(2)} </span>
-            <INCOME_TYPE.Icon className="text-primary" />
-          </li>
-          <li className="text-secondary">
-            <strong>{EXPENSE_TYPE.label}: </strong>
-            <span>R$ {transactionsCalcs.totalExpenses.toFixed(2)} </span>
-            <EXPENSE_TYPE.Icon className="text-warning" />
-          </li>
-          <li>
-            <strong>Total: </strong>
-            <span className={isCurrentlyHealthy ? 'text-success' : 'text-danger'}>
-              R$ {transactionsCalcs.total.toFixed(2)}
-            </span>
-          </li>
-        </ul>
-        <div className="mt-3">
-          <Pie options={{ maintainAspectRatio: false }} height={300} data={transactionsChartData} />
-        </div>
-      </section>
-      <section>
-        <h2><BsPieChart /> Orçamentos</h2>
-        <ul>
-          <li className="text-secondary">
-            <strong>{INCOME_TYPE.label}: </strong>
-            <span>R$ {monthlyBudgetCalcs.totalIncomes.toFixed(2)} </span>
-            <INCOME_TYPE.Icon className="text-primary" />
-          </li>
-          <li className="text-secondary">
-            <strong>{EXPENSE_TYPE.label}: </strong>
-            <span>R$ {monthlyBudgetCalcs.totalExpenses.toFixed(2)} </span>
-            <EXPENSE_TYPE.Icon className="text-warning" />
-          </li>
-          <li>
-            <strong>Total: </strong>
-            <span className={isBudgetHealthy ? 'text-success' : 'text-danger'}>
-              R$ {monthlyBudgetCalcs.total.toFixed(2)}
-            </span>
-          </li>
-        </ul>
-        <div className="mt-3">
-          <Pie options={{ maintainAspectRatio: false }} height={300} data={budgetChartData} />
-        </div>
-      </section>
-    </main>
+      <Row>
+        <Col as="section" md={3}>
+          <h2><BsArrowLeftRight /> Transações</h2>
+          <ul>
+            <li className="text-secondary">
+              <strong>{INCOME_TYPE.label}: </strong>
+              <span>R$ {transactionsCalcs.totalIncomes.toFixed(2)} </span>
+              <INCOME_TYPE.Icon className="text-primary" />
+            </li>
+            <li className="text-secondary">
+              <strong>{EXPENSE_TYPE.label}: </strong>
+              <span>R$ {transactionsCalcs.totalExpenses.toFixed(2)} </span>
+              <EXPENSE_TYPE.Icon className="text-warning" />
+            </li>
+            <li>
+              <strong>Total: </strong>
+              <span className={isCurrentlyHealthy ? 'text-success' : 'text-danger'}>
+                R$ {transactionsCalcs.total.toFixed(2)}
+              </span>
+            </li>
+          </ul>
+          <div className="mt-3">
+            <Pie options={{ maintainAspectRatio: false }} height={300} data={transactionsChartData} />
+          </div>
+        </Col>
+        <Col as="section" md={3}>
+          <h2><BsCalendarFill /> Orçamentos</h2>
+          <ul>
+            <li className="text-secondary">
+              <strong>{INCOME_TYPE.label}: </strong>
+              <span>R$ {monthlyBudgetCalcs.totalIncomes.toFixed(2)} </span>
+              <INCOME_TYPE.Icon className="text-primary" />
+            </li>
+            <li className="text-secondary">
+              <strong>{EXPENSE_TYPE.label}: </strong>
+              <span>R$ {monthlyBudgetCalcs.totalExpenses.toFixed(2)} </span>
+              <EXPENSE_TYPE.Icon className="text-warning" />
+            </li>
+            <li>
+              <strong>Total: </strong>
+              <span className={isBudgetHealthy ? 'text-success' : 'text-danger'}>
+                R$ {monthlyBudgetCalcs.total.toFixed(2)}
+              </span>
+            </li>
+          </ul>
+          <div className="mt-3">
+            <Pie options={{ maintainAspectRatio: false }} height={300} data={budgetChartData} />
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 }

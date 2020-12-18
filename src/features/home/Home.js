@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Bar } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 import { BsBarChart } from "react-icons/bs";
 import LoadingContainer from "../loading/LoadingContainer";
 import { INCOME_TYPE, EXPENSE_TYPE } from "../categories/constants";
@@ -19,21 +19,14 @@ export default function Home() {
   const isHealthy = monthlyCalcs.total.isZero() || monthlyCalcs.total.isPositive();
 
   const chartData = {
-    labels: [''],
+    labels: [INCOME_TYPE.pluralLabel, EXPENSE_TYPE.pluralLabel],
     datasets: [
       {
-        label: INCOME_TYPE.pluralLabel,
-        backgroundColor: 'rgba(0, 123, 255, 0.5)',
-        hoverBackgroundColor: 'rgba(0, 123, 255, 0.7)',
-        data: [monthlyCalcs.subtotalIncomes],
+        backgroundColor: ['rgba(0, 123, 255, 0.5)', 'rgba(255, 193, 7, 0.5)'],
+        hoverBackgroundColor: ['rgba(0, 123, 255, 0.7)', 'rgba(255, 193, 7, 0.7)'],
+        data: [monthlyCalcs.subtotalIncomes, monthlyCalcs.subtotalExpenses],
       },
-      {
-        label: EXPENSE_TYPE.pluralLabel,
-        backgroundColor: 'rgba(255, 193, 7, 0.5)',
-        hoverBackgroundColor: 'rgba(255, 193, 7, 0.7)',
-        data: [monthlyCalcs.subtotalExpenses],
-      }
-    ]
+    ],
   };
 
   return (
@@ -62,19 +55,9 @@ export default function Home() {
           </li>
         </ul>
         <div className="mt-3">
-          <Bar options={chartOptions} data={chartData} />
+          <Pie options={{ maintainAspectRatio: false }} height={300} data={chartData} />
         </div>
       </section>
     </main>
   );
 }
-
-const chartOptions = {
-  scales: {
-    yAxes: [{
-      ticks: {
-        beginAtZero: true
-      }
-    }]
-  }
-};

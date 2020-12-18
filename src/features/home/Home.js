@@ -4,7 +4,7 @@ import { Pie } from "react-chartjs-2";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { BsArrowLeftRight, BsCalendarFill } from "react-icons/bs";
+import { BsArrowLeftRight, BsCalendarFill, BsPieChartFill } from "react-icons/bs";
 import LoadingContainer from "../loading/LoadingContainer";
 import { INCOME_TYPE, EXPENSE_TYPE } from "../categories/constants";
 import useSelectorForMonthlyBudgetStatus, { getMonthlyCalcs } from "../monthly-budget/useSelectorForMonthlyBudgetStatus";
@@ -27,8 +27,8 @@ export default function Home() {
     labels: [INCOME_TYPE.pluralLabel, EXPENSE_TYPE.pluralLabel],
     datasets: [
       {
-        backgroundColor: ['rgba(0, 123, 255, 0.6)', 'rgba(255, 193, 7, 0.6)'],
-        hoverBackgroundColor: ['rgba(0, 123, 255, 0.8)', 'rgba(255, 193, 7, 0.8)'],
+        backgroundColor: ['rgba(0, 123, 255, 0.5)', 'rgba(255, 193, 7, 0.5)'],
+        hoverBackgroundColor: ['rgba(0, 123, 255, 0.7)', 'rgba(255, 193, 7, 0.7)'],
         data: [transactionsCalcs.totalIncomes, transactionsCalcs.totalExpenses],
       },
     ],
@@ -106,6 +106,16 @@ export default function Home() {
           <div className="mt-3">
             <Pie options={{ maintainAspectRatio: false }} height={300} data={budgetChartData} />
           </div>
+        </Col>
+        <Col as="section" md={6}>
+          <h2><BsPieChartFill /> Em breve...</h2>
+          <p>
+            Mais gráficos, como estatisticas de categorias mais
+            usadas (tanto linha de orçamento quanto de transações),
+            dias do mês com picos de transações (gráfico de linha)
+            e quanto de valor ainda pode ser transacionado antes
+            alcançar o orçado.
+          </p>
         </Col>
       </Row>
     </Container>

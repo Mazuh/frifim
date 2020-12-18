@@ -45,24 +45,24 @@ export default function useSelectorForMonthlyBudgetStatus() {
 export function getMonthlyCalcs(monthlySituation) {
   const monthlyCalcs = {
     total: Decimal(0),
-    subtotalIncomes: Decimal(0),
-    subtotalExpenses: Decimal(0),
+    totalIncomes: Decimal(0),
+    totalExpenses: Decimal(0),
   };
 
   monthlySituation.onlyMonthlyIncomes.forEach(({ amount }) => {
-    monthlyCalcs.subtotalIncomes = monthlyCalcs.subtotalIncomes.plus(amount);
+    monthlyCalcs.totalIncomes = monthlyCalcs.totalIncomes.plus(amount);
     monthlyCalcs.total = monthlyCalcs.total.plus(amount);
   });
 
-  monthlyCalcs.subtotalIncomes = monthlyCalcs.subtotalIncomes.plus(monthlySituation.totalWeeklyIncomes);
+  monthlyCalcs.totalIncomes = monthlyCalcs.totalIncomes.plus(monthlySituation.totalWeeklyIncomes);
   monthlyCalcs.total = monthlyCalcs.total.plus(monthlySituation.totalWeeklyIncomes);
 
   monthlySituation.onlyMonthlyExpenses.forEach(({ amount }) => {
-    monthlyCalcs.subtotalExpenses = monthlyCalcs.subtotalExpenses.plus(amount);
+    monthlyCalcs.totalExpenses = monthlyCalcs.totalExpenses.plus(amount);
     monthlyCalcs.total = monthlyCalcs.total.minus(amount);
   });
 
-  monthlyCalcs.subtotalExpenses = monthlyCalcs.subtotalExpenses.plus(monthlySituation.totalWeeklyExpenses);
+  monthlyCalcs.totalExpenses = monthlyCalcs.totalExpenses.plus(monthlySituation.totalWeeklyExpenses);
   monthlyCalcs.total = monthlyCalcs.total.minus(monthlySituation.totalWeeklyExpenses);
 
   return monthlyCalcs;

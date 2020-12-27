@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -11,8 +12,13 @@ import { login } from "./authDuck";
 
 export default function Login() {
   const dispatch = useDispatch();
-  const auth = useSelector(s => s.auth);
+
   const { isMobile } = React.useContext(ViewportContext);
+
+  const auth = useSelector(s => s.auth);
+  if (auth.isAuthorized) {
+    return <Redirect to="inicio" />;
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();

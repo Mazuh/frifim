@@ -5,6 +5,7 @@ import React from "react";
 import { Route, Switch, BrowserRouter, Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { BsExclamationTriangle } from "react-icons/bs";
+import ProtectedRoute from "./features/auth/ProtectedRoute";
 import useIzitoastForResource from "./features/izitoast-for-resources/useIzitoastForResource";
 import CategoriesView from "./features/categories/CategoriesView";
 import { categoriesActions } from "./features/categories/categoriesDuck";
@@ -37,26 +38,29 @@ export default function App() {
           <MainMenu />
           <Page>
             <Switch>
-              <Route exact path="/categorias">
+              <ProtectedRoute exact path="/categorias">
                 <CategoriesView />
-              </Route>
-              <Route exact path="/orçamento-mensal">
+              </ProtectedRoute>
+              <ProtectedRoute exact path="/orçamento-mensal">
                 <MonthlyBudgetView />
-              </Route>
-              <Route exact path="/orçamento-semanal">
+              </ProtectedRoute>
+              <ProtectedRoute exact path="/orçamento-semanal">
                 <WeeklyBudgetView />
-              </Route>
-              <Route exact path="/transacoes">
+              </ProtectedRoute>
+              <ProtectedRoute exact path="/transacoes">
                 <TransactionsView />
-              </Route>
+              </ProtectedRoute>
+              <ProtectedRoute exact path="/inicio">
+                <Home />
+              </ProtectedRoute>
               <Route exact path="/login">
+                <LoginView />
+              </Route>
+              <Route exact path="/">
                 <LoginView />
               </Route>
               <Route exact path="/404">
                 <NotFoundView />
-              </Route>
-              <Route exact path="/">
-                <Home />
               </Route>
               <Redirect to="/404" />
             </Switch>

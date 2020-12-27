@@ -9,7 +9,7 @@ export default function useIzitoastForResource(resource) {
   const { isMobile } = React.useContext(ViewportContext);
 
   React.useEffect(() => {
-    if (!message) {
+    if (!message || !message.text) {
       return;
     }
 

@@ -5,7 +5,6 @@ import { BsPlusSquare } from "react-icons/bs";
 import LoadingContainer from "../loading/LoadingContainer";
 import { EXPENSE_TYPE, INCOME_TYPE } from "../categories/constants";
 import { monthlyBudgetActions } from "./monthlyBudgetDuck";
-import useIzitoastForResource from "../izitoast-for-resources/useIzitoastForResource";
 import BudgetTable from "./BudgetTable";
 import BudgetForm from "./BudgetForm";
 import useSelectorForMonthlyBudgetStatus from './useSelectorForMonthlyBudgetStatus';
@@ -38,8 +37,6 @@ export default function MonthlyBudgetView() {
   }
 
   const [enabledUpdateUuid, setEnabledUpdateUuid] = React.useState(null);
-
-  useIzitoastForResource('monthlyBudget');
 
   if (monthlySituation.isReadingAll) {
     return <LoadingContainer />

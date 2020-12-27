@@ -5,6 +5,7 @@ import React from "react";
 import { Route, Switch, BrowserRouter, Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { BsExclamationTriangle } from "react-icons/bs";
+import useIzitoastForResource from "./features/izitoast-for-resources/useIzitoastForResource";
 import CategoriesView from "./features/categories/CategoriesView";
 import { categoriesActions } from "./features/categories/categoriesDuck";
 import MainMenu from "./features/navbar/MainMenu";
@@ -63,7 +64,16 @@ export default function App() {
   );
 }
 
+const useAllResourceToasts = () => {
+  useIzitoastForResource('transactions');
+  useIzitoastForResource('monthlyBudget');
+  useIzitoastForResource('weeklyBudget');
+  useIzitoastForResource('categories');
+};
+
 function Page(props) {
+  useAllResourceToasts();
+
   return (
     <div className="mt-4 pt-5" {...props} />
   );

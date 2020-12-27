@@ -9,13 +9,10 @@ import { BsPlusSquare, BsTrash, BsTable, BsTagFill } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import LoadingContainer from "../loading/LoadingContainer";
 import { categoriesActions } from "./categoriesDuck";
-import useIzitoastForResource from "../izitoast-for-resources/useIzitoastForResource";
 
 export default function CategoriesView() {
   const dispatch = useDispatch();
   const categoriesState = useSelector((s) => s.categories);
-
-  useIzitoastForResource('categories');
 
   if (categoriesState.isReadingAll) {
     return <LoadingContainer />

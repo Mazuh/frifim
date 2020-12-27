@@ -16,7 +16,6 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { BsArrowDown, BsBoxArrowInDownRight, BsPlusSquare, BsTable, BsTrash } from "react-icons/bs";
 import { EXPENSE_TYPE, INCOME_TYPE } from "../categories/constants";
 import LoadingContainer from "../loading/LoadingContainer";
-import useIzitoastForResource from "../izitoast-for-resources/useIzitoastForResource";
 import { transactionsActions } from "./transactionsDuck";
 import BudgetForm from "../monthly-budget/BudgetForm";
 import { humanizeDatetime, currentDatetimeValue } from "./dates";
@@ -26,8 +25,6 @@ import { ViewportContext } from "../../app/contexts";
 export default function TransactionsView() {
   const dispatch = useDispatch();
   const transactionsState = useSelector((s) => s.transactions);
-
-  useIzitoastForResource('transactions');
 
   if (transactionsState.isReadingAll) {
     return <LoadingContainer />

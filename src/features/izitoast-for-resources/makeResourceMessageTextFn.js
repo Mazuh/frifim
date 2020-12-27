@@ -1,21 +1,12 @@
-export default function makeResourceMessageTextFn(label, pluralLabel) {
+export default function makeResourceMessageTextFn(label) {
   return (relating, operation, error) => {
     const isError = error instanceof Error || error;
-    const isMany = !isError && Array.isArray(relating) && relating.length > 1;
 
     switch (operation) {
       case 'CREATE':
         return (isError ? `Falhou ao adicionar ${label}.` : `Criação de ${label} com sucesso.`);
       case 'READ':
-        if (isMany) {
-          return (
-            isError
-              ? `Falha ao carregar ${relating.length} ${pluralLabel}.`
-              : `Carregamento de ${relating.length} ${pluralLabel} com sucesso.`
-          );
-        } else {
-          return (isError ? `Falha ao carregar ${label}.` : `Carregamento de ${label} com sucesso.`);
-        }
+        return (isError ? `Falha ao carregar ${label}.` : '');
       case 'UPDATE':
         return (isError ? `Falha ao alterar ${label}.` : `Alteração em ${label} com sucesso.`);
       case 'DELETE':

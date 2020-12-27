@@ -21,6 +21,7 @@ import { transactionsActions } from "./transactionsDuck";
 import BudgetForm from "../monthly-budget/BudgetForm";
 import { humanizeDatetime, currentDatetimeValue } from "./dates";
 import CategoryIndicator from "../categories/CategoryIndicator";
+import { ViewportContext } from "../../app/contexts";
 
 export default function TransactionsView() {
   const dispatch = useDispatch();
@@ -80,6 +81,7 @@ export default function TransactionsView() {
 }
 
 function TransactionForm(props) {
+  const { isMobile } = React.useContext(ViewportContext);
   const [isImportingVisible, setImportingVisible] = React.useState(false);
 
   const handleClose = () => setImportingVisible(false);
@@ -96,7 +98,7 @@ function TransactionForm(props) {
       title: 'Importado!',
       message: 'Finalize o formulário agora, ou faça adaptações.',
       color: 'blue',
-      position: 'topRight',
+      position: isMobile ? 'bottomCenter' : 'topRight',
       timeout: 3500,
     });
   };

@@ -16,6 +16,7 @@ import WeeklyBudgetView from "./features/weekly-budget/WeeklyBudgetView";
 import { weeklyBudgetActions } from "./features/weekly-budget/weeklyBudgetDuck";
 import TransactionsView from "./features/transactions/TransactionsView";
 import { transactionsActions } from "./features/transactions/transactionsDuck";
+import GlobalContextProvider from "./app/contexts";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -29,33 +30,35 @@ export default function App() {
 
   return (
     <ErrorGuard>
-      <BrowserRouter>
-        <MainMenu />
-        <Page>
-          <Switch>
-            <Route exact path="/categorias">
-              <CategoriesView />
-            </Route>
-            <Route exact path="/orçamento-mensal">
-              <MonthlyBudgetView />
-            </Route>
-            <Route exact path="/orçamento-semanal">
-              <WeeklyBudgetView />
-            </Route>
-            <Route exact path="/transacoes">
-              <TransactionsView />
-            </Route>
-            <Route exact path="/404">
-              <NotFoundView />
-            </Route>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Redirect to="/404" />
-          </Switch>
-        </Page>
-        <MainFooter />
-      </BrowserRouter>
+      <GlobalContextProvider>
+        <BrowserRouter>
+          <MainMenu />
+          <Page>
+            <Switch>
+              <Route exact path="/categorias">
+                <CategoriesView />
+              </Route>
+              <Route exact path="/orçamento-mensal">
+                <MonthlyBudgetView />
+              </Route>
+              <Route exact path="/orçamento-semanal">
+                <WeeklyBudgetView />
+              </Route>
+              <Route exact path="/transacoes">
+                <TransactionsView />
+              </Route>
+              <Route exact path="/404">
+                <NotFoundView />
+              </Route>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Redirect to="/404" />
+            </Switch>
+          </Page>
+          <MainFooter />
+        </BrowserRouter>
+      </GlobalContextProvider>
     </ErrorGuard>
   );
 }

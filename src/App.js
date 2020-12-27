@@ -17,6 +17,7 @@ import WeeklyBudgetView from "./features/weekly-budget/WeeklyBudgetView";
 import { weeklyBudgetActions } from "./features/weekly-budget/weeklyBudgetDuck";
 import TransactionsView from "./features/transactions/TransactionsView";
 import { transactionsActions } from "./features/transactions/transactionsDuck";
+import LoginView from "./features/auth/LoginView";
 import GlobalContextProvider from "./app/contexts";
 
 export default function App() {
@@ -47,6 +48,9 @@ export default function App() {
               </Route>
               <Route exact path="/transacoes">
                 <TransactionsView />
+              </Route>
+              <Route exact path="/login">
+                <LoginView />
               </Route>
               <Route exact path="/404">
                 <NotFoundView />

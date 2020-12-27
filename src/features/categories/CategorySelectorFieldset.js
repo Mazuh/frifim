@@ -8,7 +8,9 @@ import { BsTagFill } from 'react-icons/bs';
 export default function CategorySelectorFieldset ({ idPrefix='form', defaultValue = null }) {
   const categories = useSelector(state => state.categories.items);
   const isLoading = useSelector(state => state.categories.isLoading);
+
   const [selectedColor, setSelecteColor] = React.useState('inherit');
+  const isColorTagVisible = selectedColor !== 'inherit';
 
   const [value, setValue] = React.useState(defaultValue || '');
 
@@ -26,10 +28,10 @@ export default function CategorySelectorFieldset ({ idPrefix='form', defaultValu
 
   return (
     <Form.Group as={Row} controlId={`${idPrefix}Category`}>
-      <Form.Label column sm={2}>
+      <Form.Label column xs={12} sm={2}>
         Categoria:
       </Form.Label>
-      <Col sm={9}>
+      <Col xs={isColorTagVisible ? 10 : 12} sm={isColorTagVisible ? 9 : 10}>
         <Form.Control
           as="select"
           name="category"
@@ -45,9 +47,11 @@ export default function CategorySelectorFieldset ({ idPrefix='form', defaultValu
           ))}
         </Form.Control>
       </Col>
-      <Col sm={1}>
+      {isColorTagVisible && (
+        <Col xs={2} sm={1} className="d-flex align-items-center justify-content-center">
         <BsTagFill style={{ color: selectedColor }} />
-      </Col>
+        </Col>
+      )}
     </Form.Group>
   );
 }

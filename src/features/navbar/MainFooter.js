@@ -7,7 +7,7 @@ export default function MainFooter() {
       <Container className="w-100 pt-5 pb-3">
         <p className="text-center text-muted">
           <small>
-            Feito e mantido por
+            ©
             {' '}
             <a
               href="https://github.com/Mazuh/moneycog"
@@ -17,16 +17,7 @@ export default function MainFooter() {
               Mazuh
             </a>
             {' '}
-            sob
-            {' '}
-            <a
-              href="https://github.com/Mazuh/moneycog/blob/main/LICENSE"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              MIT License
-            </a>
-            .
+            (MIT License)
           </small>
         </p>
       </Container>

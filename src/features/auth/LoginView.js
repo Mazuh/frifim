@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -6,12 +7,16 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { ViewportContext } from "../../app/contexts";
+import { login } from "./authDuck";
 
 export default function Login() {
+  const dispatch = useDispatch();
+  const auth = useSelector(s => s.auth);
   const { isMobile } = React.useContext(ViewportContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    dispatch(login());
   };
 
   return (
@@ -27,20 +32,20 @@ export default function Login() {
           </Card.Text>
           <Form.Group controlId="loginEmail">
             <Form.Label>E-mail:</Form.Label>
-            <Form.Control name="email" type="email" placeholder="Digite o e-mail cadastrado..." />
+            <Form.Control name="email" type="email" placeholder="Digite o e-mail cadastrado..." required />
           </Form.Group>
           <Form.Group controlId="loginPassword">
             <Form.Label>Senha:</Form.Label>
-            <Form.Control name="password" type="password" placeholder="Digite a senha..." />
+            <Form.Control name="password" type="password" placeholder="Digite a senha..." required />
           </Form.Group>
           <Row>
             <Col xs="12">
-              <Button variant="primary" type="submit" className="w-100">
-                Entrar
+              <Button variant="primary" type="submit" className="w-100" disabled={auth.isLoading}>
+                {auth.isLoading ? 'Entrando...' : 'Entrar'}
               </Button>
             </Col>
             <Col xs="12">
-              <Button variant="link" className="w-100">
+              <Button variant="link" className="w-100" disabled={auth.isLoading}>
                 Primeira vez aqui?
               </Button>
             </Col>

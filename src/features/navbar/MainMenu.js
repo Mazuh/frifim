@@ -3,12 +3,18 @@ import { useHistory, useLocation } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { BsArrowLeftRight, BsCalendar, BsCalendarFill, BsFillHouseDoorFill, BsFillTagFill } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
 
 export default function MainMenu() {
+  const isAuthorized = useSelector((s) => s.auth.isAuthorized);
   const history = useHistory();
   const location = useLocation();
 
   const [isExpanded, setExpanded] = React.useState(false);
+
+  if (!isAuthorized) {
+    return null;
+  }
 
   const handleSelect = (url) => {
     history.push(url);

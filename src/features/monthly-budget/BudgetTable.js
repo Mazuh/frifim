@@ -22,7 +22,7 @@ export default function BudgetTable({
   const total = items.reduce((acc, budget) => acc.plus(budget.amount), Decimal(0)).toFixed(2);
 
   return (
-    <Table striped bordered hover>
+    <Table responsive striped bordered hover>
       <thead>
         <tr>
           <th>Nome</th>

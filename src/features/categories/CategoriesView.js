@@ -111,7 +111,7 @@ function CategoriesTable({ items, onDelete, deleting }) {
   }
 
   return (
-    <Table striped bordered hover>
+    <Table responsive striped bordered hover>
       <thead>
         <tr>
           <th>Nome</th>

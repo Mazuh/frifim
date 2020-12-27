@@ -182,7 +182,7 @@ function TransactionsTable({ items, onDelete, deleting }) {
   const orderedItems = orderBy(items, it => (new Date(it.date)).valueOf(), 'desc');
 
   return (
-    <Table striped bordered hover>
+    <Table responsive striped bordered hover>
       <thead>
         <tr>
           <th>Nome</th>

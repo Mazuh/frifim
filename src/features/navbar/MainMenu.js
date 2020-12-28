@@ -1,11 +1,14 @@
 import React from 'react';
 import { useHistory, useLocation } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import { BsArrowLeftRight, BsCalendar, BsCalendarFill, BsFillHouseDoorFill, BsFillTagFill } from 'react-icons/bs';
-import { useSelector } from 'react-redux';
+import { BsArrowLeftRight, BsBoxArrowLeft, BsCalendar, BsCalendarFill, BsFillHouseDoorFill, BsFillTagFill } from 'react-icons/bs';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../auth/authDuck';
 
 export default function MainMenu() {
+  const dispatch = useDispatch();
   const isAuthorized = useSelector((s) => s.auth.isAuthorized);
   const history = useHistory();
   const location = useLocation();
@@ -14,6 +17,20 @@ export default function MainMenu() {
 
   if (!isAuthorized) {
     return null;
+  }
+
+  const onBrandClick = () => {
+    history.push('/');
+  }
+
+  const onToggleClick = () => {
+    setExpanded(!isExpanded);
+  }
+
+  const handleLogoutClick = () => {
+    if (window.confirm('Vai sair mesmo?')) {
+      dispatch(logout());
+    }
   }
 
   const handleSelect = (url) => {
@@ -31,10 +48,10 @@ export default function MainMenu() {
       expanded={isExpanded}
       onSelect={handleSelect}
     >
-      <Navbar.Brand className="cursor-pointer" onClick={() => history.push('/')}>
+      <Navbar.Brand className="cursor-pointer" onClick={onBrandClick}>
         Moneycog
       </Navbar.Brand>
-      <Navbar.Toggle aria-controls="main-navbar-collase" onClick={() => setExpanded(!isExpanded)} />
+      <Navbar.Toggle aria-controls="main-navbar-collase" onClick={onToggleClick} />
       <Navbar.Collapse id="main-navbar-collase">
         <Nav className="mr-auto">
           {menuLinks.map((link, index) => (
@@ -43,6 +60,16 @@ export default function MainMenu() {
             </Nav.Link>
           ))}
         </Nav>
+        <Navbar.Text>
+          <Button
+            variant="outline-light"
+            className="d-flex align-items-center mr-4"
+            onClick={handleLogoutClick}
+          >
+            <BsBoxArrowLeft />
+            <span className="pl-2">Sair</span>
+          </Button>
+        </Navbar.Text>
       </Navbar.Collapse>
     </Navbar>
   );

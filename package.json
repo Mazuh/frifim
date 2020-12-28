@@ -13,6 +13,7 @@
     "bootstrap": "^4.5.2",
     "chart.js": "^2.9.3",
     "decimal.js": "^10.2.0",
+    "firebase": "^8.2.1",
     "izitoast": "^1.4.0",
     "lodash.debounce": "^4.0.8",
     "lodash.get": "^4.4.2",

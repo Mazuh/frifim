@@ -60,28 +60,27 @@ export default function Home() {
         </h1>
       </header>
       <Row>
-        <Col as="section" md={3}>
+        <Col as="section" md={4}>
           <Card>
-            <Card.Body>
+            <Card.Header className="bg-dark text-light">
               <Card.Title as="h2">
                 <BsArrowLeftRight /> Transações
               </Card.Title>
+            </Card.Header>
+            <Card.Body>
               <ul>
                 <li className="text-secondary">
                   <strong>{INCOME_TYPE.label}: </strong>
-                  <br />
                   <span>R$ {transactionsCalcs.totalIncomes.toFixed(2)} </span>
                   <INCOME_TYPE.Icon className="text-primary" />
                 </li>
                 <li className="text-secondary">
                   <strong>{EXPENSE_TYPE.label}: </strong>
-                  <br />
                   <span>R$ {transactionsCalcs.totalExpenses.toFixed(2)} </span>
                   <EXPENSE_TYPE.Icon className="text-warning" />
                 </li>
                 <li>
                   <strong>Total: </strong>
-                  <br />
                   <span className={isCurrentlyHealthy ? 'text-success' : 'text-danger'}>
                     R$ {transactionsCalcs.total.toFixed(2)}
                   </span>
@@ -93,28 +92,27 @@ export default function Home() {
             </Card.Body>
           </Card>
         </Col>
-        <Col as="section" md={3}>
+        <Col as="section" md={4}>
           <Card>
-            <Card.Body>
+            <Card.Header className="bg-dark text-light">
               <Card.Title as="h2">
                 <BsCalendarFill /> Orçamentos
               </Card.Title>
+            </Card.Header>
+            <Card.Body>
               <ul>
                 <li className="text-secondary">
                   <strong>{INCOME_TYPE.label}: </strong>
-                  <br />
                   <span>R$ {monthlyBudgetCalcs.totalIncomes.toFixed(2)} </span>
                   <INCOME_TYPE.Icon className="text-primary" />
                 </li>
                 <li className="text-secondary">
                   <strong>{EXPENSE_TYPE.label}: </strong>
-                  <br />
                   <span>R$ {monthlyBudgetCalcs.totalExpenses.toFixed(2)} </span>
                   <EXPENSE_TYPE.Icon className="text-warning" />
                 </li>
                 <li>
                   <strong>Total: </strong>
-                  <br />
                   <span className={isBudgetHealthy ? 'text-success' : 'text-danger'}>
                     R$ {monthlyBudgetCalcs.total.toFixed(2)}
                   </span>
@@ -126,12 +124,14 @@ export default function Home() {
             </Card.Body>
           </Card>
         </Col>
-        <Col as="section" md={6}>
+        <Col as="section" md={4}>
           <Card>
-            <Card.Body>
+            <Card.Header className="bg-dark text-light">
               <Card.Title as="h2">
                 <BsPieChartFill /> Em breve...
               </Card.Title>
+            </Card.Header>
+            <Card.Body>
               <Card.Text>
                 Mais gráficos, como estatisticas de categorias mais
                 usadas (tanto linha de orçamento quanto de transações),

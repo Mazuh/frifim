@@ -80,7 +80,7 @@ function CategoryForm({ onSubmit, isLoading, isCreating }) {
       </Form.Group>
       <Form.Group as={Row} controlId="formColor">
         <Form.Label column sm={2}>
-          Nome:
+          Cor:
         </Form.Label>
         <Col sm={10}>
           <Form.Control

@@ -38,7 +38,7 @@ export default function Login() {
   };
 
   return (
-    <Container as="main">
+    <Container as="main" className="d-flex align-items-center">
       <Card className={`${isMobile ? 'w-100' : 'w-50'} m-auto`}>
         <Card.Body as={Form} onSubmit={handleSubmit}>
           <Card.Title as="h1">Moneycog</Card.Title>

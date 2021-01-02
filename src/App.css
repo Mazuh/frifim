@@ -1,3 +1,7 @@
+main {
+  min-height: 75vh;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }

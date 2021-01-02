@@ -3,7 +3,7 @@ import Container from "react-bootstrap/Container";
 
 export default function MainFooter() {
   return (
-    <footer className="bg-light border-top mt-5">
+    <footer className="bg-light border-top mt-5" style={{ maxHeight: '25vh' }}>
       <Container className="w-100 pt-5 pb-3">
         <p className="text-center text-muted">
           <small>

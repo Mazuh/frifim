@@ -4,6 +4,7 @@ import debounce from "lodash.debounce";
 import uniqBy from "lodash.uniqby";
 import { useSelector, useDispatch } from "react-redux";
 import iziToast from "izitoast";
+import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -57,16 +58,26 @@ export default function TransactionsView() {
       <header>
         <h1>Transações</h1>
       </header>
+      <Card as="section" className="mb-3">
+        <Card.Header className="bg-dark text-light">
+          <Card.Title as="h2">
+            <BsPlusSquare /> Criar
+          </Card.Title>
+        </Card.Header>
+        <Card.Body>
+          <TransactionForm
+            onSubmit={handleSubmit}
+            isLoading={transactionsState.isLoading}
+            isCreating={transactionsState.isCreating}
+          />
+        </Card.Body>
+      </Card>
       <section>
-        <h2><BsPlusSquare /> Criar</h2>
-        <TransactionForm
-          onSubmit={handleSubmit}
-          isLoading={transactionsState.isLoading}
-          isCreating={transactionsState.isCreating}
-        />
-      </section>
-      <section>
-        <h2><BsTable /> Dados</h2>
+        <header className="card-header bg-dark text-light">
+          <h2>
+            <BsTable /> Dados
+          </h2>
+        </header>
         <TransactionsTable
           items={transactionsState.items}
           onDelete={handleDelete}

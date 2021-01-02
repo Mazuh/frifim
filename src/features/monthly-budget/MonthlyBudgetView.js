@@ -1,4 +1,5 @@
 import React from "react";
+import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import { useSelector, useDispatch } from "react-redux";
 import { BsPlusSquare } from "react-icons/bs";
@@ -71,16 +72,26 @@ export default function MonthlyBudgetView() {
       <header>
         <h1>Orçamento mensal</h1>
       </header>
+      <Card as="section" className="mb-3">
+        <Card.Header className="bg-dark text-light">
+          <Card.Title as="h2">
+            <BsPlusSquare /> Criar
+          </Card.Title>
+        </Card.Header>
+        <Card.Body>
+          <MonthlyBudgetForm
+            onSubmit={handleSubmit}
+            isLoading={monthlySituation.isLoading}
+            isCreating={monthlySituation.isCreating}
+          />
+        </Card.Body>
+      </Card>
       <section>
-        <h2><BsPlusSquare /> Criar</h2>
-        <MonthlyBudgetForm
-          onSubmit={handleSubmit}
-          isLoading={monthlySituation.isLoading}
-          isCreating={monthlySituation.isCreating}
-        />
-      </section>
-      <section>
-        <h2><INCOME_TYPE.Icon /> {INCOME_TYPE.pluralLabel}</h2>
+        <header className="card-header bg-dark text-light">
+          <h2>
+            <INCOME_TYPE.Icon /> {INCOME_TYPE.pluralLabel}
+          </h2>
+        </header>
         <BudgetTable
           items={monthlyIncomes}
           onDelete={handleDelete}
@@ -92,7 +103,11 @@ export default function MonthlyBudgetView() {
         />
       </section>
       <section>
-        <h2><EXPENSE_TYPE.Icon /> {EXPENSE_TYPE.pluralLabel}</h2>
+        <header className="card-header bg-dark text-light">
+          <h2>
+            <EXPENSE_TYPE.Icon /> {EXPENSE_TYPE.pluralLabel}
+          </h2>
+        </header>
         <BudgetTable
           items={monthlyExpenses}
           onDelete={handleDelete}

@@ -1,4 +1,5 @@
 import React from "react";
+import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -41,16 +42,26 @@ export default function CategoriesView() {
       <header>
         <h1>Categorias</h1>
       </header>
+      <Card as="section" className="mb-3">
+        <Card.Header className="bg-dark text-light">
+          <Card.Title as="h2">
+            <BsPlusSquare /> Criar
+          </Card.Title>
+        </Card.Header>
+        <Card.Body>
+          <CategoryForm
+            onSubmit={handleSubmit}
+            isLoading={categoriesState.isLoading}
+            isCreating={categoriesState.isCreating}
+          />
+        </Card.Body>
+      </Card>
       <section>
-        <h2><BsPlusSquare /> Criar</h2>
-        <CategoryForm
-          onSubmit={handleSubmit}
-          isLoading={categoriesState.isLoading}
-          isCreating={categoriesState.isCreating}
-        />
-      </section>
-      <section>
-        <h2><BsTable/> Dados</h2>
+        <header className="card-header bg-dark text-light">
+          <h2>
+            <BsTable/> Dados
+          </h2>
+        </header>
         <CategoriesTable
           items={categoriesState.items}
           onDelete={handleDelete}

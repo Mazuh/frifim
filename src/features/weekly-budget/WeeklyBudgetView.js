@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash.get";
+import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -52,14 +53,20 @@ export default function WeeklyBudgetView() {
       <header>
         <h1>Orçamento semanal</h1>
       </header>
-      <section>
-        <h2><BsPlusSquare /> Criar</h2>
-        <WeeklyBudgetForm
-          onSubmit={handleSubmit}
-          isLoading={weeklyBudgetState.isLoading}
-          isCreating={weeklyBudgetState.isCreating}
-        />
-      </section>
+      <Card as="section" className="mb-3">
+        <Card.Header className="bg-dark text-light">
+          <Card.Title as="h2">
+            <BsPlusSquare /> Criar
+          </Card.Title>
+        </Card.Header>
+        <Card.Body>
+          <WeeklyBudgetForm
+            onSubmit={handleSubmit}
+            isLoading={weeklyBudgetState.isLoading}
+            isCreating={weeklyBudgetState.isCreating}
+          />
+        </Card.Body>
+      </Card>
       {!weeklyBudgetState.items.length && (
         <p>Nenhum planejamento semanal encontrado.</p>
       )}
@@ -67,12 +74,20 @@ export default function WeeklyBudgetView() {
         const itemsByDay = weeklyBudgetState.items.filter(it => it.day === dayEntity.value);
         return !!itemsByDay.length && (
           <section key={dayEntity.value}>
-            <h2><BsBook /> {dayEntity.label}</h2>
+            <header className="card-header bg-dark text-light">
+              <h2>
+                <BsBook /> {dayEntity.label}
+              </h2>
+            </header>
             {FLOW_TYPES.map((flowType) => {
               const itemsByDayAndFlow = itemsByDay.filter(it => it.type === flowType.value);
               return !!itemsByDayAndFlow.length && (
                 <section key={flowType.value}>
-                  <h3><flowType.Icon /> {flowType.pluralLabel}</h3>
+                  <header className="card-header bg-secondary text-light">
+                    <h3>
+                      <flowType.Icon /> {flowType.pluralLabel}
+                    </h3>
+                  </header>
                   <BudgetTable
                     items={itemsByDayAndFlow}
                     onDelete={(handleDelete)}

@@ -14,7 +14,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
 import ListGroup from "react-bootstrap/ListGroup";
-import { BsArrowDown, BsBoxArrowInDownRight, BsPlusSquare, BsTable, BsTrash } from "react-icons/bs";
+import { BsBoxArrowInDownRight, BsPlusSquare, BsTable, BsTrash } from "react-icons/bs";
 import { EXPENSE_TYPE, INCOME_TYPE } from "../categories/constants";
 import LoadingContainer from "../loading/LoadingContainer";
 import { transactionsActions } from "./transactionsDuck";
@@ -169,7 +169,7 @@ function TransactionForm(props) {
       >
         <Form.Group as={Row} controlId={`${idPrefix}budgetDate`}>
           <Form.Label column sm={2}>
-            Data e hora:
+            Data:
           </Form.Label>
           <Col sm={10}>
             <Form.Control
@@ -196,7 +196,7 @@ function TransactionsTable({ items, onDelete, deleting }) {
       <thead className="bg-dark text-light">
         <tr>
           <th>Nome</th>
-          <th title="As datas mais recentes aparecem no topo da tabela.">Data e hora <BsArrowDown /></th>
+          <th>Data</th>
           <th>Quantia</th>
           <th>Categoria</th>
           <th>Ações</th>

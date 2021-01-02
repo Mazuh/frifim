@@ -10,10 +10,12 @@ import { BsPlusSquare, BsTrash, BsTable, BsTagFill } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import LoadingContainer from "../loading/LoadingContainer";
 import { categoriesActions } from "./categoriesDuck";
+import useBasicRequestData from "../../app/useBasicRequestData";
 
 export default function CategoriesView() {
   const dispatch = useDispatch();
   const categoriesState = useSelector((s) => s.categories);
+  const basicRequestData = useBasicRequestData();
 
   if (categoriesState.isReadingAll) {
     return <LoadingContainer />
@@ -26,14 +28,14 @@ export default function CategoriesView() {
       name: event.target.name.value,
       color: event.target.color.value,
     };
-    dispatch(categoriesActions.create(creatingCategory));
+    dispatch(categoriesActions.create(creatingCategory, basicRequestData));
 
     event.target.reset();
   };
 
   const handleDelete = (category) => {
     if (window.confirm(`Deletar categoria "${category.name}"?`)) {
-      dispatch(categoriesActions.delete(category.uuid));
+      dispatch(categoriesActions.delete(category.uuid, basicRequestData));
     }
   }
 

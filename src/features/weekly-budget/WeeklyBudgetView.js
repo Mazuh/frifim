@@ -13,9 +13,11 @@ import { weeklyBudgetActions } from "./weeklyBudgetDuck";
 import BudgetTable from "../monthly-budget/BudgetTable";
 import BudgetForm from "../monthly-budget/BudgetForm";
 import { WEEK_DAYS } from "./constants";
+import useBasicRequestData from "../../app/useBasicRequestData";
 
 export default function WeeklyBudgetView() {
   const dispatch = useDispatch();
+  const basicRequestData = useBasicRequestData();
   const weeklyBudgetState = useSelector(state => state.weeklyBudget);
   const [enabledUpdateUuid, setEnabledUpdateUuid] = React.useState(null);
 
@@ -33,7 +35,7 @@ export default function WeeklyBudgetView() {
       category: event.target.category.value,
       day: parseInt(event.target.day.value, 10),
     };
-    dispatch(weeklyBudgetActions.create(creatingBudget));
+    dispatch(weeklyBudgetActions.create(creatingBudget, basicRequestData));
 
     event.target.reset();
   };
@@ -44,7 +46,7 @@ export default function WeeklyBudgetView() {
 
   const handleDelete = (budget) => {
     if (window.confirm(`Deletar do orçamento "${budget.name}"?`)) {
-      dispatch(weeklyBudgetActions.delete(budget.uuid));
+      dispatch(weeklyBudgetActions.delete(budget.uuid, basicRequestData));
     }
   }
 
@@ -140,6 +142,7 @@ function WeeklyBudgetForm(props) {
 
 function WeeklyBudgetTableRowExtension({ budget }) {
   const dispatch = useDispatch();
+  const basicRequestData = useBasicRequestData();
   const isUpdating = useSelector(state => state.weeklyBudget.updating.includes(budget.uuid));
   const isLoading = useSelector(state => state.weeklyBudget.isLoading);
 
@@ -153,7 +156,7 @@ function WeeklyBudgetTableRowExtension({ budget }) {
       category: event.target.category.value,
       day: parseInt(event.target.day.value, 10),
     };
-    dispatch(weeklyBudgetActions.update(budget.uuid, creatingBudget));
+    dispatch(weeklyBudgetActions.update(budget.uuid, creatingBudget, basicRequestData));
   };
 
   return (

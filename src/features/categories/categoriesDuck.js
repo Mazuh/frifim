@@ -17,13 +17,13 @@ const categoriesResource = makeReduxAssets({
   idKey: 'uuid',
   makeMessageText: makeResourceMessageTextFn('categoria', 'categorias'),
   gateway: {
-    fetchMany: async () => {
+    fetchMany: async (basicData) => {
       return CATEGORIES_FIXTURE;
     },
-    create: async (category) => {
+    create: async (category, basicData) => {
       return { uuid: uuidv4(), ...category };
     },
-    delete: async(uuid) => {
+    delete: async(uuid, basicData) => {
       return { uuid };
     },
   },

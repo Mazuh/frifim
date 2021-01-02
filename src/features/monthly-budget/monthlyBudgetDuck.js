@@ -9,7 +9,7 @@ const monthlyBudgetResource = makeReduxAssets({
   idKey: "uuid",
   makeMessageText: makeResourceMessageTextFn("planejamento", "planejamentos"),
   gateway: {
-    fetchMany: async () => {
+    fetchMany: async (basicData) => {
       return [
         {
           uuid: uuidv4(),
@@ -101,13 +101,13 @@ const monthlyBudgetResource = makeReduxAssets({
         },
       ];
     },
-    create: async (budget) => {
+    create: async (budget, basicData) => {
       return { uuid: uuidv4(), ...budget };
     },
-    update: async (uuid, budget) => {
+    update: async (uuid, budget, basicData) => {
       return { ...budget, uuid };
     },
-    delete: async (uuid) => {
+    delete: async (uuid, basicData) => {
       return { uuid };
     },
   },

@@ -19,55 +19,54 @@ import { weeklyBudgetActions } from "./features/weekly-budget/weeklyBudgetDuck";
 import TransactionsView from "./features/transactions/TransactionsView";
 import { transactionsActions } from "./features/transactions/transactionsDuck";
 import LoginView from "./features/auth/LoginView";
-import GlobalContextProvider from "./app/contexts";
+import useBasicRequestData from "./app/useBasicRequestData";
 
 export default function App() {
   const dispatch = useDispatch();
+  const basicRequestData = useBasicRequestData();
 
   React.useEffect(() => {
-    dispatch(categoriesActions.readAll());
-    dispatch(monthlyBudgetActions.readAll());
-    dispatch(weeklyBudgetActions.readAll());
-    dispatch(transactionsActions.readAll());
-  }, [dispatch]);
+    dispatch(categoriesActions.readAll(basicRequestData));
+    dispatch(monthlyBudgetActions.readAll(basicRequestData));
+    dispatch(weeklyBudgetActions.readAll(basicRequestData));
+    dispatch(transactionsActions.readAll(basicRequestData));
+  }, [dispatch, basicRequestData]);
 
   return (
     <ErrorGuard>
-      <GlobalContextProvider>
-        <BrowserRouter>
-          <MainMenu />
-          <Page>
-            <Switch>
-              <ProtectedRoute exact path="/categorias">
-                <CategoriesView />
-              </ProtectedRoute>
-              <ProtectedRoute exact path="/orçamento-mensal">
-                <MonthlyBudgetView />
-              </ProtectedRoute>
-              <ProtectedRoute exact path="/orçamento-semanal">
-                <WeeklyBudgetView />
-              </ProtectedRoute>
-              <ProtectedRoute exact path="/transacoes">
-                <TransactionsView />
-              </ProtectedRoute>
-              <ProtectedRoute exact path="/inicio">
-                <Home />
-              </ProtectedRoute>
-              <Route exact path="/login">
-                <LoginView />
-              </Route>
-              <Route exact path="/">
-                <LoginView />
-              </Route>
-              <Route exact path="/404">
-                <NotFoundView />
-              </Route>
-              <Redirect to="/404" />
-            </Switch>
-          </Page>
-          <MainFooter />
-        </BrowserRouter>
-      </GlobalContextProvider>
+      <BrowserRouter>
+        <MainMenu />
+        <Page>
+          <Switch>
+            <ProtectedRoute exact path="/categorias">
+              <CategoriesView />
+            </ProtectedRoute>
+            <ProtectedRoute exact path="/orçamento-mensal">
+              <MonthlyBudgetView />
+            </ProtectedRoute>
+            <ProtectedRoute exact path="/orçamento-semanal">
+              <WeeklyBudgetView />
+            </ProtectedRoute>
+            <ProtectedRoute exact path="/transacoes">
+              <TransactionsView />
+            </ProtectedRoute>
+            <ProtectedRoute exact path="/inicio">
+              <Home />
+            </ProtectedRoute>
+            <Route exact path="/login">
+              <LoginView />
+            </Route>
+            <Route exact path="/">
+              <LoginView />
+            </Route>
+            <Route exact path="/404">
+              <NotFoundView />
+            </Route>
+            <Redirect to="/404" />
+          </Switch>
+        </Page>
+        <MainFooter />
+      </BrowserRouter>
     </ErrorGuard>
   );
 }

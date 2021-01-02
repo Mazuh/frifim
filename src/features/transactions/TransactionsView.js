@@ -22,9 +22,11 @@ import BudgetForm from "../monthly-budget/BudgetForm";
 import { humanizeDatetime, currentDatetimeValue } from "./dates";
 import CategoryIndicator from "../categories/CategoryIndicator";
 import { ViewportContext } from "../../app/contexts";
+import useBasicRequestData from "../../app/useBasicRequestData";
 
 export default function TransactionsView() {
   const dispatch = useDispatch();
+  const basicRequestData = useBasicRequestData();
   const transactionsState = useSelector((s) => s.transactions);
 
   if (transactionsState.isReadingAll) {
@@ -42,14 +44,14 @@ export default function TransactionsView() {
       category: formElement.category.value,
       datetime: formElement.datetime.value,
     };
-    dispatch(transactionsActions.create(creatingTransaction));
+    dispatch(transactionsActions.create(creatingTransaction, basicRequestData));
   };
 
   const handleDelete = (transaction) => {
     const what = transaction.name;
     const when = humanizeDatetime(transaction.datetime, { month: 'long', year: 'numeric' });
     if (window.confirm(`Deletar transação "${what}" de ${when}?`)) {
-      dispatch(transactionsActions.delete(transaction.uuid));
+      dispatch(transactionsActions.delete(transaction.uuid, basicRequestData));
     }
   }
 

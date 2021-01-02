@@ -9,9 +9,11 @@ import { monthlyBudgetActions } from "./monthlyBudgetDuck";
 import BudgetTable from "./BudgetTable";
 import BudgetForm from "./BudgetForm";
 import useSelectorForMonthlyBudgetStatus from './useSelectorForMonthlyBudgetStatus';
+import useBasicRequestData from "../../app/useBasicRequestData";
 
 export default function MonthlyBudgetView() {
   const dispatch = useDispatch();
+  const basicRequestData = useBasicRequestData();
 
   const monthlySituation = useSelectorForMonthlyBudgetStatus();
 
@@ -52,7 +54,7 @@ export default function MonthlyBudgetView() {
       amount: event.target.amount.value,
       category: event.target.category.value,
     };
-    dispatch(monthlyBudgetActions.create(creatingBudget));
+    dispatch(monthlyBudgetActions.create(creatingBudget, basicRequestData));
 
     event.target.reset();
   };
@@ -63,7 +65,7 @@ export default function MonthlyBudgetView() {
 
   const handleDelete = (budget) => {
     if (window.confirm(`Deletar do orçamento "${budget.name}"?`)) {
-      dispatch(monthlyBudgetActions.delete(budget.uuid));
+      dispatch(monthlyBudgetActions.delete(budget.uuid, basicRequestData));
     }
   }
 
@@ -126,6 +128,7 @@ const MonthlyBudgetForm = BudgetForm;
 
 function MonthlyBudgetTableRowExtension({ budget }) {
   const dispatch = useDispatch();
+  const basicRequestData = useBasicRequestData();
   const isUpdating = useSelector(state => state.monthlyBudget.updating.includes(budget.uuid));
   const isLoading = useSelector(state => state.monthlyBudget.isLoading);
 
@@ -138,7 +141,7 @@ function MonthlyBudgetTableRowExtension({ budget }) {
       amount: event.target.amount.value,
       category: event.target.category.value,
     };
-    dispatch(monthlyBudgetActions.update(budget.uuid, updatingBudget));
+    dispatch(monthlyBudgetActions.update(budget.uuid, updatingBudget, basicRequestData));
   };
 
   return (

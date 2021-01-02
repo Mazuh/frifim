@@ -9,7 +9,7 @@ const transactionsResource = makeReduxAssets({
   idKey: 'uuid',
   makeMessageText: makeResourceMessageTextFn('transação', 'transações'),
   gateway: {
-    fetchMany: async () => {
+    fetchMany: async (basicData) => {
       return [
         {
           uuid: uuidv4(),
@@ -36,13 +36,13 @@ const transactionsResource = makeReduxAssets({
         },
       ];
     },
-    create: async (transaction) => {
+    create: async (transaction, basicData) => {
       return { uuid: uuidv4(), ...transaction };
     },
-    update: async (uuid, transaction) => {
+    update: async (uuid, transaction, basicData) => {
       return { ...transaction, uuid };
     },
-    delete: async(uuid) => {
+    delete: async(uuid, basicData) => {
       return { uuid };
     },
   },

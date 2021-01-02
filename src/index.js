@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import store from './app/store';
+import GlobalContextProvider from './app/contexts';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 
@@ -10,7 +11,9 @@ window.store = store;
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <GlobalContextProvider>
+        <App />
+      </GlobalContextProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

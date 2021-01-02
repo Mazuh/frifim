@@ -1,14 +1,21 @@
 import React from 'react';
 import { useHistory, useLocation } from "react-router-dom";
+import capitalize from "lodash.capitalize";
+import range from "lodash.range";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
 import Button from "react-bootstrap/Button";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { BsArrowLeftRight, BsBoxArrowLeft, BsCalendar, BsCalendarFill, BsFillHouseDoorFill, BsFillTagFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../auth/authDuck';
+import { monthToString } from '../transactions/dates';
+import { MonthContext } from '../../app/contexts';
 
 export default function MainMenu() {
   const dispatch = useDispatch();
+  const { month, setMonth } = React.useContext(MonthContext);
   const isAuthorized = useSelector((s) => s.auth.isAuthorized);
   const user = useSelector((s) => s.auth.user);
   const history = useHistory();
@@ -35,8 +42,21 @@ export default function MainMenu() {
   }
 
   const handleSelect = (url) => {
-    history.push(url);
-    setExpanded(false);
+    if (!Number.isNaN(parseInt(url, 10))) {
+      // FIXME: then it's an eventKey from handleMonthsDropdownSelect, ignore it.
+      return;
+    }
+
+    try {
+      history.push(url);
+    } finally {
+      setExpanded(false);
+    }
+  };
+
+  const handleMonthsDropdownSelect = (monthKey) => {
+    const selectedMonthIndex = parseInt(monthKey, 10) - 1;
+    setMonth(selectedMonthIndex);
   };
 
   return (
@@ -64,6 +84,20 @@ export default function MainMenu() {
         <Navbar.Text className="mr-3">
           Olá, <strong>{user.displayName || user.email || 'Usuário'}</strong>
         </Navbar.Text>
+        <br />
+        <DropdownButton
+          id="main-month-dropdown"
+          variant="secondary"
+          className="mr-2"
+          title={capitalize(monthToString(month))}
+          onSelect={handleMonthsDropdownSelect}
+        >
+          {range(1, 13).map((monthKey) => (
+            <Dropdown.Item key={monthKey} eventKey={monthKey}>
+              {capitalize(monthToString(monthKey - 1))}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
         <br />
         <Navbar.Text>
           <Button

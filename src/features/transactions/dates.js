@@ -16,3 +16,10 @@ export function currentDatetimeValue() {
   const offsetCurrentDateEntity = new Date(offsetTimestamp);
   return offsetCurrentDateEntity.toISOString().substring(0, 16);
 }
+
+/** returns local name of the month index (from 0 to 11) */
+export function monthToString(monthIndex) {
+  const date = new Date(1997, monthIndex);
+  const monthName = date.toLocaleString(navigator.language, { month: 'long' });
+  return monthName;
+}

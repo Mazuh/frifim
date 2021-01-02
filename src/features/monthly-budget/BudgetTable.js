@@ -23,7 +23,7 @@ export default function BudgetTable({
 
   return (
     <Table responsive striped bordered hover>
-      <thead>
+      <thead className="bg-dark text-light">
         <tr>
           <th>Nome</th>
           <th>Quantia</th>

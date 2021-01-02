@@ -182,7 +182,7 @@ function TransactionsTable({ items, onDelete, deleting }) {
 
   return (
     <Table responsive striped bordered hover>
-      <thead>
+      <thead className="bg-dark text-light">
         <tr>
           <th>Nome</th>
           <th title="As datas mais recentes aparecem no topo da tabela.">Data e hora <BsArrowDown /></th>

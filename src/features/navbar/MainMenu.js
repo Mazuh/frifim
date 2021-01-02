@@ -10,12 +10,13 @@ import { logout } from '../auth/authDuck';
 export default function MainMenu() {
   const dispatch = useDispatch();
   const isAuthorized = useSelector((s) => s.auth.isAuthorized);
+  const user = useSelector((s) => s.auth.user);
   const history = useHistory();
   const location = useLocation();
 
   const [isExpanded, setExpanded] = React.useState(false);
 
-  if (!isAuthorized) {
+  if (!isAuthorized || !user) {
     return null;
   }
 
@@ -60,6 +61,10 @@ export default function MainMenu() {
             </Nav.Link>
           ))}
         </Nav>
+        <Navbar.Text className="mr-3">
+          Olá, <strong>{user.displayName || user.email || 'Usuário'}</strong>
+        </Navbar.Text>
+        <br />
         <Navbar.Text>
           <Button
             variant="outline-light"

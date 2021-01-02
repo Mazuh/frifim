@@ -3,7 +3,7 @@ import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import { useSelector, useDispatch } from "react-redux";
 import { BsPlusSquare } from "react-icons/bs";
-import LoadingContainer from "../loading/LoadingContainer";
+import LoadingMainContainer from "../loading/LoadingMainContainer";
 import { EXPENSE_TYPE, INCOME_TYPE } from "../categories/constants";
 import { monthlyBudgetActions } from "./monthlyBudgetDuck";
 import BudgetTable from "./BudgetTable";
@@ -42,7 +42,7 @@ export default function MonthlyBudgetView() {
   const [enabledUpdateUuid, setEnabledUpdateUuid] = React.useState(null);
 
   if (monthlySituation.isReadingAll) {
-    return <LoadingContainer />
+    return <LoadingMainContainer />
   }
 
   const handleSubmit = (event) => {

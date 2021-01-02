@@ -7,7 +7,7 @@ import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import { useSelector, useDispatch } from "react-redux";
 import { BsBook, BsPlusSquare } from "react-icons/bs";
-import LoadingContainer from "../loading/LoadingContainer";
+import LoadingMainContainer from "../loading/LoadingMainContainer";
 import { FLOW_TYPES } from "../categories/constants";
 import { weeklyBudgetActions } from "./weeklyBudgetDuck";
 import BudgetTable from "../monthly-budget/BudgetTable";
@@ -22,7 +22,7 @@ export default function WeeklyBudgetView() {
   const [enabledUpdateUuid, setEnabledUpdateUuid] = React.useState(null);
 
   if (weeklyBudgetState.isReadingAll) {
-    return <LoadingContainer />
+    return <LoadingMainContainer />
   }
 
   const handleSubmit = (event) => {

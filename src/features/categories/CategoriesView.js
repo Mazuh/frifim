@@ -8,7 +8,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { BsPlusSquare, BsTrash, BsTable, BsTagFill } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
-import LoadingContainer from "../loading/LoadingContainer";
+import LoadingMainContainer from "../loading/LoadingMainContainer";
 import { categoriesActions } from "./categoriesDuck";
 import useBasicRequestData from "../../app/useBasicRequestData";
 
@@ -18,7 +18,7 @@ export default function CategoriesView() {
   const basicRequestData = useBasicRequestData();
 
   if (categoriesState.isReadingAll) {
-    return <LoadingContainer />
+    return <LoadingMainContainer />
   }
 
   const handleSubmit = (event) => {

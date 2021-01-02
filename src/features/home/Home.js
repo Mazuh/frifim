@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import { BsArrowLeftRight, BsCalendarFill, BsPieChartFill } from "react-icons/bs";
-import LoadingContainer from "../loading/LoadingContainer";
+import LoadingMainContainer from "../loading/LoadingMainContainer";
 import { INCOME_TYPE, EXPENSE_TYPE } from "../categories/constants";
 import useSelectorForMonthlyBudgetStatus, { getMonthlyCalcs } from "../monthly-budget/useSelectorForMonthlyBudgetStatus";
 import getTransactionsCalcs from "../transactions/getTransactionsCalcs";
@@ -17,7 +17,7 @@ export default function Home() {
   const transactions = useSelector(state => state.transactions.items);
 
   if (isLoading) {
-    return <LoadingContainer />
+    return <LoadingMainContainer />
   }
 
   const transactionsCalcs = getTransactionsCalcs(transactions);

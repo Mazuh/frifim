@@ -16,7 +16,7 @@ import Badge from "react-bootstrap/Badge";
 import ListGroup from "react-bootstrap/ListGroup";
 import { BsBoxArrowInDownRight, BsPlusSquare, BsTable, BsTrash } from "react-icons/bs";
 import { EXPENSE_TYPE, INCOME_TYPE } from "../categories/constants";
-import LoadingContainer from "../loading/LoadingContainer";
+import LoadingMainContainer from "../loading/LoadingMainContainer";
 import { transactionsActions } from "./transactionsDuck";
 import BudgetForm from "../monthly-budget/BudgetForm";
 import { humanizeDatetime, currentDatetimeValue } from "./dates";
@@ -30,7 +30,7 @@ export default function TransactionsView() {
   const transactionsState = useSelector((s) => s.transactions);
 
   if (transactionsState.isReadingAll) {
-    return <LoadingContainer />
+    return <LoadingMainContainer />
   }
 
   const handleSubmit = (event) => {

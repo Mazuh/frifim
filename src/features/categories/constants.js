@@ -9,8 +9,8 @@ export const TAG_COLORS = Object.freeze([
 
 export const INCOME_TYPE = Object.freeze({
   value: 'income',
-  label: 'Renda',
-  pluralLabel: 'Rendas',
+  label: 'Receita',
+  pluralLabel: 'Receitas',
   Icon: BsBoxArrowInLeft,
 });
 export const EXPENSE_TYPE = Object.freeze({

@@ -13,6 +13,7 @@ import getTransactionsCalcs from "../transactions/getTransactionsCalcs";
 
 export default function Home() {
   const isLoading = useSelector(state => Object.keys(state).some(slice => state[slice].isLoading));
+  const user = useSelector((s) => s.auth.user);
   const monthlySituation = useSelectorForMonthlyBudgetStatus();
   const transactions = useSelector(state => state.transactions.items);
 
@@ -52,12 +53,17 @@ export default function Home() {
 
   return (
     <Container as="main">
-      <header>
-        <h1>
-          Página inicial
-          <br />
-          <small className="text-muted">Resumos do mês</small>
+      <header className="d-flex justify-content-between align-items-center">
+        <h1 className="d-inline-block">
+          Início <small className="d-none d-md-inline text-muted">Resumos do mês</small>
         </h1>
+        <p className="d-inline-block m-0">
+          Olá,
+          {' '}
+          <span className="text-muted">{user.displayName || user.email || 'pessoa'}</span>
+          {' '}
+          💰
+        </p>
       </header>
       <Row>
         <Col as="section" md={4}>

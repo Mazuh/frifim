@@ -58,7 +58,7 @@ export default function TransactionsView() {
   return (
     <Container as="main">
       <header>
-        <h1>Transações</h1>
+        <h1>Transações reais</h1>
       </header>
       <Card as="section" className="mb-3">
         <Card.Header className="bg-dark text-light">

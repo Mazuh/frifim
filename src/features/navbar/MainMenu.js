@@ -4,10 +4,20 @@ import capitalize from "lodash.capitalize";
 import range from "lodash.range";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import { BsArrowLeftRight, BsBoxArrowLeft, BsCalendar, BsCalendarFill, BsFillHouseDoorFill, BsFillTagFill } from 'react-icons/bs';
+import {
+  BsArrowLeftRight,
+  BsBoxArrowLeft,
+  BsCalendar,
+  BsCalendarFill,
+  BsFillHouseDoorFill,
+  BsWrench,
+  BsFillTagFill,
+  BsFolderPlus,
+} from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../auth/authDuck';
 import { monthToString } from '../transactions/dates';
@@ -17,13 +27,12 @@ export default function MainMenu() {
   const dispatch = useDispatch();
   const { month, setMonth } = React.useContext(MonthContext);
   const isAuthorized = useSelector((s) => s.auth.isAuthorized);
-  const user = useSelector((s) => s.auth.user);
   const history = useHistory();
   const location = useLocation();
 
   const [isExpanded, setExpanded] = React.useState(false);
 
-  if (!isAuthorized || !user) {
+  if (!isAuthorized) {
     return null;
   }
 
@@ -43,7 +52,8 @@ export default function MainMenu() {
 
   const handleSelect = (url) => {
     if (!Number.isNaN(parseInt(url, 10))) {
-      // FIXME: then it's an eventKey from handleMonthsDropdownSelect, ignore it.
+      // then it's an eventKey from handleMonthsDropdownSelect, ignore it.
+      // (this condition is a weird workaround for a leaking selection event)
       return;
     }
 
@@ -56,6 +66,10 @@ export default function MainMenu() {
 
   const handleMonthsDropdownSelect = (monthKey) => {
     const selectedMonthIndex = parseInt(monthKey, 10) - 1;
+    if (Number.isNaN(selectedMonthIndex)) {
+      return;
+    }
+
     setMonth(selectedMonthIndex);
   };
 
@@ -65,7 +79,7 @@ export default function MainMenu() {
       bg="dark"
       variant="dark"
       fixed="top"
-      expand="lg"
+      expand="xl"
       expanded={isExpanded}
       onSelect={handleSelect}
     >
@@ -75,15 +89,24 @@ export default function MainMenu() {
       <Navbar.Toggle aria-controls="main-navbar-collase" onClick={onToggleClick} />
       <Navbar.Collapse id="main-navbar-collase">
         <Nav className="mr-auto">
-          {menuLinks.map((link, index) => (
+          {menuLinks.map((link, index) => Array.isArray(link.options) ? (
+            <NavDropdown key={index} title={<>{link.icon} {link.label}</>} id={link.id}>
+              {link.options.map((subLink, subIndex) => (
+                <NavDropdown.Item
+                  key={`${link.id}-${subIndex}`}
+                  eventKey={subLink.url}
+                  active={subLink.url === location.pathname}
+                >
+                  {subLink.icon} {subLink.label}
+                </NavDropdown.Item>
+              ))}
+            </NavDropdown>
+          ) : (
             <Nav.Link key={index} eventKey={link.url} active={link.url === location.pathname}>
               {link.icon} {link.label}
             </Nav.Link>
           ))}
         </Nav>
-        <Navbar.Text className="mr-3">
-          Olá, <strong>{user.displayName || user.email || 'Usuário'}</strong>
-        </Navbar.Text>
         <br />
         <DropdownButton
           id="main-month-dropdown"
@@ -97,6 +120,24 @@ export default function MainMenu() {
               {capitalize(monthToString(monthKey - 1))}
             </Dropdown.Item>
           ))}
+        </DropdownButton>
+        <br />
+        <DropdownButton
+          id="main-projects-dropdown"
+          variant="secondary"
+          className="mr-2"
+          title="Casa"
+          onSelect={handleMonthsDropdownSelect}
+        >
+          <Dropdown.Item eventKey={'project-plus'}>
+            <BsFolderPlus /> Novo projeto
+          </Dropdown.Item>
+          <Dropdown.Item eventKey={'project-1'}>
+            Casa
+          </Dropdown.Item>
+          <Dropdown.Item eventKey={'project-2'}>
+            Empresa
+          </Dropdown.Item>
         </DropdownButton>
         <br />
         <Navbar.Text>
@@ -115,9 +156,11 @@ export default function MainMenu() {
 }
 
 const menuLinks = [
-  { url: '/', label: 'Início', icon: <BsFillHouseDoorFill /> },
+  { url: '/inicio', label: 'Início', icon: <BsFillHouseDoorFill /> },
   { url: '/transacoes', label: 'Transações reais', icon: <BsArrowLeftRight /> },
   { url: '/orçamento-mensal', label: 'Orçamento mensal', icon: <BsCalendarFill /> },
   { url: '/orçamento-semanal', label: 'Orçamento semanal', icon: <BsCalendar /> },
-  { url: '/categorias', label: 'Categorias', icon: <BsFillTagFill /> },
+  { id: 'main-configs-dropdown', label: 'Configurações', icon: <BsWrench />, options: [
+    { url: '/categorias', label: 'Categorias', icon: <BsFillTagFill /> },
+  ]},
 ];

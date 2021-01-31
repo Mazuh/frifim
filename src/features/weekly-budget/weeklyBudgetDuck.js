@@ -1,9 +1,7 @@
 import { makeReduxAssets } from 'resource-toolkit';
 import { v4 as uuidv4 } from "uuid";
-import { CATEGORIES_FIXTURE } from '../categories/categoriesDuck';
-import { INCOME_TYPE, EXPENSE_TYPE } from '../categories/constants';
+import { WEEKLY_BUDGETS_FIXTURE } from '../../app/fixtures';
 import makeResourceMessageTextFn from '../izitoast-for-resources/makeResourceMessageTextFn';
-import { WEEK_DAYS } from './constants';
 
 const weeklyBudgetResource = makeReduxAssets({
   name: 'weeklyBudget',
@@ -11,55 +9,7 @@ const weeklyBudgetResource = makeReduxAssets({
   makeMessageText: makeResourceMessageTextFn('planejamento semanal', 'planejamentos semanais'),
   gateway: {
     fetchMany: async (basicData) => {
-      return [
-        {
-          uuid: uuidv4(),
-          name: 'Compras pro almoço',
-          type: EXPENSE_TYPE.value,
-          day: WEEK_DAYS[0].value,
-          amount: '65.00',
-          category: CATEGORIES_FIXTURE[3].uuid,
-        },
-        {
-          uuid: uuidv4(),
-          name: 'Janta (delivery)',
-          type: EXPENSE_TYPE.value,
-          day: WEEK_DAYS[0].value,
-          amount: '20.00',
-          category: CATEGORIES_FIXTURE[3].uuid,
-        },
-        {
-          uuid: uuidv4(),
-          name: 'Freelance Bar',
-          type: INCOME_TYPE.value,
-          day: WEEK_DAYS[4].value,
-          amount: '199.99',
-        },
-        {
-          uuid: uuidv4(),
-          name: 'Jantar caro',
-          type: EXPENSE_TYPE.value,
-          day: WEEK_DAYS[4].value,
-          amount: '100.00',
-          category: CATEGORIES_FIXTURE[3].uuid,
-        },
-        {
-          uuid: uuidv4(),
-          name: 'Curtição',
-          type: EXPENSE_TYPE.value,
-          day: WEEK_DAYS[5].value,
-          amount: '150.00',
-          category: CATEGORIES_FIXTURE[1].uuid,
-        },
-        {
-          uuid: uuidv4(),
-          name: 'Curtição',
-          type: EXPENSE_TYPE.value,
-          day: WEEK_DAYS[6].value,
-          amount: '200.00',
-          category: CATEGORIES_FIXTURE[1].uuid,
-        },
-      ];
+      return WEEKLY_BUDGETS_FIXTURE;
     },
     create: async (budget, basicData) => {
       return { uuid: uuidv4(), ...budget };

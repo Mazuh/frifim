@@ -15,6 +15,7 @@ import categoriesReducer from '../features/categories/categoriesDuck';
 import monthlyBudgetReducer from '../features/monthly-budget/monthlyBudgetDuck';
 import weeklyBudgetReducer from '../features/weekly-budget/weeklyBudgetDuck';
 import transactionsReducer from '../features/transactions/transactionsDuck';
+import projectsReducer from '../features/projects/projectsDuck';
 
 export const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ export const store = configureStore({
     monthlyBudget: monthlyBudgetReducer,
     weeklyBudget: weeklyBudgetReducer,
     transactions: transactionsReducer,
+    projects: projectsReducer,
   },
   middleware: getDefaultMiddleware({
     serializableCheck: {

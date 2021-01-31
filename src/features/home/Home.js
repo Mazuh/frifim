@@ -12,7 +12,9 @@ import useSelectorForMonthlyBudgetStatus, { getMonthlyCalcs } from "../monthly-b
 import getTransactionsCalcs from "../transactions/getTransactionsCalcs";
 
 export default function Home() {
-  const isLoading = useSelector(state => Object.keys(state).some(slice => state[slice].isLoading));
+  const isLoading = useSelector(state => Object.keys(state).some(
+    slice => slice !== 'projects' && state[slice].isLoading
+  ));
   const user = useSelector((s) => s.auth.user);
   const monthlySituation = useSelectorForMonthlyBudgetStatus();
   const transactions = useSelector(state => state.transactions.items);

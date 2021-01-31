@@ -20,6 +20,7 @@ import TransactionsView from "./features/transactions/TransactionsView";
 import { transactionsActions } from "./features/transactions/transactionsDuck";
 import LoginView from "./features/auth/LoginView";
 import useBasicRequestData from "./app/useBasicRequestData";
+import { projectsActions } from "./features/projects/projectsDuck";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ export default function App() {
     dispatch(monthlyBudgetActions.readAll(basicRequestData));
     dispatch(weeklyBudgetActions.readAll(basicRequestData));
     dispatch(transactionsActions.readAll(basicRequestData));
+    dispatch(projectsActions.readAll(basicRequestData));
   }, [dispatch, basicRequestData]);
 
   return (
@@ -76,6 +78,7 @@ const useAllResourceToasts = () => {
   useIzitoastForResource('monthlyBudget');
   useIzitoastForResource('weeklyBudget');
   useIzitoastForResource('categories');
+  useIzitoastForResource('projects');
 };
 
 function Page(props) {

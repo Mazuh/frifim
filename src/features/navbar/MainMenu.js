@@ -16,12 +16,12 @@ import {
   BsFillHouseDoorFill,
   BsWrench,
   BsFillTagFill,
-  BsFolderPlus,
 } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../auth/authDuck';
 import { monthToString } from '../transactions/dates';
 import { MonthContext } from '../../app/contexts';
+import ProjectSelector from '../projects/ProjectSelector';
 
 export default function MainMenu() {
   const dispatch = useDispatch();
@@ -54,6 +54,12 @@ export default function MainMenu() {
     if (!Number.isNaN(parseInt(url, 10))) {
       // then it's an eventKey from handleMonthsDropdownSelect, ignore it.
       // (this condition is a weird workaround for a leaking selection event)
+      return;
+    }
+
+    if (url.startsWith('project-selector')) {
+      // when it's an eventKey from projects selector component, ignore it.
+      // (yes, another weird condition.)
       return;
     }
 
@@ -122,23 +128,7 @@ export default function MainMenu() {
           ))}
         </DropdownButton>
         <br />
-        <DropdownButton
-          id="main-projects-dropdown"
-          variant="secondary"
-          className="mr-2"
-          title="Casa"
-          onSelect={handleMonthsDropdownSelect}
-        >
-          <Dropdown.Item eventKey={'project-plus'}>
-            <BsFolderPlus /> Novo projeto
-          </Dropdown.Item>
-          <Dropdown.Item eventKey={'project-1'}>
-            Casa
-          </Dropdown.Item>
-          <Dropdown.Item eventKey={'project-2'}>
-            Empresa
-          </Dropdown.Item>
-        </DropdownButton>
+        <ProjectSelector className="mr-2" />
         <br />
         <Navbar.Text>
           <Button

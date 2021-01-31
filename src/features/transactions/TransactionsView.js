@@ -148,7 +148,7 @@ function TransactionForm(props) {
         </Col>
       </Row>
 
-      <Modal show={isImportingVisible} onHide={handleClose} animation={false}>
+      <Modal show={isImportingVisible} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Importe um orçamento</Modal.Title>
         </Modal.Header>
@@ -260,7 +260,7 @@ function BudgetsSearcher({ onBudgetSelect }) {
 
   return (
     <div className="budgets-searcher">
-      <Form.Group controlId="formBasicEmail">
+      <Form.Group controlId="transactionSearchInput">
         <Form.Label>
           Parte do nome do planejamento:
         </Form.Label>

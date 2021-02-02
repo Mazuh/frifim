@@ -43,10 +43,10 @@ export default function Login() {
         <Card.Body as={Form} onSubmit={handleSubmit}>
           <Card.Title as="h1">Moneycog</Card.Title>
           <Card.Subtitle as="h2" className="mb-2 text-muted">
-            Entre de graça!
+            Entre agora!
           </Card.Subtitle>
           <Card.Text>
-            Gestão doméstica de finanças e gastos, para leigos.
+            Gestão financeira simplificada. Gratuitamente.
           </Card.Text>
           {!!auth.errorCode && (
             <Alert variant="danger">

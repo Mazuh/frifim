@@ -16,4 +16,6 @@ const firebaseConfig = Object.freeze({
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 firebase.analytics(firebaseApp);
 
+export const firedb = firebaseApp.firestore();
+
 export default firebaseApp;

@@ -1,6 +1,34 @@
+import omit from "lodash.omit";
 import { v4 as uuidv4 } from "uuid";
 import { EXPENSE_TYPE, INCOME_TYPE } from "../features/categories/constants";
 import { WEEK_DAYS } from "../features/weekly-budget/constants";
+import { firedb } from "./firebase-configs";
+
+export function persistFixtures(userUid = firedb.app.auth().currentUser.uid) {
+  console.log('Appending fixture data to user', userUid);
+  const batch = firedb.batch();
+
+  const toDbData = (entity) => ({ ...omit(entity, 'uuid'), userUid });
+  const setFixturesOnBatch = (entities, collection) => {
+    console.log('Batching', collection, entities);
+    entities.forEach((entity) => {
+      const docRef = firedb.collection(collection).doc(entity.uuid);
+      const data = toDbData(entity);
+      batch.set(docRef, data);
+    });
+  };
+
+  setFixturesOnBatch(PROJECTS_FIXTURE, 'projects');
+  setFixturesOnBatch(CATEGORIES_FIXTURE, 'categories');
+  setFixturesOnBatch(MONTHLY_BUDGETS_FIXTURE, 'monthly_budgets');
+  setFixturesOnBatch(WEEKLY_BUDGETS_FIXTURE, 'weekly_budgets');
+  setFixturesOnBatch(TRANSACTIONS_FIXTURE.map(it => ({ ...it, datetime: new Date(it.datetime) })), 'transactions');
+
+  batch.commit();
+  console.log('Commit sent.');
+}
+
+window.persistFixtures = persistFixtures; // for devs!
 
 export const TAG_COLORS = Object.freeze([
   '#59BE4A',

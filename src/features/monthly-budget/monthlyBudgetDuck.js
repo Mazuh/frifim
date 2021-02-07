@@ -1,7 +1,6 @@
 import { makeReduxAssets } from "resource-toolkit";
 import { v4 as uuidv4 } from "uuid";
-import { parseQuerySnapshot } from "../../app/firebase-adapters";
-import { firedb } from "../../app/firebase-configs";
+import { fireContextQuery, parseQuerySnapshot } from "../../app/firebase-adapters";
 import makeResourceMessageTextFn from "../izitoast-for-resources/makeResourceMessageTextFn";
 
 const monthlyBudgetResource = makeReduxAssets({
@@ -10,11 +9,7 @@ const monthlyBudgetResource = makeReduxAssets({
   makeMessageText: makeResourceMessageTextFn("planejamento", "planejamentos"),
   gateway: {
     fetchMany: async (ids, basicData) => {
-      return firedb
-        .collection('monthly_budgets')
-        .where('userUid', '==', basicData.user.uid)
-        .get()
-        .then(parseQuerySnapshot);
+      return fireContextQuery('monthly_budgets', basicData).get().then(parseQuerySnapshot);
     },
     create: async (budget, basicData) => {
       return { uuid: uuidv4(), ...budget };

@@ -2,6 +2,17 @@ import omit from "lodash.omit";
 import { firedb } from "./firebase-configs";
 
 /**
+ * Build a `firebase.firestore.Query` to a given `collection`,
+ * but already including all basic filters (from `useBasicRequestData`).
+ */
+export function fireContextQuery(collection, basicData) {
+  return firedb
+    .collection(collection)
+    .where('userUid', '==', basicData.user.uid)
+    .where('project', '==', basicData.project.uuid);
+}
+
+/**
  * Map domain entity into a Firestore data.
  * 
  * Assures that `uuid` field is dropped

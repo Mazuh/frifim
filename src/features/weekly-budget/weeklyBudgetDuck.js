@@ -1,6 +1,7 @@
 import { makeReduxAssets } from 'resource-toolkit';
 import { v4 as uuidv4 } from "uuid";
-import { WEEKLY_BUDGETS_FIXTURE } from '../../app/fixtures';
+import { parseQuerySnapshot } from '../../app/firebase-adapters';
+import { firedb } from '../../app/firebase-configs';
 import makeResourceMessageTextFn from '../izitoast-for-resources/makeResourceMessageTextFn';
 
 const weeklyBudgetResource = makeReduxAssets({
@@ -8,8 +9,12 @@ const weeklyBudgetResource = makeReduxAssets({
   idKey: 'uuid',
   makeMessageText: makeResourceMessageTextFn('planejamento semanal', 'planejamentos semanais'),
   gateway: {
-    fetchMany: async (basicData) => {
-      return WEEKLY_BUDGETS_FIXTURE;
+    fetchMany: async (ids, basicData) => {
+      return firedb
+        .collection('weekly_budgets')
+        .where('userUid', '==', basicData.user.uid)
+        .get()
+        .then(parseQuerySnapshot);
     },
     create: async (budget, basicData) => {
       return { uuid: uuidv4(), ...budget };

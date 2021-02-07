@@ -1,6 +1,7 @@
 import { makeReduxAssets } from 'resource-toolkit';
 import { v4 as uuidv4 } from "uuid";
-import { TRANSACTIONS_FIXTURE } from '../../app/fixtures';
+import { parseQuerySnapshot } from '../../app/firebase-adapters';
+import { firedb } from '../../app/firebase-configs';
 import makeResourceMessageTextFn from '../izitoast-for-resources/makeResourceMessageTextFn';
 
 const transactionsResource = makeReduxAssets({
@@ -8,8 +9,12 @@ const transactionsResource = makeReduxAssets({
   idKey: 'uuid',
   makeMessageText: makeResourceMessageTextFn('transação', 'transações'),
   gateway: {
-    fetchMany: async (basicData) => {
-      return TRANSACTIONS_FIXTURE;
+    fetchMany: async (ids, basicData) => {
+      return firedb
+        .collection('transactions')
+        .where('userUid', '==', basicData.user.uid)
+        .get()
+        .then(parseQuerySnapshot);
     },
     create: async (transaction, basicData) => {
       return { uuid: uuidv4(), ...transaction };

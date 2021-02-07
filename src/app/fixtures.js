@@ -36,11 +36,11 @@ export const TAG_COLORS = Object.freeze([
   '#1277C0',
 ]);
 
-export const PROJECTS_FIXTURE = [
+const PROJECTS_FIXTURE = [
   { uuid: uuidv4(), name: 'Principal' },
 ];
 
-export const CATEGORIES_FIXTURE = [
+const CATEGORIES_FIXTURE = [
   { uuid: uuidv4(), name: 'Empresa Acme', color: TAG_COLORS[0], project: PROJECTS_FIXTURE[0].uuid },
   { uuid: uuidv4(), name: 'Entretenimento', color: TAG_COLORS[2], project: PROJECTS_FIXTURE[0].uuid },
   { uuid: uuidv4(), name: 'Moradia', color: TAG_COLORS[1], project: PROJECTS_FIXTURE[0].uuid },
@@ -49,7 +49,7 @@ export const CATEGORIES_FIXTURE = [
   { uuid: uuidv4(), name: 'Saúde', color: TAG_COLORS[2], project: PROJECTS_FIXTURE[0].uuid },
 ];
 
-export const TRANSACTIONS_FIXTURE = [
+const TRANSACTIONS_FIXTURE = [
   {
     uuid: uuidv4(),
     datetime: (new Date()).toISOString(),
@@ -79,7 +79,7 @@ export const TRANSACTIONS_FIXTURE = [
   },
 ];
 
-export const WEEKLY_BUDGETS_FIXTURE = [
+const WEEKLY_BUDGETS_FIXTURE = [
   {
     uuid: uuidv4(),
     name: 'Compras pro almoço',
@@ -147,7 +147,7 @@ export const WEEKLY_BUDGETS_FIXTURE = [
   },
 ];
 
-export const MONTHLY_BUDGETS_FIXTURE = [
+const MONTHLY_BUDGETS_FIXTURE = [
   {
     uuid: uuidv4(),
     name: "Salário (após IR e FGTS)",

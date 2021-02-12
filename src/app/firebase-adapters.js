@@ -2,7 +2,7 @@ import omit from "lodash.omit";
 import { firedb } from "./firebase-configs";
 
 /**
- * Build a `firebase.firestore.Query` to a given `collection`,
+ * Build a `firebase.firestore.Query` to a given `collection` name,
  * but already including all basic filters (from `useBasicRequestData`).
  */
 export function fireContextQuery(collection, basicData) {
@@ -13,10 +13,35 @@ export function fireContextQuery(collection, basicData) {
 }
 
 /**
+ * Call `CollectionReference.prototype.push` to a given `collection` name,
+ * but already including all basic payload (from `useBasicRequestData`).
+ */
+export function fireContextCreation(collection, basicData, entity) {
+  const rawData = { ...entity, project: basicData.project.uuid };
+  return firedb
+    .collection(collection)
+    .add(toFirestoreDocData(rawData))
+    .then(responseRef => ({ ...rawData, uuid: responseRef.id }));
+}
+
+/**
+ * Call `DocumentReference.prototype.delete` to a given documented
+ * identified by `entitityUid` within a given `collection` name,
+ */
+export async function fireContextDeletion(collection, basicData, entityUid) {
+  return firedb
+    .collection(collection)
+    .doc(entityUid)
+    .delete()
+    .then(() => ({ uuid: entityUid }));
+}
+
+/**
  * Map domain entity into a Firestore data.
  * 
- * Assures that `uuid` field is dropped
- * and ISO datetimes as strings will become `Date` objects.
+ * Assures that `uuid` field is dropped,
+ * ISO datetimes as strings will become `Date` objects
+ * and `userUid` is appended.
  */
 export function toFirestoreDocData(entity) {
   const requestResource = omit(entity, 'uuid');

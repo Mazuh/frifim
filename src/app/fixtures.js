@@ -4,7 +4,7 @@ import { EXPENSE_TYPE, INCOME_TYPE } from "../features/categories/constants";
 import { WEEK_DAYS } from "../features/weekly-budget/constants";
 import { firedb } from "./firebase-configs";
 
-export function persistFixtures(userUid = firedb.app.auth().currentUser.uid) {
+function persistFixtures(userUid = firedb.app.auth().currentUser.uid) {
   console.log('Appending fixture data to user', userUid);
   const batch = firedb.batch();
 
@@ -28,9 +28,7 @@ export function persistFixtures(userUid = firedb.app.auth().currentUser.uid) {
   console.log('Commit sent.');
 }
 
-window.persistFixtures = persistFixtures; // for devs!
-
-export const TAG_COLORS = Object.freeze([
+const TAG_COLORS = Object.freeze([
   '#59BE4A',
   '#F2D730',
   '#1277C0',
@@ -276,3 +274,7 @@ const MONTHLY_BUDGETS_FIXTURE = [
     year: 2021,
   },
 ];
+
+// for devs!
+window.persistFixtures = persistFixtures;
+window.firedb = firedb;

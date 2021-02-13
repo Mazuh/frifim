@@ -45,7 +45,7 @@ export default function MainMenu() {
   }
 
   const handleLogoutClick = () => {
-    if (window.confirm('Vai sair mesmo?')) {
+    if (window.confirm('Terminar sessão no Moneycog?')) {
       dispatch(logout());
     }
   }

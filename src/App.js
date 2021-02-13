@@ -3,7 +3,7 @@ import "izitoast/dist/css/iziToast.min.css";
 import "./App.css";
 import './app/fixtures';
 import React from "react";
-import { Route, Switch, BrowserRouter, Redirect } from "react-router-dom";
+import { Route, Switch, BrowserRouter, Redirect, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { BsExclamationTriangle } from "react-icons/bs";
 import ProtectedRoute from "./features/auth/ProtectedRoute";
@@ -50,13 +50,17 @@ export default function App() {
       return;
     }
 
+    if (window.location.pathname === '/login') {
+      return;
+    }
+
     dispatch(categoriesActions.readAll(basicRequestData));
     dispatch(monthlyBudgetActions.readAll(basicRequestData));
     dispatch(weeklyBudgetActions.readAll(basicRequestData));
     dispatch(transactionsActions.readAll(basicRequestData));
   }, [dispatch, basicRequestData, isProjectsLoading, defaultProject, setProject]);
 
-  if (!project) {
+  if (basicRequestData.user && !project) {
     return <LoadingMainContainer />;
   }
 
@@ -140,7 +144,7 @@ function NotFoundView() {
         <h1><BsExclamationTriangle /> Ops...<br /><small>Página não encontrada.</small></h1>
       </header>
       <p>
-        Navegue por outras páginas usando o menu principal.
+        Navegue por outras páginas usando o menu principal ou <Link to="/">volte ao início</Link>.
       </p>
     </main>
   );
@@ -153,7 +157,9 @@ function UnknownCriticalErrorView() {
         <h1>Eita!<br /><small>Erro interno desconhecido.</small></h1>
       </header>
       <p>
-        Volte à <a href="/">página inicial</a> e reporte esse erro ao time de desenvolvimento.
+        Volte à <a href="/">página inicial</a>.
+        {' '}
+        E se o problema persistir, por favor, <a href="https://github.com/Mazuh/moneycog" target="blank">entre em contato</a> com o projeto.
       </p>
     </main>
   );

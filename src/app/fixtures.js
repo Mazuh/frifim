@@ -276,5 +276,7 @@ const MONTHLY_BUDGETS_FIXTURE = [
 ];
 
 // for devs!
-window.persistFixtures = persistFixtures;
-window.firedb = firedb;
+if (process.env.NODE_ENV !== 'production') {
+  window.persistFixtures = persistFixtures;
+  window.firedb = firedb;
+}

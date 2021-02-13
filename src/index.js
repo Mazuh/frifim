@@ -6,7 +6,9 @@ import GlobalContextProvider from './app/contexts';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 
-window.store = store;
+if (process.env.NODE_ENV !== 'production') {
+  window.store = store;
+}
 
 ReactDOM.render(
   <React.StrictMode>

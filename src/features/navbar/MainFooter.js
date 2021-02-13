@@ -3,13 +3,14 @@ import Container from "react-bootstrap/Container";
 
 export default function MainFooter() {
   return (
-    <footer className="bg-light border-top mt-5" style={{ maxHeight: '25vh' }}>
+    <footer className="bg-secondary text-white border-top mt-5" style={{ maxHeight: '25vh' }}>
       <Container className="w-100 pt-5 pb-3">
-        <p className="text-center text-muted">
+        <p className="text-center">
           <small>
             ©
             {' '}
             <a
+              className="text-light"
               href="https://github.com/Mazuh/moneycog"
               target="_blank"
               rel="noopener noreferrer"

@@ -60,11 +60,12 @@ export default function Home() {
           Início <small className="d-none d-md-inline text-muted">Resumos do mês</small>
         </h1>
         <p className="d-inline-block m-0">
-          Olá,
-          {' '}
-          <span className="text-muted">{user.displayName || user.email || 'pessoa'}</span>
-          {' '}
-          💰
+          <span role="img" aria-label="Money">💸</span>
+          <span className="ml-2">
+            Olá,
+            {' '}
+            <span className="text-muted">{user.displayName || user.email || 'pessoa'}</span>
+          </span>
         </p>
       </header>
       <Row>

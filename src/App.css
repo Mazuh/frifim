@@ -1,3 +1,7 @@
+body {
+  background-color: #f6f7f9;
+}
+
 main {
   min-height: 75vh;
   padding-top: 20px;

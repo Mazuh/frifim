@@ -8,8 +8,10 @@ import { BsFolder, BsFolderPlus } from 'react-icons/bs';
 import { ProjectContext } from '../../app/contexts';
 import { useDispatch, useSelector } from 'react-redux';
 import { projectsActions } from './projectsDuck';
+import { setLastSelectedProjectUuid } from '../auth/authDuck';
 
 export default function ProjectSelector({ className }) {
+  const dispatch = useDispatch();
   const { project, setProject } = React.useContext(ProjectContext);
   const projectsState = useSelector(s => s.projects);
 
@@ -55,6 +57,7 @@ export default function ProjectSelector({ className }) {
     }
 
     setProject(selecting);
+    dispatch(setLastSelectedProjectUuid(selecting.uuid));
   };
 
   const getDropdownLabel = () => {

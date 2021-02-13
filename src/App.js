@@ -28,6 +28,11 @@ import LoadingMainContainer from "./features/loading/LoadingMainContainer";
 export default function App() {
   const dispatch = useDispatch();
   const { project, setProject } = React.useContext(ProjectContext);
+  const lastSelectedProject = useSelector(state => 
+    (state.projects.items.length && state.auth.lastSelectedProjectUuid)
+      ? state.projects.items.find(it => it.uuid === state.auth.lastSelectedProjectUuid)
+      : null
+  );
   const defaultProject = useSelector(state => state.projects.items[0]);
   const isProjectsLoading = useSelector(state => state.projects.isLoading);
   const basicRequestData = useBasicRequestData();
@@ -46,7 +51,7 @@ export default function App() {
     }
 
     if (!basicRequestData.project) {
-      setProject(defaultProject);
+      setProject(lastSelectedProject || defaultProject);
       return;
     }
 
@@ -58,7 +63,7 @@ export default function App() {
     dispatch(monthlyBudgetActions.readAll(basicRequestData));
     dispatch(weeklyBudgetActions.readAll(basicRequestData));
     dispatch(transactionsActions.readAll(basicRequestData));
-  }, [dispatch, basicRequestData, isProjectsLoading, defaultProject, setProject]);
+  }, [dispatch, basicRequestData, isProjectsLoading, lastSelectedProject, defaultProject, setProject]);
 
   if (basicRequestData.user && !project) {
     return <LoadingMainContainer />;

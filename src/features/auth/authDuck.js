@@ -9,6 +9,7 @@ const authSlice = createSlice({
     isAuthorized: false,
     errorCode: '',
     infoMessage: '',
+    lastSelectedProjectUuid: '',
   },
   reducers: {
     setAsLoading: (state) => {
@@ -35,12 +36,15 @@ const authSlice = createSlice({
       state.errorCode = '';
       state.infoMessage = '';
     },
+    setLastSelectedProjectUuid: (state, action) => {
+      state.lastSelectedProjectUuid = action.payload;
+    },
   }
 });
 
 firebaseApp.auth().onAuthStateChanged((user) => authSlice.actions.setUser(user ? user.toJSON() : null));
 
-export const { clearMessages } = authSlice.actions;
+export const { setLastSelectedProjectUuid, clearMessages } = authSlice.actions;
 
 export const login = (email, password) => (dispatch) => {
   dispatch(authSlice.actions.setAsLoading());

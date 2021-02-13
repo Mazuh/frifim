@@ -50,7 +50,6 @@ export function fireContextCreation(collection, basicData, entity) {
  */
 export async function fireContextUpdate(collection, basicData, entity) {
   const rawUpdatingData = { ...entity, project: basicData.project.uuid };
-  console.log('updating', entity, rawUpdatingData);
   return firedb
     .collection(collection)
     .doc(entity.uuid)

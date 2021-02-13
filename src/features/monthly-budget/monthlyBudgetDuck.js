@@ -9,8 +9,9 @@ const monthlyBudgetResource = makeReduxAssets({
   idKey: "uuid",
   makeMessageText: makeResourceMessageTextFn("planejamento", "planejamentos"),
   gateway: {
-    fetchMany: (ids, basicData) => client.read(basicData),
+    fetchMany: (uuid, basicData) => client.read(basicData),
     create: (budget, basicData) => client.create(basicData, budget),
+    update: (uuid, budget, basicData) => client.update(basicData, budget),
     delete: (uuid) => client.delete(uuid),
   },
 });

@@ -149,14 +149,15 @@ function WeeklyBudgetTableRowExtension({ budget }) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const creatingBudget = {
+    const updatingBudget = {
+      uuid: budget.uuid,
       name: event.target.name.value,
       type: event.target.type.value,
       amount: event.target.amount.value,
       category: event.target.category.value,
       day: parseInt(event.target.day.value, 10),
     };
-    dispatch(weeklyBudgetActions.update(budget.uuid, creatingBudget, basicRequestData));
+    dispatch(weeklyBudgetActions.update(budget.uuid, updatingBudget, basicRequestData));
   };
 
   return (

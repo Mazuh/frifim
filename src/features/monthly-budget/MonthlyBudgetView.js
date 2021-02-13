@@ -136,6 +136,7 @@ function MonthlyBudgetTableRowExtension({ budget }) {
     event.preventDefault();
 
     const updatingBudget = {
+      uuid: budget.uuid,
       name: event.target.name.value,
       type: event.target.type.value,
       amount: event.target.amount.value,

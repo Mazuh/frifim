@@ -14,8 +14,9 @@ import { firedb } from "./firebase-configs";
 export function makeFirestoreApiClient(collection) {
   return {
     query: (basicData) => fireContextQuery(collection, basicData),
-    create: (basicData, data) => fireContextCreation(collection, basicData, data),
+    create: (basicData, creatingData) => fireContextCreation(collection, basicData, creatingData),
     read: (basicData) => fireContextQuery(collection, basicData).get().then(parseQuerySnapshot),
+    update: (basicData, updatingData) => fireContextUpdate(collection, basicData, updatingData),
     delete: (uuid) => fireContextDeletion(collection, null, uuid),
   };
 }
@@ -36,11 +37,25 @@ export function fireContextQuery(collection, basicData) {
  * but already including all basic payload (from `useBasicRequestData`).
  */
 export function fireContextCreation(collection, basicData, entity) {
-  const rawData = { ...entity, project: basicData.project.uuid };
+  const rawCreatingData = { ...entity, project: basicData.project.uuid };
   return firedb
     .collection(collection)
-    .add(toFirestoreDocData(rawData))
-    .then(responseRef => ({ ...rawData, uuid: responseRef.id }));
+    .add(toFirestoreDocData(rawCreatingData))
+    .then(responseRef => ({ ...rawCreatingData, uuid: responseRef.id }));
+}
+
+/**
+ * Call `DocumentReference.prototype.update` to a given documented
+ * identified by `entity.uuid` within a given `collection` name,
+ */
+export async function fireContextUpdate(collection, basicData, entity) {
+  const rawUpdatingData = { ...entity, project: basicData.project.uuid };
+  console.log('updating', entity, rawUpdatingData);
+  return firedb
+    .collection(collection)
+    .doc(entity.uuid)
+    .update(toFirestoreDocData(rawUpdatingData))
+    .then(() => rawUpdatingData);
 }
 
 /**

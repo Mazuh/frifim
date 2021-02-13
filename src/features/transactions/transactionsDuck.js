@@ -1,25 +1,17 @@
 import { makeReduxAssets } from 'resource-toolkit';
-import { v4 as uuidv4 } from "uuid";
-import { fireContextQuery, parseQuerySnapshot } from '../../app/firebase-adapters';
+import { makeFirestoreApiClient } from '../../app/firebase-adapters';
 import makeResourceMessageTextFn from '../izitoast-for-resources/makeResourceMessageTextFn';
+
+const client = makeFirestoreApiClient('transactions');
 
 const transactionsResource = makeReduxAssets({
   name: 'transactions',
   idKey: 'uuid',
   makeMessageText: makeResourceMessageTextFn('transação', 'transações'),
   gateway: {
-    fetchMany: async (ids, basicData) => {
-      return fireContextQuery('transactions', basicData).get().then(parseQuerySnapshot);
-    },
-    create: async (transaction, basicData) => {
-      return { uuid: uuidv4(), ...transaction };
-    },
-    update: async (uuid, transaction, basicData) => {
-      return { ...transaction, uuid };
-    },
-    delete: async(uuid, basicData) => {
-      return { uuid };
-    },
+    fetchMany: (ids, basicData) => client.read(basicData),
+    create: (transaction, basicData) => client.create(basicData, transaction),
+    delete: (uuid) => client.delete(uuid),
   },
 });
 

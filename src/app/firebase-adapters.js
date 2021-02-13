@@ -2,6 +2,25 @@ import omit from "lodash.omit";
 import { firedb } from "./firebase-configs";
 
 /**
+ * Factory of generic Firestore client for a given `collection` name,
+ * with CRUD operations and a query builder.
+ * 
+ * All methods will require the `basicData` param
+ * (from `useBasicRequestData`) (except `.delete`),
+ * thus they're bound to such data as filters or payloads.
+ * And there's no need to parse ingoing/outgoing data,
+ * this is already done.
+ */
+export function makeFirestoreApiClient(collection) {
+  return {
+    query: (basicData) => fireContextQuery(collection, basicData),
+    create: (basicData, data) => fireContextCreation(collection, basicData, data),
+    read: (basicData) => fireContextQuery(collection, basicData).get().then(parseQuerySnapshot),
+    delete: (uuid) => fireContextDeletion(collection, null, uuid),
+  };
+}
+
+/**
  * Build a `firebase.firestore.Query` to a given `collection` name,
  * but already including all basic filters (from `useBasicRequestData`).
  */

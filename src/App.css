@@ -7,6 +7,10 @@ main {
   padding-top: 20px;
 }
 
+.table {
+  background-color: #fff;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }

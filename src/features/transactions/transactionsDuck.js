@@ -11,8 +11,8 @@ const transactionsResource = makeReduxAssets({
   gateway: {
     fetchMany: (ids, basicData) => client
       .query(basicData)
-      .where('datetime', '>=', makeFirstDateOfMonth(basicData.month))
-      .where('datetime', '<=', makeLastDateOfMonth(basicData.month))
+      .where('datetime', '>=', makeFirstDateOfMonth(basicData.month, basicData.year))
+      .where('datetime', '<=', makeLastDateOfMonth(basicData.month, basicData.year))
       .get()
       .then(parseQuerySnapshot),
     create: (transaction, basicData) => client.create(basicData, transaction),

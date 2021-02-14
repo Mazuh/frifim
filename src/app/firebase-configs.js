@@ -17,8 +17,12 @@ const firebaseConfig = Object.freeze({
 
 // Initialize Firebase
 const firebaseApp = firebase.initializeApp(firebaseConfig);
-firebase.analytics(firebaseApp);
-// firebase.firestore.setLogLevel("debug")
+
+if (process.env.NODE_ENV === 'production') {
+  firebase.analytics(firebaseApp);
+} else {
+  // firebase.firestore.setLogLevel("debug");
+}
 
 export const firedb = firebaseApp.firestore();
 

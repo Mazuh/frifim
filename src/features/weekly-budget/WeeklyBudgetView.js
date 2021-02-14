@@ -34,6 +34,8 @@ export default function WeeklyBudgetView() {
       amount: event.target.amount.value,
       category: event.target.category.value,
       day: parseInt(event.target.day.value, 10),
+      month: basicRequestData.month,
+      year: basicRequestData.year,
     };
     dispatch(weeklyBudgetActions.create(creatingBudget, basicRequestData));
 

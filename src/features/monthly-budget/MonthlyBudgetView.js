@@ -53,6 +53,8 @@ export default function MonthlyBudgetView() {
       type: event.target.type.value,
       amount: event.target.amount.value,
       category: event.target.category.value,
+      year: basicRequestData.year,
+      month: basicRequestData.month,
     };
     dispatch(monthlyBudgetActions.create(creatingBudget, basicRequestData));
 

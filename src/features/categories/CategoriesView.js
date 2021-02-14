@@ -58,18 +58,22 @@ export default function CategoriesView() {
           />
         </Card.Body>
       </Card>
-      <section>
-        <header className="card-header bg-dark text-light">
-          <h2>
-            <BsTable/> Dados
-          </h2>
-        </header>
-        <CategoriesTable
-          items={categoriesState.items}
-          onDelete={handleDelete}
-          deleting={categoriesState.deleting}
-        />
-      </section>
+      {!categoriesState.items.length ? (
+        <p>Categorias não encontradas. Crie alguma e organize suas transações e orçamentos!</p>
+      ) : (
+        <section>
+          <header className="card-header bg-dark text-light">
+            <h2>
+              <BsTable/> Dados
+            </h2>
+          </header>
+          <CategoriesTable
+            items={categoriesState.items}
+            onDelete={handleDelete}
+            deleting={categoriesState.deleting}
+          />
+        </section>
+      )}
     </Container>
   );
 }
@@ -116,10 +120,6 @@ function CategoryForm({ onSubmit, isLoading, isCreating }) {
 }
 
 function CategoriesTable({ items, onDelete, deleting }) {
-  if (items.length === 0) {
-    return <p>Categorias não encontradas.</p>;
-  }
-
   return (
     <Table responsive striped bordered hover>
       <thead className="bg-dark text-light">

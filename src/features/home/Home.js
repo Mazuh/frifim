@@ -76,29 +76,37 @@ export default function Home() {
                 <BsArrowLeftRight /> Transações
               </Card.Title>
             </Card.Header>
-            <Card.Body>
-              <ul>
-                <li className="text-secondary">
-                  <strong>{INCOME_TYPE.label}: </strong>
-                  <span>R$ {transactionsCalcs.totalIncomes.toFixed(2)} </span>
-                  <INCOME_TYPE.Icon className="text-primary" />
-                </li>
-                <li className="text-secondary">
-                  <strong>{EXPENSE_TYPE.label}: </strong>
-                  <span>R$ {transactionsCalcs.totalExpenses.toFixed(2)} </span>
-                  <EXPENSE_TYPE.Icon className="text-warning" />
-                </li>
-                <li>
-                  <strong>Total: </strong>
-                  <span className={isCurrentlyHealthy ? 'text-success' : 'text-danger'}>
-                    R$ {transactionsCalcs.total.toFixed(2)}
-                  </span>
-                </li>
-              </ul>
-              <div className="mt-3">
-                <Pie options={{ maintainAspectRatio: false }} height={300} data={transactionsChartData} />
-              </div>
-            </Card.Body>
+            {transactionsCalcs.totalIncomes.isZero() && transactionsCalcs.totalExpenses.isZero() ? (
+              <Card.Body>
+                <p>
+                  Aparecerá um resumo visual das transações do mês aqui, quando você começar a registrá-las.
+                </p>
+              </Card.Body>
+            ) : (
+              <Card.Body>
+                <ul>
+                  <li className="text-secondary">
+                    <strong>{INCOME_TYPE.label}: </strong>
+                    <span>R$ {transactionsCalcs.totalIncomes.toFixed(2)} </span>
+                    <INCOME_TYPE.Icon className="text-primary" />
+                  </li>
+                  <li className="text-secondary">
+                    <strong>{EXPENSE_TYPE.label}: </strong>
+                    <span>R$ {transactionsCalcs.totalExpenses.toFixed(2)} </span>
+                    <EXPENSE_TYPE.Icon className="text-warning" />
+                  </li>
+                  <li>
+                    <strong>Total: </strong>
+                    <span className={isCurrentlyHealthy ? 'text-success' : 'text-danger'}>
+                      R$ {transactionsCalcs.total.toFixed(2)}
+                    </span>
+                  </li>
+                </ul>
+                <div className="mt-3">
+                  <Pie options={{ maintainAspectRatio: false }} height={300} data={transactionsChartData} />
+                </div>
+              </Card.Body>
+            )}
           </Card>
         </Col>
         <Col as="section" md={4}>
@@ -108,29 +116,38 @@ export default function Home() {
                 <BsCalendarFill /> Orçamentos
               </Card.Title>
             </Card.Header>
-            <Card.Body>
-              <ul>
-                <li className="text-secondary">
-                  <strong>{INCOME_TYPE.label}: </strong>
-                  <span>R$ {monthlyBudgetCalcs.totalIncomes.toFixed(2)} </span>
-                  <INCOME_TYPE.Icon className="text-primary" />
-                </li>
-                <li className="text-secondary">
-                  <strong>{EXPENSE_TYPE.label}: </strong>
-                  <span>R$ {monthlyBudgetCalcs.totalExpenses.toFixed(2)} </span>
-                  <EXPENSE_TYPE.Icon className="text-warning" />
-                </li>
-                <li>
-                  <strong>Total: </strong>
-                  <span className={isBudgetHealthy ? 'text-success' : 'text-danger'}>
-                    R$ {monthlyBudgetCalcs.total.toFixed(2)}
-                  </span>
-                </li>
-              </ul>
-              <div className="mt-3">
-                <Pie options={{ maintainAspectRatio: false }} height={300} data={budgetChartData} />
-              </div>
-            </Card.Body>
+              {monthlyBudgetCalcs.totalIncomes.isZero() && monthlyBudgetCalcs.totalIncomes.isZero() ? (
+                <Card.Body>
+                  <p>
+                    Quando você começar a cadastrar orçamentos semanais ou mensais,
+                    um gráfico aparecerá aqui.
+                  </p>
+                </Card.Body>
+              ) : (
+                <Card.Body>
+                  <ul>
+                    <li className="text-secondary">
+                      <strong>{INCOME_TYPE.label}: </strong>
+                      <span>R$ {monthlyBudgetCalcs.totalIncomes.toFixed(2)} </span>
+                      <INCOME_TYPE.Icon className="text-primary" />
+                    </li>
+                    <li className="text-secondary">
+                      <strong>{EXPENSE_TYPE.label}: </strong>
+                      <span>R$ {monthlyBudgetCalcs.totalExpenses.toFixed(2)} </span>
+                      <EXPENSE_TYPE.Icon className="text-warning" />
+                    </li>
+                    <li>
+                      <strong>Total: </strong>
+                      <span className={isBudgetHealthy ? 'text-success' : 'text-danger'}>
+                        R$ {monthlyBudgetCalcs.total.toFixed(2)}
+                      </span>
+                    </li>
+                  </ul>
+                  <div className="mt-3">
+                    <Pie options={{ maintainAspectRatio: false }} height={300} data={budgetChartData} />
+                  </div>
+                </Card.Body>
+              )}
           </Card>
         </Col>
         <Col as="section" md={4}>
@@ -142,7 +159,7 @@ export default function Home() {
             </Card.Header>
             <Card.Body>
               <Card.Text>
-                Mais gráficos, como estatisticas de categorias mais
+                Haverá mais gráficos, como estatisticas de categorias mais
                 usadas (tanto linha de orçamento quanto de transações),
                 dias do mês com picos de transações (gráfico de linha)
                 e quanto de valor ainda pode ser transacionado antes

@@ -90,38 +90,44 @@ export default function MonthlyBudgetView() {
           />
         </Card.Body>
       </Card>
-      <section>
-        <header className="card-header bg-dark text-light">
-          <h2>
-            <INCOME_TYPE.Icon /> {INCOME_TYPE.pluralLabel}
-          </h2>
-        </header>
-        <BudgetTable
-          items={monthlyIncomes}
-          onDelete={handleDelete}
-          deleting={monthlySituation.deleting}
-          onUpdate={handleUpdate}
-          updating={monthlySituation.updating}
-          extendedUuid={enabledUpdateUuid}
-          ExtendedComponent={MonthlyBudgetTableRowExtension}
-        />
-      </section>
-      <section>
-        <header className="card-header bg-dark text-light">
-          <h2>
-            <EXPENSE_TYPE.Icon /> {EXPENSE_TYPE.pluralLabel}
-          </h2>
-        </header>
-        <BudgetTable
-          items={monthlyExpenses}
-          onDelete={handleDelete}
-          deleting={monthlySituation.deleting}
-          onUpdate={handleUpdate}
-          updating={monthlySituation.updating}
-          extendedUuid={enabledUpdateUuid}
-          ExtendedComponent={MonthlyBudgetTableRowExtension}
-        />
-      </section>
+      {!monthlyIncomes.length && !monthlyExpenses.length ? (
+        <p>O planejamento mensal deste mês não foi encontrado ou não foi criado ainda.</p>
+      ) : (
+        <>
+          <section>
+            <header className="card-header bg-dark text-light">
+              <h2>
+                <INCOME_TYPE.Icon /> {INCOME_TYPE.pluralLabel}
+              </h2>
+            </header>
+            <BudgetTable
+              items={monthlyIncomes}
+              onDelete={handleDelete}
+              deleting={monthlySituation.deleting}
+              onUpdate={handleUpdate}
+              updating={monthlySituation.updating}
+              extendedUuid={enabledUpdateUuid}
+              ExtendedComponent={MonthlyBudgetTableRowExtension}
+            />
+          </section>
+          <section>
+            <header className="card-header bg-dark text-light">
+              <h2>
+                <EXPENSE_TYPE.Icon /> {EXPENSE_TYPE.pluralLabel}
+              </h2>
+            </header>
+            <BudgetTable
+              items={monthlyExpenses}
+              onDelete={handleDelete}
+              deleting={monthlySituation.deleting}
+              onUpdate={handleUpdate}
+              updating={monthlySituation.updating}
+              extendedUuid={enabledUpdateUuid}
+              ExtendedComponent={MonthlyBudgetTableRowExtension}
+            />
+          </section>
+        </>
+      )}
     </Container>
   );
 }

@@ -72,7 +72,7 @@ export default function WeeklyBudgetView() {
         </Card.Body>
       </Card>
       {!weeklyBudgetState.items.length && (
-        <p>Nenhum planejamento semanal encontrado.</p>
+        <p>O planejamento semanal deste mês não foi encontrado ou não foi criado ainda.</p>
       )}
       {WEEK_DAYS.map((dayEntity) => {
         const itemsByDay = weeklyBudgetState.items.filter(it => it.day === dayEntity.value);

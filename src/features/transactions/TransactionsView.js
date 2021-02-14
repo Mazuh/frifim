@@ -74,18 +74,22 @@ export default function TransactionsView() {
           />
         </Card.Body>
       </Card>
-      <section>
-        <header className="card-header bg-dark text-light">
-          <h2>
-            <BsTable /> Dados
-          </h2>
-        </header>
-        <TransactionsTable
-          items={transactionsState.items}
-          onDelete={handleDelete}
-          deleting={transactionsState.deleting}
-        />
-      </section>
+      {!transactionsState.items.length ? (
+        <p>As transações desse mês não foram encontradas, ou ainda não houve alguma.</p>
+      ) : (
+        <section>
+          <header className="card-header bg-dark text-light">
+            <h2>
+              <BsTable /> Dados
+            </h2>
+          </header>
+          <TransactionsTable
+            items={transactionsState.items}
+            onDelete={handleDelete}
+            deleting={transactionsState.deleting}
+          />
+        </section>
+      )}
     </Container>
   );
 }
@@ -187,10 +191,6 @@ function TransactionForm(props) {
 }
 
 function TransactionsTable({ items, onDelete, deleting }) {
-  if (items.length === 0) {
-    return <p>Transações não encontradas.</p>;
-  }
-
   const orderedItems = orderBy(items, it => (new Date(it.date)).valueOf(), 'desc');
 
   return (

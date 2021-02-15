@@ -1,10 +1,10 @@
 {
-  "name": "moneycog",
+  "name": "frifim",
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
   "author": "Marcell 'Mazuh' Guilherme Costa da Silva",
-  "repository": "github:mazuh/moneycog",
+  "repository": "github:mazuh/frifim",
   "dependencies": {
     "@firebase/firestore": "^2.1.5",
     "@reduxjs/toolkit": "^1.1.0",

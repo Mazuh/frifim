@@ -164,7 +164,7 @@ function UnknownCriticalErrorView() {
       <p>
         Volte à <a href="/">página inicial</a>.
         {' '}
-        E se o problema persistir, por favor, <a href="https://github.com/Mazuh/moneycog" target="blank">entre em contato</a> com o projeto.
+        E se o problema persistir, por favor, <a href="https://github.com/mazuh/frifim" target="blank">entre em contato</a> com o projeto.
       </p>
     </main>
   );

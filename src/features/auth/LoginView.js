@@ -41,7 +41,7 @@ export default function Login() {
     <Container as="main" className="d-flex align-items-center">
       <Card className={`${isMobile ? 'w-100' : 'w-50'} m-auto`}>
         <Card.Body as={Form} onSubmit={handleSubmit}>
-          <Card.Title as="h1">Moneycog</Card.Title>
+          <Card.Title as="h1">Frifim</Card.Title>
           <Card.Subtitle as="h2" className="mb-2 text-muted">
             Entre agora!
           </Card.Subtitle>

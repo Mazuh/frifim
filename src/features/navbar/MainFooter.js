@@ -11,7 +11,7 @@ export default function MainFooter() {
             {' '}
             <a
               className="text-light"
-              href="https://github.com/Mazuh/moneycog"
+              href="https://github.com/mazuh/frifim"
               target="_blank"
               rel="noopener noreferrer"
             >

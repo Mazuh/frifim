@@ -45,7 +45,7 @@ export default function MainMenu() {
   }
 
   const handleLogoutClick = () => {
-    if (window.confirm('Terminar sessão no Moneycog?')) {
+    if (window.confirm('Terminar sessão no Frifim?')) {
       dispatch(logout());
     }
   }
@@ -90,7 +90,7 @@ export default function MainMenu() {
       onSelect={handleSelect}
     >
       <Navbar.Brand className="cursor-pointer" onClick={onBrandClick}>
-        Moneycog
+        Frifim
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="main-navbar-collase" onClick={onToggleClick} />
       <Navbar.Collapse id="main-navbar-collase">

@@ -24,6 +24,7 @@ import useBasicRequestData from "./app/useBasicRequestData";
 import { projectsActions } from "./features/projects/projectsDuck";
 import { ProjectContext } from "./app/contexts";
 import LoadingMainContainer from "./features/loading/LoadingMainContainer";
+import SignupView from "./features/auth/SignupView";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -55,7 +56,7 @@ export default function App() {
       return;
     }
 
-    if (window.location.pathname === '/login') {
+    if (window.location.pathname === '/login' || window.location.pathname === '/signup') {
       return;
     }
 
@@ -96,6 +97,9 @@ export default function App() {
             </ProtectedRoute>
             <Route exact path="/login">
               <LoginView />
+            </Route>
+            <Route exact path="/signup">
+              <SignupView />
             </Route>
             <Route exact path="/">
               <LoginView />

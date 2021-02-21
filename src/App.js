@@ -65,6 +65,10 @@ export default function App() {
     dispatch(transactionsActions.readAll(basicRequestData));
   }, [dispatch, basicRequestData, isProjectsLoading, lastSelectedProject, defaultProject, setProject]);
 
+  if (!window.chrome) {
+    return <UnsupportedBrowser />;
+  }
+
   if (basicRequestData.user && !project) {
     return <LoadingMainContainer />;
   }
@@ -165,6 +169,22 @@ function UnknownCriticalErrorView() {
         Volte à <a href="/">página inicial</a>.
         {' '}
         E se o problema persistir, por favor, <a href="https://github.com/mazuh/frifim" target="blank">entre em contato</a> com o projeto.
+      </p>
+    </main>
+  );
+}
+
+function UnsupportedBrowser() {
+  return (
+    <main className="container mt-2">
+      <header>
+        <h1>Desculpe...<br /><small>Isso é constrangedor.</small></h1>
+      </header>
+      <p>
+        Mas por ora, esse protótipo funciona bem apenas no Google Chrome.
+      </p>
+      <p>
+        O projeto é voluntário e free source, caso queira contribuir para melhorar isso, <a href="https://github.com/mazuh/frifim" target="blank">entre em contato</a>.
       </p>
     </main>
   );

@@ -9,17 +9,16 @@ import Alert from "react-bootstrap/Alert";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { ViewportContext } from "../../app/contexts";
 import { clearMessages, login } from "./authDuck";
 import { PrivacyPolicy, TermsOfService } from "./legal-articles";
+import { BsBoxArrowInRight } from "react-icons/bs";
+import Logo from "../../assets/frifim_logo.svg";
 
 export default function LoginView() {
   const dispatch = useDispatch();
   const history = useHistory();
 
   const [isLegalVisible, setLegalVisible] = React.useState(false);
-
-  const { isMobile } = React.useContext(ViewportContext);
 
   const auth = useSelector(s => s.auth);
   if (auth.isAuthorized) {
@@ -43,16 +42,22 @@ export default function LoginView() {
   };
 
   return (
-    <Container as="main" className="d-flex align-items-center">
-      <Card className={`${isMobile ? 'w-100' : 'w-50'} m-auto`}>
+    <Container as="main" className="d-flex align-items-center login-view">
+      <Card className='m-auto login-card'>
+        <Card.Header as="header" className="text-white bg-dark">
+          <Row className="align-items-center">
+            <Col>
+              <Card.Title as="h1">Frifim</Card.Title>
+              <Card.Subtitle>
+                Gestão financeira simplificada. Gratuitamente.
+              </Card.Subtitle>
+            </Col>
+            <Col as="aside" xs="auto">
+              <img src={Logo} alt="Frifim logo" width="100" />
+            </Col>
+          </Row>
+        </Card.Header>
         <Card.Body as={Form} onSubmit={handleLoginSubmit}>
-          <Card.Title as="h1">Frifim</Card.Title>
-          <Card.Subtitle as="h2" className="mb-2 text-muted">
-            Entre agora!
-          </Card.Subtitle>
-          <Card.Text>
-            Gestão financeira simplificada. Gratuitamente.
-          </Card.Text>
           {!!auth.errorCode && (
             <Alert variant="danger">
               Desculpe, houve um erro com seu e-mail ou senha.
@@ -91,10 +96,11 @@ export default function LoginView() {
               <Button
                 variant="primary"
                 type="submit"
-                className="w-100 mb-3"
+                className="w-100 mb-3 d-flex align-items-center justify-content-center"
                 disabled={auth.isLoading}
               >
-                {auth.isLoading ? 'Entrando...' : 'Entrar'}
+                <BsBoxArrowInRight className="mr-2" />
+                <span>{auth.isLoading ? 'Entrando...' : 'Entrar'}</span>
               </Button>
             </Col>
             <Col xs="12">
@@ -124,8 +130,8 @@ export default function LoginView() {
                   <PrivacyPolicy />
                 </Modal.Body>
                 <Modal.Footer>
-                  Ao usar o Frifim, você está totalmente de acordo com esses termos acima.
-                  O texto delas foi uma adaptação de boa fé dos termos de uso do serviço Mobilis.
+                  Ao usar o Frifim, <strong>você está totalmente de acordo</strong> com esses termos acima.
+                  Os textos foram uma adaptação de boa fé dos termos de uso do serviço Mobilis.
                 </Modal.Footer>
               </Modal>
             </Col>

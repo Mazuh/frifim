@@ -9,17 +9,15 @@ import Alert from "react-bootstrap/Alert";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { ViewportContext } from "../../app/contexts";
 import { clearMessages, signupAndLogin } from "./authDuck";
 import { PrivacyPolicy, TermsOfService } from "./legal-articles";
+import { BsPersonPlus } from "react-icons/bs";
 
 export default function SignupView() {
   const dispatch = useDispatch();
   const history = useHistory();
 
   const [isLegalVisible, setLegalVisible] = React.useState(false);
-
-  const { isMobile } = React.useContext(ViewportContext);
 
   const auth = useSelector(s => s.auth);
   if (auth.isAuthorized) {
@@ -65,13 +63,15 @@ export default function SignupView() {
   };
 
   return (
-    <Container as="main" className="d-flex align-items-center" style={{ marginTop: '-25px' }}>
-      <Card className={`${isMobile ? 'w-100' : 'w-50'} m-auto`}>
-        <Card.Body as={Form} onSubmit={handleSignupSubmit}>
+    <Container as="main" className="d-flex align-items-center signup-view">
+      <Card className="m-auto signup-card">
+        <Card.Header className="text-white bg-dark">
           <Card.Title as="h1">Frifim</Card.Title>
-          <Card.Subtitle as="h2" className="mb-2 text-muted">
+          <Card.Subtitle className="mb-2">
             Criando primeiro acesso...
           </Card.Subtitle>
+        </Card.Header>
+        <Card.Body as={Form} onSubmit={handleSignupSubmit}>
           {!!auth.errorCode && (
             <Alert variant="danger">
               {auth.errorCode === 'auth/email-already-in-use'
@@ -165,9 +165,10 @@ export default function SignupView() {
               <Button
                 variant="success"
                 type="submit"
-                className="w-100 mb-3"
+                className="w-100 mb-3 d-flex align-items-center justify-content-center"
                 disabled={auth.isLoading}
               >
+                <BsPersonPlus className="mr-2" />
                 {auth.isLoading ? 'Cadastrando...' : 'Cadastrar'}
               </Button>
             </Col>
@@ -193,8 +194,8 @@ export default function SignupView() {
           <PrivacyPolicy />
         </Modal.Body>
         <Modal.Footer>
-          Ao usar o Frifim, você está totalmente de acordo com esses termos acima.
-          O texto delas foi uma adaptação de boa fé dos termos de uso do serviço Mobilis.
+          Ao usar o Frifim, <strong>você está totalmente de acordo</strong> com esses termos acima.
+          Os textos foram uma adaptação de boa fé dos termos de uso do serviço Mobilis.
         </Modal.Footer>
       </Modal>
     </Container>

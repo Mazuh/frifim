@@ -19,3 +19,8 @@ main {
   max-height: 30vh;
   overflow: auto;
 }
+
+main.login-view,
+main.signup-view {
+  margin-top: -40px;
+}

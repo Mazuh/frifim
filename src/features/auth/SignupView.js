@@ -10,7 +10,7 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { ViewportContext } from "../../app/contexts";
-import { clearMessages } from "./authDuck";
+import { clearMessages, signupAndLogin } from "./authDuck";
 import { PrivacyPolicy, TermsOfService } from "./legal-articles";
 
 export default function SignupView() {
@@ -33,12 +33,19 @@ export default function SignupView() {
   const handleSignupSubmit = (event) => {
     event.preventDefault();
 
-    window.agreement = event.target.agreement;
-    const isInAgreement = event.target.agreement.checked;
-    // const displayName = event.target.displayName.value;
-    // const email = event.target.email.value;
+    const displayName = event.target.displayName.value.trim();
+    const email = event.target.email.value.trim();
     const password = event.target.password.value;
     const passwordConfirmation = event.target.passwordConfirmation.value;
+    const isInAgreement = event.target.agreement.checked;
+
+    if (!displayName) {
+      window.alert('Por favor, digite um nome ou apelido de sua preferência.');
+    }
+
+    if (!email) {
+      window.alert('Por favor, escolha um e-mail para te identificarmos.');
+    }
 
     if (!isInAgreement) {
       window.alert('Concordar com os Termos de Uso e Política de Privacidade é obrigatório.');
@@ -50,7 +57,7 @@ export default function SignupView() {
       return;
     }
 
-    window.alert('Login not implemented.');
+    dispatch(signupAndLogin(email, password, displayName));
   };
 
   const handleLoginClick = () => {
@@ -58,7 +65,7 @@ export default function SignupView() {
   };
 
   return (
-    <Container as="main" className="d-flex align-items-center">
+    <Container as="main" className="d-flex align-items-center" style={{ marginTop: '-25px' }}>
       <Card className={`${isMobile ? 'w-100' : 'w-50'} m-auto`}>
         <Card.Body as={Form} onSubmit={handleSignupSubmit}>
           <Card.Title as="h1">Frifim</Card.Title>
@@ -67,7 +74,10 @@ export default function SignupView() {
           </Card.Subtitle>
           {!!auth.errorCode && (
             <Alert variant="danger">
-              Desculpe, houve um erro com seu e-mail ou senha.
+              {auth.errorCode === 'auth/email-already-in-use'
+                ? 'E-mail já em uso.'
+                : 'Desculpe, houve um erro inesperado.'
+              }
             </Alert>
           )}
           {!!auth.infoMessage && (

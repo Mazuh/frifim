@@ -62,4 +62,23 @@ export const logout = () => (dispatch) => {
   dispatch(authSlice.actions.setUser(null));
 };
 
+export const signupAndLogin = (email, password, displayName) => (dispatch) => {
+  dispatch(authSlice.actions.setAsLoading());
+  firebaseApp
+    .auth()
+    .createUserWithEmailAndPassword(email, password)
+    .then((credentials) => Promise.all([
+      credentials,
+      credentials
+        .user
+        .updateProfile({ displayName }),
+      firebaseApp
+        .firestore()
+        .collection('projects')
+        .add({ name: 'Principal', userUid: credentials.user.uid }),
+    ]))
+    .then(([credentials, ...responses]) => dispatch(authSlice.actions.setUser(credentials.user.toJSON())))
+    .catch(error => console.error('Erro', error) || dispatch(authSlice.actions.setError(error.code)));
+};
+
 export default authSlice.reducer;

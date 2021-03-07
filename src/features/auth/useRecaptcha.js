@@ -25,7 +25,11 @@ export default function useRecaptcha(widgetId) {
       setRecaptchaVerified(false);
 
       if (recaptchaVerifierRef.current) {
-        recaptchaVerifierRef.current.clear();
+        if (document.getElementById(widgetId)) {
+          recaptchaVerifierRef.current.clear();
+        } else {
+          recaptchaVerifierRef.current = null;
+        }
       }
     };
   }, [widgetId]);

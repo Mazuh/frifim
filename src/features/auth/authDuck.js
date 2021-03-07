@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import iziToast from "izitoast";
-import firebaseApp from "../../app/firebase-configs";
+import firebaseApp, { googleAuthProvider } from "../../app/firebase-configs";
 
 const authSlice = createSlice({
   name: "auth",
@@ -19,6 +19,9 @@ const authSlice = createSlice({
       state.isAuthorized = false;
       state.errorCode = '';
       state.infoMessage = '';
+    },
+    setAsNotLoading: (state) => {
+      state.loading = false;
     },
     setUser: (state, { payload: user }) => {
       state.user = user;
@@ -43,20 +46,70 @@ const authSlice = createSlice({
   }
 });
 
-firebaseApp.auth().onAuthStateChanged((user) => authSlice.actions.setUser(user ? user.toJSON() : null));
-
 export const { setLastSelectedProjectUuid, clearMessages } = authSlice.actions;
 
 export const login = (email, password) => (dispatch) => {
   dispatch(authSlice.actions.setAsLoading());
+
   setTimeout(() => {
     firebaseApp
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((credentials) => dispatch(authSlice.actions.setUser(credentials.user.toJSON())))
       .catch(error => dispatch(authSlice.actions.setError(error.code)));
-  }, 1000);
+  }, 900);
 };
+
+const handlePotentialNewOAuthUser = (credentials) => Promise.all([
+  credentials,
+  credentials.additionalUserInfo.isNewUser &&
+    firebaseApp
+      .firestore()
+      .collection('projects')
+      .add({ name: 'Principal', userUid: credentials.user.uid }),
+  credentials.additionalUserInfo.isNewUser &&
+    credentials.user.sendEmailVerification(),
+]);
+
+const postOAuthSingupHandler = (dispatch) => ([credentials, ...responses]) =>
+  credentials.user !== null && dispatch(authSlice.actions.setUser(credentials.user.toJSON()));
+
+const defaultErrorHandler = (dispatch) => (error) =>
+  dispatch(authSlice.actions.setError(error.code));
+
+export const checkSignInRedirectResult = (options = {}) => (dispatch, getState) => {
+  if (getState().auth.user !== null) {
+    return;
+  }
+
+  if (options.triggerLoading) {
+    dispatch(authSlice.actions.setAsLoading());
+  }
+
+  firebaseApp
+    .auth()
+    .getRedirectResult()
+    .then(handlePotentialNewOAuthUser)
+    .then(postOAuthSingupHandler(dispatch))
+    .catch(defaultErrorHandler(dispatch))
+    .finally(() => dispatch(authSlice.actions.setAsNotLoading()));
+};
+
+export const signInByGoogle = (options = {}) => (dispatch) => {
+  dispatch(authSlice.actions.setAsLoading());
+
+  if (options.signInWithRedirect) {
+    firebaseApp.auth().signInWithRedirect(googleAuthProvider);
+    return;
+  }
+
+  firebaseApp
+    .auth()
+    .signInWithPopup(googleAuthProvider)
+    .then(handlePotentialNewOAuthUser)
+    .then(postOAuthSingupHandler(dispatch))
+    .catch(defaultErrorHandler(dispatch));
+}
 
 export const logout = () => (dispatch) => {
   firebaseApp.auth().signOut();
@@ -89,7 +142,7 @@ export const signupAndLogin = (email, password, displayName) => (dispatch) => {
       position: 'topCenter',
       timeout: 7000,
     }))
-    .catch(error => console.error('Erro', error) || dispatch(authSlice.actions.setError(error.code)));
+    .catch(defaultErrorHandler);
 };
 
 export default authSlice.reducer;

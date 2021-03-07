@@ -26,4 +26,6 @@ if (process.env.NODE_ENV === 'production') {
 
 export const firedb = firebaseApp.firestore();
 
+export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+
 export default firebaseApp;

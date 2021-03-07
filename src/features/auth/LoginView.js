@@ -1,5 +1,6 @@
 import React from "react";
 import { BsBoxArrowInRight } from "react-icons/bs";
+import { FcGoogle } from "react-icons/fc";
 import { Redirect, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "react-bootstrap/Modal";
@@ -11,12 +12,22 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Logo from "../../assets/frifim_logo.svg";
-import { clearMessages, login } from "./authDuck";
+import { checkSignInRedirectResult, clearMessages, login, signInByGoogle } from "./authDuck";
 import { PrivacyPolicy, TermsOfService } from "./legal-articles";
 import useRecaptcha from "./useRecaptcha";
+import { ViewportContext } from "../../app/contexts";
 
 export default function LoginView() {
   const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(checkSignInRedirectResult({ triggerLoading: true }));
+    const timer = setInterval(() => dispatch(checkSignInRedirectResult()), 1000);
+    return () => clearInterval(timer);
+  }, [dispatch]);
+
+  const { isMobile } = React.useContext(ViewportContext);
+
   const history = useHistory();
 
   const { isRecaptchaVerified } = useRecaptcha('login-recaptcha');
@@ -44,6 +55,10 @@ export default function LoginView() {
     dispatch(login(email, password));
   };
 
+  const handleGoogleClick = () => {
+    dispatch(signInByGoogle({ signInWithRedirect: isMobile }));
+  };
+
   const handleSignupClick = () => {
     history.push('/signup');
   };
@@ -68,7 +83,9 @@ export default function LoginView() {
         <Card.Body as={Form} onSubmit={handleLoginSubmit}>
           {!!auth.errorCode && (
             <Alert variant="danger">
-              Desculpe, houve um erro com seu e-mail ou senha.
+              {auth.errorCode === 'auth/operation-not-allowed'
+                ? 'Não permitido. Entre em contato com o suporte.'
+                : 'Desculpe, houve um erro com seu e-mail ou senha.'}
             </Alert>
           )}
           {!!auth.infoMessage && (
@@ -112,6 +129,18 @@ export default function LoginView() {
               >
                 <BsBoxArrowInRight className="mr-2" />
                 <span>{auth.isLoading ? 'Entrando...' : 'Entrar'}</span>
+              </Button>
+            </Col>
+            <Col xs="12">
+              <Button
+                variant="outline-primary"
+                type="button"
+                className="w-100 mb-3 d-flex align-items-center justify-content-center"
+                disabled={auth.isLoading}
+                onClick={handleGoogleClick}
+              >
+                <FcGoogle className="mr-2" />
+                <span>Entrar com Google</span>
               </Button>
             </Col>
             <Col xs="12">

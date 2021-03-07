@@ -19,7 +19,11 @@ import projectsReducer from '../features/projects/projectsDuck';
 
 export const store = configureStore({
   reducer: {
-    auth: persistReducer({ key: 'auth', storage: localPersitence }, authReducer),
+    auth: persistReducer({
+      key: 'auth',
+      storage: localPersitence,
+      blacklist: ['infoMessage', 'errorCode', 'isLoading'],
+    }, authReducer),
     categories: categoriesReducer,
     monthlyBudget: monthlyBudgetReducer,
     weeklyBudget: weeklyBudgetReducer,

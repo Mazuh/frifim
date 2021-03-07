@@ -1,7 +1,6 @@
 import React from 'react';
 import { useHistory, useLocation } from "react-router-dom";
 import capitalize from "lodash.capitalize";
-import range from "lodash.range";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -121,7 +120,7 @@ export default function MainMenu() {
           title={capitalize(monthToString(month))}
           onSelect={handleMonthsDropdownSelect}
         >
-          {range(1, 13).map((monthKey) => (
+          {[3].map((monthKey) => (
             <Dropdown.Item key={monthKey} eventKey={monthKey}>
               {capitalize(monthToString(monthKey - 1))}
             </Dropdown.Item>

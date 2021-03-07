@@ -12,21 +12,12 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Logo from "../../assets/frifim_logo.svg";
-import { checkSignInRedirectResult, clearMessages, login, signInByGoogle } from "./authDuck";
+import { clearMessages, login, signInByGoogle } from "./authDuck";
 import { PrivacyPolicy, TermsOfService } from "./legal-articles";
 import useRecaptcha from "./useRecaptcha";
-import { ViewportContext } from "../../app/contexts";
 
 export default function LoginView() {
   const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    dispatch(checkSignInRedirectResult({ triggerLoading: true }));
-    const timer = setInterval(() => dispatch(checkSignInRedirectResult()), 1000);
-    return () => clearInterval(timer);
-  }, [dispatch]);
-
-  const { isMobile } = React.useContext(ViewportContext);
 
   const history = useHistory();
 
@@ -56,7 +47,7 @@ export default function LoginView() {
   };
 
   const handleGoogleClick = () => {
-    dispatch(signInByGoogle({ signInWithRedirect: isMobile }));
+    dispatch(signInByGoogle({ signInWithRedirect: false }));
   };
 
   const handleSignupClick = () => {

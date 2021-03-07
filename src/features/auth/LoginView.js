@@ -1,4 +1,5 @@
 import React from "react";
+import { BsBoxArrowInRight } from "react-icons/bs";
 import { Redirect, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "react-bootstrap/Modal";
@@ -9,14 +10,16 @@ import Alert from "react-bootstrap/Alert";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Logo from "../../assets/frifim_logo.svg";
 import { clearMessages, login } from "./authDuck";
 import { PrivacyPolicy, TermsOfService } from "./legal-articles";
-import { BsBoxArrowInRight } from "react-icons/bs";
-import Logo from "../../assets/frifim_logo.svg";
+import useRecaptcha from "./useRecaptcha";
 
 export default function LoginView() {
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const { isRecaptchaVerified } = useRecaptcha('login-recaptcha');
 
   const [isLegalVisible, setLegalVisible] = React.useState(false);
 
@@ -31,6 +34,10 @@ export default function LoginView() {
 
   const handleLoginSubmit = (event) => {
     event.preventDefault();
+
+    if (!isRecaptchaVerified) {
+      return;
+    }
 
     const email = event.target.email.value;
     const password = event.target.password.value;
@@ -92,12 +99,15 @@ export default function LoginView() {
             </Form.Group>
           )}
           <Row>
+            <div id="login-recaptcha" className="d-flex align-items-center justify-content-center w-100 mt-2 mb-2" />
+          </Row>
+          <Row>
             <Col xs="12">
               <Button
                 variant="primary"
                 type="submit"
                 className="w-100 mb-3 d-flex align-items-center justify-content-center"
-                disabled={auth.isLoading}
+                disabled={auth.isLoading || !isRecaptchaVerified}
               >
                 <BsBoxArrowInRight className="mr-2" />
                 <span>{auth.isLoading ? 'Entrando...' : 'Entrar'}</span>

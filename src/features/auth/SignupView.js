@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { BsPersonPlus } from "react-icons/bs";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -11,13 +12,19 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { clearMessages, signupAndLogin } from "./authDuck";
 import { PrivacyPolicy, TermsOfService } from "./legal-articles";
-import { BsPersonPlus } from "react-icons/bs";
+import useRecaptcha from "./useRecaptcha";
 
 export default function SignupView() {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const { isRecaptchaVerified } = useRecaptcha('signup-recaptcha');
+
   const [isLegalVisible, setLegalVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    dispatch(clearMessages());
+  }, [dispatch]);
 
   const auth = useSelector(s => s.auth);
   if (auth.isAuthorized) {
@@ -30,6 +37,10 @@ export default function SignupView() {
 
   const handleSignupSubmit = (event) => {
     event.preventDefault();
+
+    if (!isRecaptchaVerified) {
+      return;
+    }
 
     const displayName = event.target.displayName.value.trim();
     const email = event.target.email.value.trim();
@@ -161,12 +172,15 @@ export default function SignupView() {
             />
           </Form.Group>
           <Row>
+            <div id="signup-recaptcha" className="d-flex align-items-center justify-content-center w-100 mt-2 mb-2" />
+          </Row>
+          <Row>
             <Col xs="12">
               <Button
                 variant="success"
                 type="submit"
                 className="w-100 mb-3 d-flex align-items-center justify-content-center"
-                disabled={auth.isLoading}
+                disabled={auth.isLoading || !isRecaptchaVerified}
               >
                 <BsPersonPlus className="mr-2" />
                 {auth.isLoading ? 'Cadastrando...' : 'Cadastrar'}

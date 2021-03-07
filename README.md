@@ -74,6 +74,17 @@ is nice and free but limited), before any hard work.
 In case you need a more private conversation, [reach me](https://github.com/Mazuh)
 by social media.
 
+## Deploying
+
+For service administrators. Prepare the static dist folder:
+
+```js
+yarn build
+```
+
+And see:
+https://medium.com/swlh/how-to-deploy-a-react-app-with-firebase-hosting-98063c5bf425
+
 ## What does Frifim mean?
 
 In a short answer: **fr**ee **i**ndependent **fi**nancial **m**anagement.

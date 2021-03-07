@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import iziToast from "izitoast";
 import firebaseApp from "../../app/firebase-configs";
 
 const authSlice = createSlice({
@@ -72,12 +73,22 @@ export const signupAndLogin = (email, password, displayName) => (dispatch) => {
       credentials
         .user
         .updateProfile({ displayName }),
+      credentials
+        .user
+        .sendEmailVerification(),
       firebaseApp
         .firestore()
         .collection('projects')
         .add({ name: 'Principal', userUid: credentials.user.uid }),
     ]))
     .then(([credentials, ...responses]) => dispatch(authSlice.actions.setUser(credentials.user.toJSON())))
+    .then(() => iziToast.show({
+      title: 'Confirme seu e-mail',
+      message: `Enviando link de confirmação para ${email} (cheque a caixa de spam também).`,
+      color: 'blue',
+      position: 'topCenter',
+      timeout: 7000,
+    }))
     .catch(error => console.error('Erro', error) || dispatch(authSlice.actions.setError(error.code)));
 };
 

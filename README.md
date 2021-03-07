@@ -1,6 +1,6 @@
 # Frifim
 
-> Simplified financial management. Take a look: https://frifim.com/
+> Simplified financial management. Check out beta version: https://frifim.com/
 
 ## Setting up for core development
 

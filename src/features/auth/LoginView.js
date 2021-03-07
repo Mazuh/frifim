@@ -58,6 +58,7 @@ export default function LoginView() {
               <Card.Subtitle>
                 Gestão financeira simplificada. Gratuitamente.
               </Card.Subtitle>
+              <Card.Subtitle className="mt-2">(Em beta!)</Card.Subtitle>
             </Col>
             <Col as="aside" xs="auto">
               <img src={Logo} alt="Frifim logo" width="100" />

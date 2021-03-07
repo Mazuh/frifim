@@ -4,7 +4,8 @@
 
 ## Setting up for core development
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app),
+using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
 ### Installing dependencies
 
@@ -42,9 +43,17 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits. You will also see any lint errors in the console.
 
-During your first queries, a few console errors may show up, requiring the creation of
-indexes on the database. Just follow the link provided by the warning (and wait a few
-minutes).
+### Some more Firebase operations
+
+A few more steps to finish your initial Firebase setup. In your console:
+
+1. Authentication -> Sign-in method: enable at least the "e-mail/password" mode.
+2. Cloud Firestore -> Rules: if you're planning to store real data,
+secure it with a few rules.
+3. While running the app, during your first queries, a few browser console errors may show up,
+requiring the creation of indexes on the database. Just follow the link provided by the
+warning (and wait a few minutes).
+
 
 ### Fixture data
 
@@ -52,10 +61,10 @@ This part is optional.
 
 When you are logged in on your own Frifim instance, open the browser console
 and call once `persistFixtures()` and wait for a messaging saying that a commit
-was sent. Refresh the page and you'll see that a few data was registered for
-you as a demonstration.
+was sent. Refresh the page, this is important too. Now you'll see that a few
+data was registered for you as a demonstration.
 
-### Contributing
+## Contributing
 
 Open [an issue](https://github.com/Mazuh/frifim/issues) describing how you're
 planning to contribute, even plain ideas or clueless bug reports are very 
@@ -63,7 +72,7 @@ good contributions. Then we can check the doable viability (cause Firebase
 is nice and free but limited), before any hard work.
 
 In case you need a more private conversation, [reach me](https://github.com/Mazuh)
-by social media (like Twitter or LinkedIn).
+by social media.
 
 ## What does Frifim mean?
 

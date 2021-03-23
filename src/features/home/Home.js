@@ -5,13 +5,17 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 import { BsArrowLeftRight, BsCalendarFill, BsPieChartFill } from "react-icons/bs";
+import { useHistory } from "react-router";
 import LoadingMainContainer from "../loading/LoadingMainContainer";
 import { INCOME_TYPE, EXPENSE_TYPE } from "../categories/constants";
 import useSelectorForMonthlyBudgetStatus, { getMonthlyCalcs } from "../monthly-budget/useSelectorForMonthlyBudgetStatus";
 import getTransactionsCalcs from "../transactions/getTransactionsCalcs";
 
 export default function Home() {
+  const history = useHistory();
+
   const isLoading = useSelector(state => Object.keys(state).some(
     slice => slice !== 'projects' && state[slice].isLoading
   ));
@@ -82,6 +86,9 @@ export default function Home() {
                     Quando você começar a cadastrar orçamentos semanais ou mensais,
                     um gráfico aparecerá aqui.
                   </p>
+                  <Button onClick={() => history.push('/orçamento-mensal')} className="w-100" primary>
+                    Começar
+                  </Button>
                 </Card.Body>
               ) : (
                 <Card.Body>

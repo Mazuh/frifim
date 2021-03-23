@@ -73,46 +73,6 @@ export default function Home() {
           <Card>
             <Card.Header className="bg-dark text-light">
               <Card.Title as="h2">
-                <BsArrowLeftRight /> Transações
-              </Card.Title>
-            </Card.Header>
-            {transactionsCalcs.totalIncomes.isZero() && transactionsCalcs.totalExpenses.isZero() ? (
-              <Card.Body>
-                <p>
-                  Aparecerá um resumo visual das transações do mês aqui, quando você começar a registrá-las.
-                </p>
-              </Card.Body>
-            ) : (
-              <Card.Body>
-                <ul>
-                  <li className="text-secondary">
-                    <strong>{INCOME_TYPE.label}: </strong>
-                    <span>R$ {transactionsCalcs.totalIncomes.toFixed(2)} </span>
-                    <INCOME_TYPE.Icon className="text-primary" />
-                  </li>
-                  <li className="text-secondary">
-                    <strong>{EXPENSE_TYPE.label}: </strong>
-                    <span>R$ {transactionsCalcs.totalExpenses.toFixed(2)} </span>
-                    <EXPENSE_TYPE.Icon className="text-warning" />
-                  </li>
-                  <li>
-                    <strong>Total: </strong>
-                    <span className={isCurrentlyHealthy ? 'text-success' : 'text-danger'}>
-                      R$ {transactionsCalcs.total.toFixed(2)}
-                    </span>
-                  </li>
-                </ul>
-                <div className="mt-3">
-                  <Pie options={{ maintainAspectRatio: false }} height={300} data={transactionsChartData} />
-                </div>
-              </Card.Body>
-            )}
-          </Card>
-        </Col>
-        <Col as="section" md={4}>
-          <Card>
-            <Card.Header className="bg-dark text-light">
-              <Card.Title as="h2">
                 <BsCalendarFill /> Orçamentos
               </Card.Title>
             </Card.Header>
@@ -148,6 +108,46 @@ export default function Home() {
                   </div>
                 </Card.Body>
               )}
+          </Card>
+        </Col>
+        <Col as="section" md={4}>
+          <Card>
+            <Card.Header className="bg-dark text-light">
+              <Card.Title as="h2">
+                <BsArrowLeftRight /> Transações
+              </Card.Title>
+            </Card.Header>
+            {transactionsCalcs.totalIncomes.isZero() && transactionsCalcs.totalExpenses.isZero() ? (
+              <Card.Body>
+                <p>
+                  Aparecerá um resumo visual das transações do mês aqui, quando você começar a registrá-las.
+                </p>
+              </Card.Body>
+            ) : (
+              <Card.Body>
+                <ul>
+                  <li className="text-secondary">
+                    <strong>{INCOME_TYPE.label}: </strong>
+                    <span>R$ {transactionsCalcs.totalIncomes.toFixed(2)} </span>
+                    <INCOME_TYPE.Icon className="text-primary" />
+                  </li>
+                  <li className="text-secondary">
+                    <strong>{EXPENSE_TYPE.label}: </strong>
+                    <span>R$ {transactionsCalcs.totalExpenses.toFixed(2)} </span>
+                    <EXPENSE_TYPE.Icon className="text-warning" />
+                  </li>
+                  <li>
+                    <strong>Total: </strong>
+                    <span className={isCurrentlyHealthy ? 'text-success' : 'text-danger'}>
+                      R$ {transactionsCalcs.total.toFixed(2)}
+                    </span>
+                  </li>
+                </ul>
+                <div className="mt-3">
+                  <Pie options={{ maintainAspectRatio: false }} height={300} data={transactionsChartData} />
+                </div>
+              </Card.Body>
+            )}
           </Card>
         </Col>
         <Col as="section" md={4}>

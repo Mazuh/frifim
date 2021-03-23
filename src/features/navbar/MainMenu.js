@@ -13,8 +13,8 @@ import {
   BsCalendar,
   BsCalendarFill,
   BsFillHouseDoorFill,
-  BsWrench,
   BsFillTagFill,
+  BsPlusCircleFill,
 } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../auth/authDuck';
@@ -84,7 +84,7 @@ export default function MainMenu() {
       bg="dark"
       variant="dark"
       fixed="top"
-      expand="xl"
+      expand="md"
       expanded={isExpanded}
       onSelect={handleSelect}
     >
@@ -146,10 +146,10 @@ export default function MainMenu() {
 
 const menuLinks = [
   { url: '/inicio', label: 'Início', icon: <BsFillHouseDoorFill /> },
-  { url: '/transacoes', label: 'Transações reais', icon: <BsArrowLeftRight /> },
   { url: '/orçamento-mensal', label: 'Orçamento mensal', icon: <BsCalendarFill /> },
-  { url: '/orçamento-semanal', label: 'Orçamento semanal', icon: <BsCalendar /> },
-  { id: 'main-configs-dropdown', label: 'Configurações', icon: <BsWrench />, options: [
+  { id: 'more-configs-dropdown', label: 'Mais', icon: <BsPlusCircleFill />, options: [
+    { url: '/orçamento-semanal', label: 'Orçamento semanal', icon: <BsCalendar /> },
+    { url: '/transacoes', label: 'Transações reais', icon: <BsArrowLeftRight /> },
     { url: '/categorias', label: 'Categorias', icon: <BsFillTagFill /> },
   ]},
 ];

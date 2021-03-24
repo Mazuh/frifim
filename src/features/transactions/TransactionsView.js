@@ -4,6 +4,7 @@ import debounce from "lodash.debounce";
 import uniqBy from "lodash.uniqby";
 import { useSelector, useDispatch } from "react-redux";
 import iziToast from "izitoast";
+import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
@@ -96,8 +97,12 @@ export default function TransactionsView() {
 
 function TransactionForm(props) {
   const { isMobile } = React.useContext(ViewportContext);
-  const [isImportingVisible, setImportingVisible] = React.useState(false);
 
+  const hasBudgetsToImport = useSelector(state =>
+    state.monthlyBudget.items.length > 0 && state.weeklyBudget.items.length > 0
+  );
+
+  const [isImportingVisible, setImportingVisible] = React.useState(false);
   const handleClose = () => setImportingVisible(false);
   const handleShow = () => setImportingVisible(true);
 
@@ -142,19 +147,28 @@ function TransactionForm(props) {
           </p>
         </Col>
         <Col xs={10} sm={10}>
-          <small className="text-muted">
-            Sem digitar nada! <span role="img" aria-label="Blink emoji">😉</span>
-          </small>
-          <br />
-          <Button variant="outline-secondary" onClick={handleShow}>
-            <BsBoxArrowInDownRight /> Preencher via orçamento
-          </Button>
+          {hasBudgetsToImport ? (
+            <>
+              <small className="text-muted">
+                Não digite de novo. <span role="img" aria-label="Blink emoji">😉</span>
+              </small>
+              <br />
+              <Button variant="outline-secondary" onClick={handleShow}>
+                <BsBoxArrowInDownRight /> Preencher via orçamento
+              </Button>
+            </>
+          ) : (
+            <p>
+              Quando você criar <Link to="/orçamento-mensal">orçamentos</Link>,
+              poderá criar transações a partir deles ao invés de digitar tudo.
+            </p>
+          )}
         </Col>
       </Row>
 
       <Modal show={isImportingVisible} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Importe um orçamento</Modal.Title>
+          <Modal.Title>Use um orçamento</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <BudgetsSearcher onBudgetSelect={handleBudgetSelect} />

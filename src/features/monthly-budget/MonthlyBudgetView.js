@@ -1,6 +1,10 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Modal from "react-bootstrap/Modal";
 import { useSelector, useDispatch } from "react-redux";
 import { BsPlusSquare } from "react-icons/bs";
 import LoadingMainContainer from "../loading/LoadingMainContainer";
@@ -14,6 +18,8 @@ import useBasicRequestData from "../../app/useBasicRequestData";
 export default function MonthlyBudgetView() {
   const dispatch = useDispatch();
   const basicRequestData = useBasicRequestData();
+
+  const [isHelpVisible, setHelpVisible] = React.useState(false);
 
   const monthlySituation = useSelectorForMonthlyBudgetStatus();
 
@@ -73,9 +79,31 @@ export default function MonthlyBudgetView() {
 
   return (
     <Container as="main">
-      <header>
-        <h1>Orçamento mensal</h1>
-      </header>
+      <Row as="header" className="align-items-center">
+        <Col xs="12" sm="10"><h1>Orçamento mensal</h1></Col>
+        <Col xs="12" sm="auto">
+          <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-secondary">
+            O que é isso?
+          </Button>
+          <Modal show={isHelpVisible} onHide={() => setHelpVisible(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Orçamento</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>
+                Estimativa de dinheiro
+                que <strong>entra (receita)</strong> e <strong>sai (despesa)</strong> em
+                um período. Exemplos:
+              </p>
+              <ul>
+                <li>Receitas: salário líquido, mesada, bolsa, comissões.</li>
+                <li>Despesas essenciais: água, luz, alimentação, remédios.</li>
+                <li>Outras despesas: assinaturas, cinema, lanches.</li>
+              </ul>
+            </Modal.Body>
+          </Modal>
+        </Col>
+      </Row>
       <Card as="section" className="mb-3">
         <Card.Header className="bg-dark text-light">
           <Card.Title as="h2">

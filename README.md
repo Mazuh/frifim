@@ -82,7 +82,12 @@ For service administrators. Prepare the static dist folder:
 yarn build
 ```
 
-And see:
+And publish these assets:
+```
+firebase deploy
+```
+
+If it's your first time, see:
 https://medium.com/swlh/how-to-deploy-a-react-app-with-firebase-hosting-98063c5bf425
 
 ## What does Frifim mean?

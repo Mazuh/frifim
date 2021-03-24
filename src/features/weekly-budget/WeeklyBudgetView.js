@@ -5,6 +5,8 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import { useSelector, useDispatch } from "react-redux";
 import { BsBook, BsPlusSquare } from "react-icons/bs";
 import LoadingMainContainer from "../loading/LoadingMainContainer";
@@ -20,6 +22,8 @@ export default function WeeklyBudgetView() {
   const basicRequestData = useBasicRequestData();
   const weeklyBudgetState = useSelector(state => state.weeklyBudget);
   const [enabledUpdateUuid, setEnabledUpdateUuid] = React.useState(null);
+
+  const [isHelpVisible, setHelpVisible] = React.useState(false);
 
   if (weeklyBudgetState.isReadingAll) {
     return <LoadingMainContainer />
@@ -54,9 +58,31 @@ export default function WeeklyBudgetView() {
 
   return (
     <Container as="main">
-      <header>
-        <h1>Orçamento semanal</h1>
-      </header>
+      <Row as="header" className="align-items-center mb-2">
+        <Col xs="12" sm="10"><h1>Orçamento semanal</h1></Col>
+        <Col xs="12" sm="auto">
+          <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-secondary">
+            O que é isso?
+          </Button>
+          <Modal show={isHelpVisible} onHide={() => setHelpVisible(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Orçamento semanal</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>
+                Semelhante ao orçamento mensal, são planejamentos de fluxo de dinheiro,
+                mas aqui <strong>por semana</strong>. Ou seja, são orçamentos que
+                acontecem <strong>4 vezes por mês</strong>, pois todo mês costuma ter 4 semanas.
+              </p>
+              <p>Exemplo: uma feira alimentar toda semana como despesa.</p>
+              <p>
+                <strong>Atenção</strong>: o somatório de orçamento semanal irá aparecer
+                magicamente no orçamento do mês, devidamente multiplicado por 4.
+              </p>
+            </Modal.Body>
+          </Modal>
+        </Col>
+      </Row>
       <Card as="section" className="mb-3">
         <Card.Header className="bg-dark text-light">
           <Card.Title as="h2">

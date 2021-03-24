@@ -30,6 +30,8 @@ export default function TransactionsView() {
   const basicRequestData = useBasicRequestData();
   const transactionsState = useSelector((s) => s.transactions);
 
+  const [isHelpVisible, setHelpVisible] = React.useState(false);
+
   if (transactionsState.isReadingAll) {
     return <LoadingMainContainer />
   }
@@ -58,9 +60,35 @@ export default function TransactionsView() {
 
   return (
     <Container as="main">
-      <header>
-        <h1>Transações reais</h1>
-      </header>
+      <Row as="header" className="align-items-center mb-2">
+        <Col xs="12" sm="10"><h1>Transações reais</h1></Col>
+        <Col xs="12" sm="auto">
+          <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-secondary">
+            O que é isso?
+          </Button>
+          <Modal show={isHelpVisible} onHide={() => setHelpVisible(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Transações reais</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>
+                São <strong>operações realmente feitas</strong>, não só planejamentos.
+              </p>
+              <p>
+                Por exemplo, você pode ter estimado 200 reais para a conta de energia,
+                mas poupou e acabou tendo a despesa de apenas 150 reais.
+              </p>
+              <p>
+                Você também pode ter encontrar uma nota de 100 reais no chão, o que
+                é uma receita de surpresa.
+              </p>
+              <p>
+                Ou pode ter esquecido de pagar alguma conta do orçamento, o que é perigoso.
+              </p>
+            </Modal.Body>
+          </Modal>
+        </Col>
+      </Row>
       <Card as="section" className="mb-3">
         <Card.Header className="bg-dark text-light">
           <Card.Title as="h2">

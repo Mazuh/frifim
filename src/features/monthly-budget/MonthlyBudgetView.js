@@ -79,7 +79,7 @@ export default function MonthlyBudgetView() {
 
   return (
     <Container as="main">
-      <Row as="header" className="align-items-center">
+      <Row as="header" className="align-items-center mb-2">
         <Col xs="12" sm="10"><h1>Orçamento mensal</h1></Col>
         <Col xs="12" sm="auto">
           <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-secondary">
@@ -87,13 +87,13 @@ export default function MonthlyBudgetView() {
           </Button>
           <Modal show={isHelpVisible} onHide={() => setHelpVisible(false)}>
             <Modal.Header closeButton>
-              <Modal.Title>Orçamento</Modal.Title>
+              <Modal.Title>Orçamento mensal</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <p>
                 Estimativa de dinheiro
-                que <strong>entra (receita)</strong> e <strong>sai (despesa)</strong> em
-                um período. Exemplos:
+                que <strong>entra (receita)</strong> e <strong>sai (despesa)</strong> no
+                no mês. Exemplos:
               </p>
               <ul>
                 <li>Receitas: salário líquido, mesada, bolsa, comissões.</li>

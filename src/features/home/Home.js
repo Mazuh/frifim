@@ -86,7 +86,7 @@ export default function Home() {
                     Quando você começar a cadastrar orçamentos semanais ou mensais,
                     um gráfico aparecerá aqui.
                   </p>
-                  <Button onClick={() => history.push('/orçamento-mensal')} className="w-100" primary>
+                  <Button onClick={() => history.push('/orçamento-mensal')} className="w-100">
                     Começar
                   </Button>
                 </Card.Body>

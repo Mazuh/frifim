@@ -6,6 +6,7 @@ import Row from "react-bootstrap/Row";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import { BsPlusSquare, BsTrash, BsTable, BsTagFill } from "react-icons/bs";
 import { useSelector, useDispatch } from "react-redux";
 import LoadingMainContainer from "../loading/LoadingMainContainer";
@@ -16,6 +17,8 @@ export default function CategoriesView() {
   const dispatch = useDispatch();
   const categoriesState = useSelector((s) => s.categories);
   const basicRequestData = useBasicRequestData();
+
+  const [isHelpVisible, setHelpVisible] = React.useState(false);
 
   if (categoriesState.isReadingAll) {
     return <LoadingMainContainer />
@@ -41,9 +44,37 @@ export default function CategoriesView() {
 
   return (
     <Container as="main">
-      <header>
-        <h1>Categorias</h1>
-      </header>
+      <Row as="header" className="align-items-center mb-2">
+        <Col xs="12" sm="10"><h1>Categorias</h1></Col>
+        <Col xs="12" sm="auto">
+          <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-secondary">
+            O que é isso?
+          </Button>
+          <Modal show={isHelpVisible} onHide={() => setHelpVisible(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Categorias</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>
+                São <strong>etiquetas</strong> opcionais para agrupar orçamentos
+                e transações. Algumas sugestões que podem fazer sentido:
+              </p>
+              <ul>
+                <li>Moradia (para orçar água e energia)</li>
+                <li>Alimentação (para orçar feira e lanches)</li>
+                <li>Entretenimento (para orçar Netflix e Spotify)</li>
+                <li>Saúde (para orçar remédios e plano de saúde)</li>
+                <li>Pets (para orçar ração e presentes a bichinhos)</li>
+              </ul>
+              <p>
+                Assim, no fim de cada mês você terá informações mais precisas sobre
+                em quais categorias houve exagero, para tomar decisões inteligentes
+                a respeito.
+              </p>
+            </Modal.Body>
+          </Modal>
+        </Col>
+      </Row>
       <Card as="section" className="mb-3">
         <Card.Header className="bg-dark text-light">
           <Card.Title as="h2">

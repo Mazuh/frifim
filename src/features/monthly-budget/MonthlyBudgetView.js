@@ -91,15 +91,18 @@ export default function MonthlyBudgetView() {
             </Modal.Header>
             <Modal.Body>
               <p>
-                Estimativa de dinheiro
-                que <strong>entra (receita)</strong> e <strong>sai (despesa)</strong> no
-                no mês. Exemplos:
+                <strong>Estimativa ou planejamento</strong> de dinheiro
+                que <strong>entra (receita)</strong> e <strong>sai (despesa)</strong> todos
+                os meses. Exemplos:
               </p>
               <ul>
-                <li>Receitas: salário líquido, mesada, bolsa, comissões.</li>
-                <li>Despesas essenciais: água, luz, alimentação, remédios.</li>
-                <li>Outras despesas: assinaturas, cinema, lanches.</li>
+                <li>Receitas: salário, mesada, bolsa, comissões etc.</li>
+                <li>Despesas: água, energia, feira do mês, ração pro pet, remédios, serviços por assinatura etc.</li>
               </ul>
+              <p>
+                Se for sua primeira vez preenchendo isso, pode usar suas faturas e extratos atuais como
+                base inicial de <strong>planejamento mensal</strong>.
+              </p>
             </Modal.Body>
           </Modal>
         </Col>

@@ -72,18 +72,19 @@ export default function TransactionsView() {
             </Modal.Header>
             <Modal.Body>
               <p>
-                São <strong>operações realmente feitas</strong>, não só planejamentos.
+                São <strong>operações realmente feitas</strong>, você pode registrar até o
+                dia e hora em que ocorreu. Ou seja, não são apenas orçamentos planejados.
               </p>
               <p>
-                Por exemplo, você pode ter estimado 200 reais para a conta de energia,
-                mas poupou e acabou tendo a despesa de apenas 150 reais.
-              </p>
-              <p>
-                Você também pode ter encontrar uma nota de 100 reais no chão, o que
-                é uma receita de surpresa.
+                Por exemplo, você pode ter orçado 200 reais como despesa energia elétrica,
+                mas quando a conta chegou você precisou pagar apenas 150 reais como transação.
               </p>
               <p>
                 Ou pode ter esquecido de pagar alguma conta do orçamento, o que é perigoso.
+              </p>
+              <p>
+                Você também pode ter encontrado uma nota de 100 reais no chão, o que
+                será uma receita de surpresa nas suas transações.
               </p>
             </Modal.Body>
           </Modal>

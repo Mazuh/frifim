@@ -83,7 +83,7 @@ export default function Home() {
               {monthlyBudgetCalcs.totalIncomes.isZero() && monthlyBudgetCalcs.totalIncomes.isZero() ? (
                 <Card.Body>
                   <p>
-                    Quando você começar a cadastrar orçamentos semanais ou mensais,
+                    Quando você começar a cadastrar orçamentos mensais,
                     um gráfico aparecerá aqui.
                   </p>
                   <Button onClick={() => history.push('/orçamento-mensal')} className="w-100">
@@ -166,7 +166,8 @@ export default function Home() {
             </Card.Header>
             <Card.Body>
               <Card.Text>
-                Haverá mais gráficos, como estatisticas de categorias mais
+                <strong>Aguarde novas atualizações!</strong> Haverá mais gráficos,
+                como estatisticas de categorias mais
                 usadas (tanto linha de orçamento quanto de transações),
                 dias do mês com picos de transações (gráfico de linha)
                 e quanto de valor ainda pode ser transacionado antes

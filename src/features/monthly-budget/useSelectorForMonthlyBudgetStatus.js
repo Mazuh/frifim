@@ -35,7 +35,7 @@ export default function useSelectorForMonthlyBudgetStatus() {
     totalWeeklyIncomes: totalEachWeeklyIncomes.times(4),
     onlyMonthlyExpenses,
     totalEachWeeklyExpenses,
-    totalWeeklyExpenses: totalEachWeeklyIncomes.times(4),
+    totalWeeklyExpenses: totalEachWeeklyExpenses.times(4),
     isLoading: monthlyBudgetState.isLoading || weeklyBudgetState.isLoading,
     isCreating: monthlyBudgetState.isCreating || weeklyBudgetState.isCreating,
     isReadingAll: monthlyBudgetState.isReadingAll || weeklyBudgetState.isReadingAll,

@@ -30,6 +30,7 @@ export default function useSelectorForMonthlyBudgetStatus() {
     weeklyBudgetState,
     ...monthlyBudgetState,
     items: null,
+    monthlyBudgetSize: onlyMonthlyIncomes.length + onlyMonthlyExpenses.length,
     onlyMonthlyIncomes,
     totalEachWeeklyIncomes,
     totalWeeklyIncomes: totalEachWeeklyIncomes.times(4),

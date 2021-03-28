@@ -82,11 +82,22 @@ export default function CategoriesView() {
           </Card.Title>
         </Card.Header>
         <Card.Body>
+          {categoriesState.items.length < 10 ? (
           <CategoryForm
             onSubmit={handleSubmit}
             isLoading={categoriesState.isLoading}
             isCreating={categoriesState.isCreating}
           />
+          ) : (
+            <span>
+              <strong>Você já criou muitas categorias.</strong>
+              <br/>
+              O uso é limitado, dada a natureza gratuita do Frifim.
+              Porém caso você realmente precise, entre em contato
+              com a manutenção do projeto, e prontamente alguma
+              exceção será pensada.
+            </span>
+          )}
         </Card.Body>
       </Card>
       {!categoriesState.items.length ? (

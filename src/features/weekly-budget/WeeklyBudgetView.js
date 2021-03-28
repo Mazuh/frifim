@@ -72,7 +72,7 @@ export default function WeeklyBudgetView() {
               <p>
                 Semelhante ao orçamento mensal, são <strong>estimativas ou planejamentos</strong> de
                 fluxo de dinheiro, mas que se repetem <strong>toda semana</strong>. Ou seja,
-                são orçamentos que acontecem <strong>4 vezes por mês</strong>.
+                são orçamentos que acontecem <strong>aproximadamente 4 vezes por mês</strong>.
               </p>
               <p>
                 Como exemplo de despesa semanal, talvez alguma feira que você faça toda quarta-feira.
@@ -92,11 +92,22 @@ export default function WeeklyBudgetView() {
           </Card.Title>
         </Card.Header>
         <Card.Body>
-          <WeeklyBudgetForm
-            onSubmit={handleSubmit}
-            isLoading={weeklyBudgetState.isLoading}
-            isCreating={weeklyBudgetState.isCreating}
-          />
+          {weeklyBudgetState.items.length < 25 ? (
+            <WeeklyBudgetForm
+              onSubmit={handleSubmit}
+              isLoading={weeklyBudgetState.isLoading}
+              isCreating={weeklyBudgetState.isCreating}
+            />
+          ) : (
+            <span>
+              <strong>Você já criou muitas linhas de orçamento semanal.</strong>
+              <br/>
+              O uso é limitado, dada a natureza gratuita do Frifim.
+              Porém caso você realmente precise, entre em contato
+              com a manutenção do projeto, e prontamente alguma
+              exceção será pensada.
+            </span>
+          )}
         </Card.Body>
       </Card>
       {!weeklyBudgetState.items.length && (

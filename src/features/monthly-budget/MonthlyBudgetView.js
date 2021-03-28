@@ -114,11 +114,22 @@ export default function MonthlyBudgetView() {
           </Card.Title>
         </Card.Header>
         <Card.Body>
-          <MonthlyBudgetForm
-            onSubmit={handleSubmit}
-            isLoading={monthlySituation.isLoading}
-            isCreating={monthlySituation.isCreating}
-          />
+          {monthlySituation.monthlyBudgetSize < 25 ? (
+            <MonthlyBudgetForm
+              onSubmit={handleSubmit}
+              isLoading={monthlySituation.isLoading}
+              isCreating={monthlySituation.isCreating}
+            />
+          ) : (
+            <span>
+              <strong>Você já criou muitas linhas de orçamento mensal.</strong>
+              <br/>
+              O uso é limitado, dada a natureza gratuita do Frifim.
+              Porém caso você realmente precise, entre em contato
+              com a manutenção do projeto, e prontamente alguma
+              exceção será pensada.
+            </span>
+          )}
         </Card.Body>
       </Card>
       {!monthlyIncomes.length && !monthlyExpenses.length ? (

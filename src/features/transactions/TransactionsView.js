@@ -97,11 +97,22 @@ export default function TransactionsView() {
           </Card.Title>
         </Card.Header>
         <Card.Body>
-          <TransactionForm
-            onSubmit={handleSubmit}
-            isLoading={transactionsState.isLoading}
-            isCreating={transactionsState.isCreating}
-          />
+          {transactionsState.items.length < 50 ? (
+            <TransactionForm
+              onSubmit={handleSubmit}
+              isLoading={transactionsState.isLoading}
+              isCreating={transactionsState.isCreating}
+            />
+          ) : (
+            <span>
+              <strong>Você já criou muitas linhas de transações.</strong>
+              <br/>
+              O uso é limitado, dada a natureza gratuita do Frifim.
+              Porém caso você realmente precise, entre em contato
+              com a manutenção do projeto, e prontamente alguma
+              exceção será pensada.
+            </span>
+          )}
         </Card.Body>
       </Card>
       {!transactionsState.items.length ? (
@@ -128,7 +139,7 @@ function TransactionForm(props) {
   const { isMobile } = React.useContext(ViewportContext);
 
   const hasBudgetsToImport = useSelector(state =>
-    state.monthlyBudget.items.length > 0 && state.weeklyBudget.items.length > 0
+    state.monthlyBudget.items.length > 0 || state.weeklyBudget.items.length > 0
   );
 
   const [isImportingVisible, setImportingVisible] = React.useState(false);

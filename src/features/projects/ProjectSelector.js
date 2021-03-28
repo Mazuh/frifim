@@ -86,9 +86,11 @@ export default function ProjectSelector({ className }) {
         disabled={projectsState.isLoading}
         onSelect={handleSelect}
       >
-        <Dropdown.Item eventKey={'project-selector-plus'} onClick={openCreation}>
-          {newProjectSpan}
-        </Dropdown.Item>
+        {projectsState.items.length < 3 && (
+          <Dropdown.Item eventKey={'project-selector-plus'} onClick={openCreation}>
+            {newProjectSpan}
+          </Dropdown.Item>
+        )}
         {projectsState.items.map((listingProject) => (
           <Dropdown.Item
             key={listingProject.uuid}

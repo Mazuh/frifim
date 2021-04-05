@@ -35,7 +35,7 @@ const TAG_COLORS = Object.freeze([
 ]);
 
 const PROJECTS_FIXTURE = [
-  { uuid: uuidv4(), name: 'Demonstração' },
+  { uuid: uuidv4(), name: 'Demonstração', createdAt: new Date().toISOString() },
 ];
 
 const CATEGORIES_FIXTURE = [

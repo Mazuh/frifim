@@ -120,7 +120,7 @@ function CreationModal({ isVisible, isBlocked, close }) {
       return;
     }
 
-    dispatch(projectsActions.create({ name }));
+    dispatch(projectsActions.create({ name, createdAt: new Date().toISOString() }));
     close();
   };
 

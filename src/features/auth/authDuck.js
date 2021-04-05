@@ -66,7 +66,11 @@ const handlePotentialNewOAuthUser = (credentials) => Promise.all([
     firebaseApp
       .firestore()
       .collection('projects')
-      .add({ name: 'Principal', userUid: credentials.user.uid }),
+      .add({
+        name: 'Principal',
+        userUid: credentials.user.uid,
+        createdAt: new Date().toISOString(),
+      }),
   credentials.additionalUserInfo.isNewUser &&
     credentials.user.sendEmailVerification(),
 ]);
@@ -132,7 +136,11 @@ export const signupAndLogin = (email, password, displayName) => (dispatch) => {
       firebaseApp
         .firestore()
         .collection('projects')
-        .add({ name: 'Principal', userUid: credentials.user.uid }),
+        .add({
+          name: 'Principal',
+          userUid: credentials.user.uid,
+          createdAt: new Date().toISOString(),
+        }),
     ]))
     .then(([credentials, ...responses]) => dispatch(authSlice.actions.setUser(credentials.user.toJSON())))
     .then(() => iziToast.show({

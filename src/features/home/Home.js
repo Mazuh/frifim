@@ -1,4 +1,5 @@
 import React from "react";
+import get from "lodash.get";
 import { useSelector } from "react-redux";
 import { Pie } from "react-chartjs-2";
 import Container from "react-bootstrap/Container";
@@ -12,18 +13,26 @@ import LoadingMainContainer from "../loading/LoadingMainContainer";
 import { INCOME_TYPE, EXPENSE_TYPE } from "../categories/constants";
 import useSelectorForMonthlyBudgetStatus, { getMonthlyCalcs } from "../monthly-budget/useSelectorForMonthlyBudgetStatus";
 import getTransactionsCalcs from "../transactions/getTransactionsCalcs";
-import { MonthContext } from "../../app/contexts";
 import { monthToString } from "../transactions/dates";
+import { checkAnyBudget } from "./multi-month-stats";
+import useBasicRequestData from "../../app/useBasicRequestData";
 
 export default function Home() {
   const history = useHistory();
 
-  const { month } = React.useContext(MonthContext);
+  const basicReqData = useBasicRequestData();
+  const { user, month } = basicReqData;
+
+  const projectUuid = get(basicReqData, 'project.uuid');
+  const userUid = get(basicReqData, 'user.uid');
+  const [hasAnyBudget, setHasAnyBudget] = React.useState(false);
+  React.useEffect(() => {
+    checkAnyBudget(userUid, projectUuid).then(result => setHasAnyBudget(!!result));
+  }, [userUid, projectUuid]);
 
   const isLoading = useSelector(state => Object.keys(state).some(
     slice => slice !== 'projects' && state[slice].isLoading
   ));
-  const user = useSelector((s) => s.auth.user);
   const monthlySituation = useSelectorForMonthlyBudgetStatus();
   const transactions = useSelector(state => state.transactions.items);
 
@@ -61,6 +70,10 @@ export default function Home() {
     ],
   };
 
+  const handleReuseBudget = () => {
+    console.error('not implemented');
+  }
+
   return (
     <Container as="main">
       <header className="d-flex justify-content-between align-items-center">
@@ -88,17 +101,7 @@ export default function Home() {
                 <BsCalendarFill /> Orçamentos
               </Card.Title>
             </Card.Header>
-              {monthlyBudgetCalcs.totalIncomes.isZero() && monthlyBudgetCalcs.totalIncomes.isZero() ? (
-                <Card.Body>
-                  <p>
-                    Quando você começar a cadastrar orçamentos mensais,
-                    um gráfico aparecerá aqui.
-                  </p>
-                  <Button onClick={() => history.push('/orçamento-mensal')} className="w-100">
-                    Começar
-                  </Button>
-                </Card.Body>
-              ) : (
+              {!monthlyBudgetCalcs.totalIncomes.isZero() || !monthlyBudgetCalcs.totalExpenses.isZero() ? (
                 <Card.Body>
                   <ul>
                     <li className="text-secondary">
@@ -122,6 +125,34 @@ export default function Home() {
                     <Pie options={{ maintainAspectRatio: false }} height={300} data={budgetChartData} />
                   </div>
                 </Card.Body>
+              ) : (
+                hasAnyBudget ? (
+                  <Card.Body>
+                    <p>
+                      Há orçamentos em outros períodos,
+                      mas ainda <strong>não deste mês</strong>.
+                      Bora se organizar?
+                    </p>
+                    <Button variant="warning" onClick={handleReuseBudget} className="w-100">
+                      Copiar de outro mês
+                    </Button>
+                    <br/>
+                    <p className="text-center text-muted m-0">ou...</p>
+                    <Button variant="outline-primary" onClick={() => history.push('/orçamento-mensal')} className="w-100">
+                      Começar do zero
+                    </Button>
+                  </Card.Body>
+                ) : (
+                  <Card.Body>
+                    <p>
+                      Quando você começar a cadastrar orçamentos mensais,
+                      um gráfico aparecerá aqui.
+                    </p>
+                    <Button onClick={() => history.push('/orçamento-mensal')} className="w-100">
+                      Começar
+                    </Button>
+                  </Card.Body>
+                )
               )}
           </Card>
         </Col>

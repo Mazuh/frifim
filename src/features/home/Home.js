@@ -12,9 +12,13 @@ import LoadingMainContainer from "../loading/LoadingMainContainer";
 import { INCOME_TYPE, EXPENSE_TYPE } from "../categories/constants";
 import useSelectorForMonthlyBudgetStatus, { getMonthlyCalcs } from "../monthly-budget/useSelectorForMonthlyBudgetStatus";
 import getTransactionsCalcs from "../transactions/getTransactionsCalcs";
+import { MonthContext } from "../../app/contexts";
+import { monthToString } from "../transactions/dates";
 
 export default function Home() {
   const history = useHistory();
+
+  const { month } = React.useContext(MonthContext);
 
   const isLoading = useSelector(state => Object.keys(state).some(
     slice => slice !== 'projects' && state[slice].isLoading
@@ -61,7 +65,11 @@ export default function Home() {
     <Container as="main">
       <header className="d-flex justify-content-between align-items-center">
         <h1 className="d-inline-block">
-          Início <small className="d-none d-md-inline text-muted">Resumos do mês</small>
+          Início
+          {' '}
+          <small className="d-none d-md-inline text-muted">
+            Resumos de {monthToString(month)}
+          </small>
         </h1>
         <p className="d-inline-block m-0">
           <span role="img" aria-label="Money">💸</span>

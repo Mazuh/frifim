@@ -1,8 +1,5 @@
 import React from 'react';
 import { useHistory, useLocation } from "react-router-dom";
-import capitalize from "lodash.capitalize";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
 import Navbar from "react-bootstrap/Navbar";
@@ -18,13 +15,11 @@ import {
 } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../auth/authDuck';
-import { monthToString } from '../transactions/dates';
-import { MonthContext } from '../../app/contexts';
 import ProjectSelector from '../projects/ProjectSelector';
+import PeriodSelector from '../periods/PeriodSelector';
 
 export default function MainMenu() {
   const dispatch = useDispatch();
-  const { month, setMonth } = React.useContext(MonthContext);
   const isAuthorized = useSelector((s) => s.auth.isAuthorized);
   const history = useHistory();
   const location = useLocation();
@@ -69,15 +64,6 @@ export default function MainMenu() {
     }
   };
 
-  const handleMonthsDropdownSelect = (monthKey) => {
-    const selectedMonthIndex = parseInt(monthKey, 10) - 1;
-    if (Number.isNaN(selectedMonthIndex)) {
-      return;
-    }
-
-    setMonth(selectedMonthIndex);
-  };
-
   return (
     <Navbar
       className="vw-100"
@@ -113,19 +99,7 @@ export default function MainMenu() {
           ))}
         </Nav>
         <br />
-        <DropdownButton
-          id="main-month-dropdown"
-          variant="secondary"
-          className="mr-2"
-          title={capitalize(monthToString(month))}
-          onSelect={handleMonthsDropdownSelect}
-        >
-          {[3].map((monthKey) => (
-            <Dropdown.Item key={monthKey} eventKey={monthKey}>
-              {capitalize(monthToString(monthKey - 1))}
-            </Dropdown.Item>
-          ))}
-        </DropdownButton>
+        <PeriodSelector className="mr-2" />
         <br />
         <ProjectSelector className="mr-2" />
         <br />

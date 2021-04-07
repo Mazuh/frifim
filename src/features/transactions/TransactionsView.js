@@ -32,6 +32,10 @@ export default function TransactionsView() {
 
   const [isHelpVisible, setHelpVisible] = React.useState(false);
 
+  if (!window.chrome) {
+    return <UnsupportedBrowser />;
+  }
+
   if (transactionsState.isReadingAll) {
     return <LoadingMainContainer />
   }
@@ -366,5 +370,24 @@ function BudgetsSearcher({ onBudgetSelect }) {
         </p>
       )}
     </div>
+  );
+}
+
+function UnsupportedBrowser() {
+  return (
+    <main className="container mt-2">
+      <header>
+        <h1>Desculpe...<br /><small>Isso é constrangedor.</small></h1>
+      </header>
+      <p>
+        Por ora, esta função funciona bem apenas no Google Chrome.
+      </p>
+      <p>
+        Estamos em fase beta de testes. E o projeto é voluntário e free source.
+        <br/>
+        Caso queira contribuir para melhorar
+        isso, <a href="https://github.com/mazuh/frifim" target="blank">entre em contato</a>.
+      </p>
+    </main>
   );
 }

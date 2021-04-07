@@ -24,7 +24,7 @@ export async function checkAnyBudget(userUid, projectUuid) {
 export async function copyBudgets(userUid, projectUuid, fromPeriod, toPeriod) {
   const batch = firedb.batch();
 
-  await Promise.all(['monthly_budgets', 'weekly_budgets'].map((collection) =>
+  const results = await Promise.all(['monthly_budgets', 'weekly_budgets'].map((collection) =>
     firedb
       .collection(collection)
       .where('userUid', '==', userUid)
@@ -33,7 +33,7 @@ export async function copyBudgets(userUid, projectUuid, fromPeriod, toPeriod) {
       .where('month', '==', fromPeriod.month)
       .get()
       .then(parseQuerySnapshot)
-      .then((founds) => founds.forEach((budget) => {
+      .then((founds) => founds.reduce((count, budget) => {
         const docRef = firedb.collection(collection).doc();
 
         const copying = toFirestoreDocData(budget);
@@ -42,8 +42,11 @@ export async function copyBudgets(userUid, projectUuid, fromPeriod, toPeriod) {
 
         batch.set(docRef, copying);
         console.log('Copying', copying.name);
-      }))
+
+        return count + 1;
+      }, 0))
   ));
 
-  return await batch.commit();
+  await batch.commit();
+  return results.reduce((sum, it) => sum + it, 0);
 }

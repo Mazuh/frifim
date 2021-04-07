@@ -91,11 +91,11 @@ export default function Home() {
     }
 
     setCopyingPeriod(true);
-    copyBudgets(userUid, projectUuid, selectedPeriod, openPeriod).then(() => {
+    copyBudgets(userUid, projectUuid, selectedPeriod, openPeriod).then((result) => {
+      window.alert(`Encontrado(s) ${result} orçamento(s). Pronto!`);
       setCopyingPeriod(false);
       dispatch(monthlyBudgetActions.readAll(basicReqData));
       dispatch(weeklyBudgetActions.readAll(basicReqData));
-      console.log('Reading budgets again.');
     }).catch((error) => {
       setCopyingPeriod(false);
       window.alert('Ops... Algo deu errado. Entre em contato com a manutenção, por gentileza.');

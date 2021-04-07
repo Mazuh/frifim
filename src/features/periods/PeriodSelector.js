@@ -1,22 +1,13 @@
 import React from "react";
-import range from "lodash.range";
-import capitalize from "lodash.capitalize";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import { monthToString } from '../transactions/dates';
-import { MonthContext, ProjectContext } from '../../app/contexts';
+import { MonthContext } from '../../app/contexts';
+import useProjectPeriods, { periodToString } from "./useProjectPeriods";
 
 export default function PeriodSelector({ className }) {
-  const { project } = React.useContext(ProjectContext);
-  const projectCreation = new Date(project.createdAt);
-  const projectCreationMonth = projectCreation.getMonth();
+  const periods = useProjectPeriods().reverse();
 
   const { month, setMonth } = React.useContext(MonthContext);
-
-  const currentMonth = (new Date()).getMonth();
-  const periods = range(projectCreationMonth, currentMonth + 1)
-    .reverse()
-    .map(it => ({ month: it, year: 2021 }));
 
   const handleMonthsDropdownSelect = (monthKey) => {
     const selectedMonthIndex = parseInt(monthKey, 10) - 1;
@@ -46,5 +37,3 @@ export default function PeriodSelector({ className }) {
     </DropdownButton>
   );
 }
-
-const periodToString = (period) => capitalize(monthToString(period.month));

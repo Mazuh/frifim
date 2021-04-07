@@ -1,4 +1,5 @@
 import { firedb } from "../../app/firebase-configs";
+import { parseQuerySnapshot, toFirestoreDocData } from "../../app/firebase-adapters";
 
 export async function checkAnyBudget(userUid, projectUuid) {
   return (
@@ -19,3 +20,30 @@ export async function checkAnyBudget(userUid, projectUuid) {
       .then(snap => snap.size)
   );
 };
+
+export async function copyBudgets(userUid, projectUuid, fromPeriod, toPeriod) {
+  const batch = firedb.batch();
+
+  await Promise.all(['monthly_budgets', 'weekly_budgets'].map((collection) =>
+    firedb
+      .collection(collection)
+      .where('userUid', '==', userUid)
+      .where('project', '==', projectUuid)
+      .where('year', '==', fromPeriod.year)
+      .where('month', '==', fromPeriod.month)
+      .get()
+      .then(parseQuerySnapshot)
+      .then((founds) => founds.forEach((budget) => {
+        const docRef = firedb.collection(collection).doc();
+
+        const copying = toFirestoreDocData(budget);
+        copying.month = toPeriod.month;
+        copying.year = toPeriod.year;
+
+        batch.set(docRef, copying);
+        console.log('Copying', copying.name);
+      }))
+  ));
+
+  return await batch.commit();
+}

@@ -119,7 +119,7 @@ export default function LoginView() {
                 disabled={auth.isLoading || !isRecaptchaVerified}
               >
                 <BsBoxArrowInRight className="mr-2" />
-                <span>{auth.isLoading ? 'Entrando...' : 'Entrar'}</span>
+                <span>{auth.isLoading ? 'Entrando...' : 'Entrar usando e-mail'}</span>
               </Button>
             </Col>
             <Col xs="12">
@@ -131,7 +131,7 @@ export default function LoginView() {
                 onClick={handleGoogleClick}
               >
                 <FcGoogle className="mr-2" />
-                <span>Entrar com Google</span>
+                <span>Continuar via Google</span>
               </Button>
             </Col>
             <Col xs="12">
@@ -141,7 +141,7 @@ export default function LoginView() {
                 onClick={handleSignupClick}
                 disabled={auth.isLoading}
               >
-                Primeira vez aqui? Cadastre-se!
+                Cadastro usando e-mail
               </Button>
             </Col>
             <Col xs="12">

@@ -25,6 +25,8 @@ import { projectsActions } from "./features/projects/projectsDuck";
 import { ProjectContext } from "./app/contexts";
 import LoadingMainContainer from "./features/loading/LoadingMainContainer";
 import SignupView from "./features/auth/SignupView";
+import firebaseApp from "./app/firebase-configs";
+import { expireSession } from "./features/auth/authDuck";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -65,6 +67,15 @@ export default function App() {
     dispatch(weeklyBudgetActions.readAll(basicRequestData));
     dispatch(transactionsActions.readAll(basicRequestData));
   }, [dispatch, basicRequestData, isProjectsLoading, lastSelectedProject, defaultProject, setProject]);
+
+  React.useEffect(() => {
+    const unsubscribe = firebaseApp.auth().onIdTokenChanged((user) => {
+      if (!user) {
+        dispatch(expireSession());
+      }
+    });
+    return () => unsubscribe();
+  }, [dispatch]);
 
   if (basicRequestData.user && !project) {
     return <LoadingMainContainer />;

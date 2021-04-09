@@ -7,18 +7,14 @@ export default function MainFooter() {
       <Container className="w-100 pt-5 pb-3">
         <p className="text-center">
           <small>
-            ©
-            {' '}
             <a
               className="text-light"
               href="https://github.com/mazuh/frifim"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Mazuh
+              © Mazuh (MIT License)
             </a>
-            {' '}
-            (MIT License)
           </small>
         </p>
       </Container>

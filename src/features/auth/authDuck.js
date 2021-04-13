@@ -40,7 +40,7 @@ const authSlice = createSlice({
       state.user = null;
       state.isAuthorized = false;
       state.isLoading = false;
-      state.infoMessage = 'Sua sessão expirou por segurança. Entre novamente!';
+      state.infoMessage = 'Você saiu ou a sessão expirou.';
     },
     clearMessages: (state) => {
       state.errorCode = '';
@@ -126,7 +126,11 @@ export const logout = () => (dispatch) => {
   dispatch(authSlice.actions.setUser(null));
 };
 
-export const expireSession = () => (dispatch) => {
+export const expireSession = () => (dispatch, getState) => {
+  if (!getState().auth.user) {
+    return;
+  }
+
   firebaseApp.auth().signOut();
   dispatch(authSlice.actions.expireSession());
 }

@@ -1,17 +1,15 @@
 import React from "react";
 import get from "lodash.get";
 import { useDispatch, useSelector } from "react-redux";
-import { Pie } from "react-chartjs-2";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import { BsArrowLeftRight, BsCalendarFill, BsPieChartFill } from "react-icons/bs";
+import { BsArrowLeftRight, BsBarChartFill, BsCalendar, BsPieChartFill } from "react-icons/bs";
 import { useHistory } from "react-router";
 import Dropdown from "react-bootstrap/Dropdown";
 import LoadingMainContainer from "../loading/LoadingMainContainer";
-import { INCOME_TYPE, EXPENSE_TYPE } from "../categories/constants";
 import useSelectorForMonthlyBudgetStatus, { getMonthlyCalcs } from "../monthly-budget/useSelectorForMonthlyBudgetStatus";
 import getTransactionsCalcs from "../transactions/getTransactionsCalcs";
 import { monthToString } from "../transactions/dates";
@@ -20,6 +18,7 @@ import useBasicRequestData from "../../app/useBasicRequestData";
 import useProjectPeriods, { periodToString } from "../periods/useProjectPeriods";
 import { monthlyBudgetActions } from "../monthly-budget/monthlyBudgetDuck";
 import { weeklyBudgetActions } from "../weekly-budget/weeklyBudgetDuck";
+import BudgetsChart from "./BudgetsChart";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -54,35 +53,9 @@ export default function Home() {
     return <LoadingMainContainer />
   }
 
-  const transactionsCalcs = getTransactionsCalcs(transactions);
-
-  const isCurrentlyHealthy = transactionsCalcs.total.isZero() || transactionsCalcs.total.isPositive();
-
-  const transactionsChartData = {
-    labels: [INCOME_TYPE.pluralLabel, EXPENSE_TYPE.pluralLabel],
-    datasets: [
-      {
-        backgroundColor: ['rgba(0, 123, 255, 0.5)', 'rgba(255, 193, 7, 0.5)'],
-        hoverBackgroundColor: ['rgba(0, 123, 255, 0.7)', 'rgba(255, 193, 7, 0.7)'],
-        data: [transactionsCalcs.totalIncomes, transactionsCalcs.totalExpenses],
-      },
-    ],
-  };
-
   const monthlyBudgetCalcs = getMonthlyCalcs(monthlySituation);
-
-  const isBudgetHealthy = monthlyBudgetCalcs.total.isZero() || monthlyBudgetCalcs.total.isPositive();
-
-  const budgetChartData = {
-    labels: [INCOME_TYPE.pluralLabel, EXPENSE_TYPE.pluralLabel],
-    datasets: [
-      {
-        backgroundColor: ['rgba(0, 123, 255, 0.5)', 'rgba(255, 193, 7, 0.5)'],
-        hoverBackgroundColor: ['rgba(0, 123, 255, 0.7)', 'rgba(255, 193, 7, 0.7)'],
-        data: [monthlyBudgetCalcs.totalIncomes, monthlyBudgetCalcs.totalExpenses],
-      },
-    ],
-  };
+  const transactionsCalcs = getTransactionsCalcs(transactions);
+  const hasFinantialData = !monthlyBudgetCalcs.total.isZero() || !transactionsCalcs.total.isZero();
 
   const handleReuseBudgetSelect = (serializedPeriod) => {
     const selectedPeriod = JSON.parse(serializedPeriod);
@@ -114,7 +87,7 @@ export default function Home() {
           </small>
         </h1>
         <p className="d-inline-block m-0">
-          <span role="img" aria-label="Money">💸</span>
+          <span role="img" aria-label="Mão acenando">👋</span>
           <span className="ml-2">
             Olá,
             {' '}
@@ -123,35 +96,33 @@ export default function Home() {
         </p>
       </header>
       <Row>
-        <Col as="section" md={4}>
+        <Col as="section" md={8}>
           <Card>
             <Card.Header className="bg-dark text-light">
               <Card.Title as="h2">
-                <BsCalendarFill /> Orçamentos
+                <BsBarChartFill /> Fluxos do mês
               </Card.Title>
             </Card.Header>
-              {!monthlyBudgetCalcs.totalIncomes.isZero() || !monthlyBudgetCalcs.totalExpenses.isZero() ? (
+              {hasFinantialData ? (
                 <Card.Body>
                   <ul>
-                    <li className="text-secondary">
-                      <strong>{INCOME_TYPE.label}: </strong>
-                      <span>R$ {monthlyBudgetCalcs.totalIncomes.toFixed(2)} </span>
-                      <INCOME_TYPE.Icon className="text-primary" />
-                    </li>
-                    <li className="text-secondary">
-                      <strong>{EXPENSE_TYPE.label}: </strong>
-                      <span>R$ {monthlyBudgetCalcs.totalExpenses.toFixed(2)} </span>
-                      <EXPENSE_TYPE.Icon className="text-warning" />
+                    <li>
+                      <BsCalendar className="mr-1" />
+                      <strong>Total dos orçamentos: </strong>
+                      <span className={monthlyBudgetCalcs.total.lessThan(0) ? 'text-danger' : ''}>
+                        R$ {monthlyBudgetCalcs.total.toFixed(2)}
+                      </span>
                     </li>
                     <li>
-                      <strong>Total: </strong>
-                      <span className={isBudgetHealthy ? 'text-success' : 'text-danger'}>
-                        R$ {monthlyBudgetCalcs.total.toFixed(2)}
+                      <BsArrowLeftRight className="mr-1" />
+                      <strong>Total das transações: </strong>
+                      <span className={transactionsCalcs.total.lessThan(0) ? 'text-danger' : ''}>
+                        R$ {transactionsCalcs.total.toFixed(2)}
                       </span>
                     </li>
                   </ul>
                   <div className="mt-3">
-                    <Pie options={{ maintainAspectRatio: false }} height={300} data={budgetChartData} />
+                    <BudgetsChart />
                   </div>
                 </Card.Body>
               ) : (
@@ -197,7 +168,9 @@ export default function Home() {
                   <Card.Body>
                     <p>
                       Quando você começar a cadastrar orçamentos mensais,
-                      um gráfico aparecerá aqui.
+                      por exemplo, um gráfico aparecerá aqui.
+                      Serão <strong>informações inteligentes</strong> te que
+                      guiarão sobre a situação do mês.
                     </p>
                     <Button onClick={() => history.push('/orçamento-mensal')} className="w-100">
                       Começar
@@ -205,46 +178,6 @@ export default function Home() {
                   </Card.Body>
                 )
               )}
-          </Card>
-        </Col>
-        <Col as="section" md={4}>
-          <Card>
-            <Card.Header className="bg-dark text-light">
-              <Card.Title as="h2">
-                <BsArrowLeftRight /> Transações
-              </Card.Title>
-            </Card.Header>
-            {transactionsCalcs.totalIncomes.isZero() && transactionsCalcs.totalExpenses.isZero() ? (
-              <Card.Body>
-                <p>
-                  Aparecerá um resumo visual das transações do mês aqui, quando você começar a registrá-las.
-                </p>
-              </Card.Body>
-            ) : (
-              <Card.Body>
-                <ul>
-                  <li className="text-secondary">
-                    <strong>{INCOME_TYPE.label}: </strong>
-                    <span>R$ {transactionsCalcs.totalIncomes.toFixed(2)} </span>
-                    <INCOME_TYPE.Icon className="text-primary" />
-                  </li>
-                  <li className="text-secondary">
-                    <strong>{EXPENSE_TYPE.label}: </strong>
-                    <span>R$ {transactionsCalcs.totalExpenses.toFixed(2)} </span>
-                    <EXPENSE_TYPE.Icon className="text-warning" />
-                  </li>
-                  <li>
-                    <strong>Total: </strong>
-                    <span className={isCurrentlyHealthy ? 'text-success' : 'text-danger'}>
-                      R$ {transactionsCalcs.total.toFixed(2)}
-                    </span>
-                  </li>
-                </ul>
-                <div className="mt-3">
-                  <Pie options={{ maintainAspectRatio: false }} height={300} data={transactionsChartData} />
-                </div>
-              </Card.Body>
-            )}
           </Card>
         </Col>
         <Col as="section" md={4}>

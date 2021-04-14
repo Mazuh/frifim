@@ -27,6 +27,7 @@ import LoadingMainContainer from "./features/loading/LoadingMainContainer";
 import SignupView from "./features/auth/SignupView";
 import firebaseApp from "./app/firebase-configs";
 import { expireSession } from "./features/auth/authDuck";
+import ProjectView from "./features/projects/ProjectView";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -87,6 +88,9 @@ export default function App() {
         <MainMenu />
         <Page>
           <Switch>
+            <ProtectedRoute exact path="/projeto">
+              <ProjectView />
+            </ProtectedRoute>
             <ProtectedRoute exact path="/categorias">
               <CategoriesView />
             </ProtectedRoute>

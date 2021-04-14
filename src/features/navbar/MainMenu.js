@@ -11,6 +11,7 @@ import {
   BsCalendarFill,
   BsFillHouseDoorFill,
   BsFillTagFill,
+  BsFolder,
   BsPlusCircleFill,
 } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
@@ -125,5 +126,6 @@ const menuLinks = [
     { url: '/orçamento-semanal', label: 'Orçamento semanal', icon: <BsCalendar /> },
     { url: '/transacoes', label: 'Transações reais', icon: <BsArrowLeftRight /> },
     { url: '/categorias', label: 'Categorias', icon: <BsFillTagFill /> },
+    { url: '/projeto', label: 'Projeto', icon: <BsFolder /> },
   ]},
 ];

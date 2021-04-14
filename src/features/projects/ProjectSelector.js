@@ -139,6 +139,8 @@ function CreationModal({ isVisible, isBlocked, close }) {
               placeholder="Nome do novo projeto..."
               autoComplete="off"
               name="name"
+              minLength={3}
+              maxLength={20}
               required
             />
             <Form.Text className="text-muted">

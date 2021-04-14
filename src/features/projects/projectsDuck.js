@@ -15,6 +15,12 @@ const projectsResource = makeReduxAssets({
         .get()
         .then(parseQuerySnapshot);
     },
+    update: (uuid, project) =>
+      firedb
+        .collection('projects')
+        .doc(uuid)
+        .update(toFirestoreDocData(project))
+        .then(() => ({ ...project, uuid })),
     create: (project) =>
       firedb
         .collection('projects')

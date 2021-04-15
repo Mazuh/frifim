@@ -28,6 +28,7 @@ import SignupView from "./features/auth/SignupView";
 import firebaseApp from "./app/firebase-configs";
 import { expireSession } from "./features/auth/authDuck";
 import ProjectView from "./features/projects/ProjectView";
+import HelpView from "./features/help/HelpView";
 
 export default function App() {
   const dispatch = useDispatch();
@@ -88,6 +89,9 @@ export default function App() {
         <MainMenu />
         <Page>
           <Switch>
+            <ProtectedRoute exact path="/ajuda">
+              <HelpView />
+            </ProtectedRoute>
             <ProtectedRoute exact path="/projeto">
               <ProjectView />
             </ProtectedRoute>

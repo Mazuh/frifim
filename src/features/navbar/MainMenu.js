@@ -13,6 +13,7 @@ import {
   BsFillTagFill,
   BsFolder,
   BsPlusCircleFill,
+  BsQuestionCircle,
 } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../auth/authDuck';
@@ -127,5 +128,6 @@ const menuLinks = [
     { url: '/transacoes', label: 'Transações reais', icon: <BsArrowLeftRight /> },
     { url: '/categorias', label: 'Categorias', icon: <BsFillTagFill /> },
     { url: '/projeto', label: 'Projeto', icon: <BsFolder /> },
+    { url: '/ajuda', label: 'Central de ajuda', icon: <BsQuestionCircle /> },
   ]},
 ];

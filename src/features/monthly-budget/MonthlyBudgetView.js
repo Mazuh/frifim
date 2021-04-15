@@ -100,13 +100,9 @@ export default function MonthlyBudgetView() {
                 <li>Despesas: água, energia, feira do mês, ração pro pet, remédios, serviços por assinatura etc.</li>
               </ul>
               <p>
-                Se for sua primeira vez preenchendo isso, pode usar suas faturas e extratos atuais como
-                base inicial de <strong>planejamento mensal</strong>.
-              </p>
-              <p>
-                Quando preencher tudo, vai saber quando estiver gastando algo não planejado e pensar
-                duas vezes. Ou até descobrir que todo mês você se planeja de gastar mais do que deve
-                sem saber!
+                Quando preencher tudo, vai saber quando estiver gastando algo não planejado e pensará
+                duas vezes. Ou até descobrir que, sem querer, seu subconsciente planeja mensalmente gastar
+                mais do que ganha!
               </p>
             </Modal.Body>
           </Modal>

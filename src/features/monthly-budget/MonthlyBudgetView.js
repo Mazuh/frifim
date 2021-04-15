@@ -103,6 +103,11 @@ export default function MonthlyBudgetView() {
                 Se for sua primeira vez preenchendo isso, pode usar suas faturas e extratos atuais como
                 base inicial de <strong>planejamento mensal</strong>.
               </p>
+              <p>
+                Quando preencher tudo, vai saber quando estiver gastando algo não planejado e pensar
+                duas vezes. Ou até descobrir que todo mês você se planeja de gastar mais do que deve
+                sem saber!
+              </p>
             </Modal.Body>
           </Modal>
         </Col>

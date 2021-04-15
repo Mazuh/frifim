@@ -90,6 +90,11 @@ export default function TransactionsView() {
                 Você também pode ter encontrado uma nota de 100 reais no chão, o que
                 será uma receita de surpresa nas suas transações.
               </p>
+              <p>
+                Registrar isso não é "obrigatório", mas te ajuda a descobrir em que momento
+                você fugiu dos planejamentos, para evitar que se repita ou guiar a reorganizar
+                de orçamentos.
+              </p>
             </Modal.Body>
           </Modal>
         </Col>

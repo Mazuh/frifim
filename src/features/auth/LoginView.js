@@ -115,6 +115,7 @@ export default function LoginView() {
               <Button
                 variant="primary"
                 type="submit"
+                data-testid="submit-button"
                 className="w-100 mb-3 d-flex align-items-center justify-content-center"
                 disabled={auth.isLoading || !isRecaptchaVerified}
               >

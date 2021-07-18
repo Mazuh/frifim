@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useReducer } from "react";
 import { BsBoxArrowInRight } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { Redirect, useHistory } from "react-router-dom";
@@ -18,6 +18,13 @@ import useRecaptcha from "./useRecaptcha";
 
 export default function LoginView() {
   const dispatch = useDispatch();
+  const [formData, setFormData] = useReducer((data, newData) => ({ ...data, ...newData}), {})
+
+  const saveInputData = (input) => (event) => {
+    dispatch(clearMessages());
+    setFormData({
+    [input]: event.currentTarget.value
+  })}
 
   const history = useHistory();
 
@@ -30,9 +37,6 @@ export default function LoginView() {
     return <Redirect to="inicio" />;
   }
 
-  const handleChange = () => {
-    dispatch(clearMessages());
-  };
 
   const handleLoginSubmit = (event) => {
     event.preventDefault();
@@ -41,8 +45,8 @@ export default function LoginView() {
       return;
     }
 
-    const email = event.target.email.value;
-    const password = event.target.password.value;
+    const { email, password } = formData;
+
     dispatch(login(email, password));
   };
 
@@ -87,10 +91,11 @@ export default function LoginView() {
           <Form.Group controlId="loginEmail">
             <Form.Label>E-mail:</Form.Label>
             <Form.Control
+              data-testid="email"
               name="email"
               type="email"
+              onChange={saveInputData('email')}
               placeholder="Digite o e-mail cadastrado..."
-              onChange={handleChange}
               disabled={auth.isLoading}
               required
             />
@@ -99,10 +104,11 @@ export default function LoginView() {
             <Form.Group controlId="loginPassword">
               <Form.Label>Senha:</Form.Label>
               <Form.Control
+                data-testid="password"
                 name="password"
                 type="password"
+                onChange={saveInputData('password')}
                 placeholder="Digite a senha..."
-                onChange={handleChange}
                 required
               />
             </Form.Group>

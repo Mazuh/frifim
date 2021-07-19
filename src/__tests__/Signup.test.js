@@ -4,12 +4,18 @@ import userEvent from '@testing-library/user-event'
 
 import { Provider } from 'react-redux';
 import store from '../app/store';
-import SignupView from "..//features/auth/SignupView";
+import SignupView from "../features/auth/SignupView";
 import GlobalContextProvider from '../app/contexts';
+import * as firebaseMock from '../app/firebase-configs';
 
 
+// jest.mock('../features/auth/useRecaptcha', () => jest.fn(() => ({
+//   isRecaptchaVerified: true
+// })))
 
-describe('/', () => {
+// jest.useFakeTimers();
+
+describe('/signup', () => {
   beforeEach(() => 
     render(
         <Provider store={store}>
@@ -19,12 +25,12 @@ describe('/', () => {
         </Provider>
       )
   )
-
   
   it('should register new user', async () => {
+    const fakeSignUp = jest.spyOn(firebaseMock, 'createUserWithEmailAndPassword')
     
     const NewFakeName = "Test"
-    const NewFakeEmail = 'newElement@test.com'
+    const NewFakeEmail = 'newUserFake@test.com'
     const NewFakePassword = 'test123'
     const confirmNewFakePassword = 'test123'
 
@@ -36,6 +42,7 @@ describe('/', () => {
     const CheckAgreement = screen.getByTestId('agreement')
     const buttonNew = screen.getByTestId('button-submit')
 
+    expect(fakeSignUp).not.toHaveBeenCalledWith(NewFakeEmail, NewFakePassword)
     
     userEvent.type(inputNewEmail, NewFakeEmail )
     userEvent.type(inputNewName, NewFakeName )
@@ -45,6 +52,7 @@ describe('/', () => {
     userEvent.click(CheckAgreement)
     userEvent.click(buttonNew)
 
+    // expect(fakeSignUp).toHaveBeenCalledWith(NewFakeEmail, NewFakePassword)
 
   });
   it.todo('should NOT register when recaptcha is unchecked')

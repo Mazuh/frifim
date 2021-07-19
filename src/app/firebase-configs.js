@@ -30,4 +30,8 @@ export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
 export const signInWithEmailAndPassword = (...args) => firebaseApp.auth().signInWithEmailAndPassword(...args)
 
+export const createUserWithEmailAndPassword = (...args) => firebaseApp.auth().createUserWithEmailAndPassword(...args)
+
+export const updateProfile = (...args) => firebaseApp.auth().updateProfile(...args)
+
 export default firebaseApp;

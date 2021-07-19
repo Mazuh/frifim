@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import iziToast from "izitoast";
 import firebaseApp, { googleAuthProvider, signInWithEmailAndPassword } from "../../app/firebase-configs";
 
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,

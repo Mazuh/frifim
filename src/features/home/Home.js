@@ -79,7 +79,7 @@ export default function Home() {
   return (
     <Container as="main">
       <header className="d-flex justify-content-between align-items-center">
-        <h1 className="d-inline-block">
+        <h1 className="d-inline-block" data-testid="page-title">
           Início
           {' '}
           <small className="d-none d-md-inline text-muted">
@@ -109,7 +109,7 @@ export default function Home() {
                     <li>
                       <BsCalendar className="mr-1" />
                       <strong>Total dos orçamentos: </strong>
-                      <span className={monthlyBudgetCalcs.total.lessThan(0) ? 'text-danger' : ''}>
+                      <span data-testid="total-monthly-budget" className={monthlyBudgetCalcs.total.lessThan(0) ? 'text-danger' : ''}>
                         R$ {monthlyBudgetCalcs.total.toFixed(2)}
                       </span>
                     </li>

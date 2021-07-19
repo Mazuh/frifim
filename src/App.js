@@ -25,7 +25,7 @@ import { projectsActions } from "./features/projects/projectsDuck";
 import { ProjectContext } from "./app/contexts";
 import LoadingMainContainer from "./features/loading/LoadingMainContainer";
 import SignupView from "./features/auth/SignupView";
-import firebaseApp from "./app/firebase-configs";
+import { onIdTokenChanged } from "./app/firebase-configs";
 import { expireSession } from "./features/auth/authDuck";
 import ProjectView from "./features/projects/ProjectView";
 import HelpView from "./features/help/HelpView";
@@ -71,7 +71,7 @@ export default function App() {
   }, [dispatch, basicRequestData, isProjectsLoading, lastSelectedProject, defaultProject, setProject]);
 
   React.useEffect(() => {
-    const unsubscribe = firebaseApp.auth().onIdTokenChanged((user) => {
+    const unsubscribe = onIdTokenChanged((user) => {
       if (!user) {
         dispatch(expireSession());
       }

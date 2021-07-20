@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import iziToast from "izitoast";
-import firebaseApp, { googleAuthProvider, signInWithEmailAndPassword } from "../../app/firebase-configs";
+import firebaseApp, { createUserWithEmailAndPassword, googleAuthProvider, signInWithEmailAndPassword } from "../../app/firebase-configs";
 
 const authSlice = createSlice({
   name: "auth",
@@ -133,9 +133,8 @@ export const expireSession = () => (dispatch, getState) => {
 
 export const signupAndLogin = (email, password, displayName) => (dispatch) => {
   dispatch(authSlice.actions.setAsLoading());
-  firebaseApp
-    .auth()
-    .createUserWithEmailAndPassword(email, password)
+
+    createUserWithEmailAndPassword(email, password)
     .then((credentials) => Promise.all([
       credentials,
       credentials

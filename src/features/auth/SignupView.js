@@ -18,6 +18,8 @@ export default function SignupView() {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [formData, setFormData] = useReducer((data, newData) => ({ ...data, ...newData}), {})
+
   const { isRecaptchaVerified } = useRecaptcha('signup-recaptcha');
 
   const [isLegalVisible, setLegalVisible] = React.useState(false);
@@ -31,9 +33,11 @@ export default function SignupView() {
     return <Redirect to="inicio" />;
   }
 
-  const handleChange = () => {
+  const saveInputData = (input) => (event) => {
     dispatch(clearMessages());
-  };
+    setFormData({
+    [input]: event.currentTarget.value.trim()
+  })}
 
   const handleSignupSubmit = (event) => {
     event.preventDefault();
@@ -42,31 +46,31 @@ export default function SignupView() {
       return;
     }
 
-    const displayName = event.target.displayName.value.trim();
-    const email = event.target.email.value.trim();
-    const password = event.target.password.value;
-    const passwordConfirmation = event.target.passwordConfirmation.value;
-    const isInAgreement = event.target.agreement.checked;
+    // const displayName = event.target.displayName.value.trim();
+    // const email = event.target.email.value.trim();
+    // const password = event.target.password.value;
+    // const passwordConfirmation = event.target.passwordConfirmation.value;
+    // const isInAgreement = event.target.agreement.checked;
 
-    if (!displayName) {
+    if (!formData.displayName) {
       window.alert('Por favor, digite um nome ou apelido de sua preferência.');
     }
 
-    if (!email) {
+    if (!formData.email) {
       window.alert('Por favor, escolha um e-mail para te identificarmos.');
     }
 
-    if (!isInAgreement) {
+    if (!formData.isInAgreement) {
       window.alert('Concordar com os Termos de Uso e Política de Privacidade é obrigatório.');
       return;
     }
 
-    if (password !== passwordConfirmation) {
+    if (formData.password !== formData.passwordConfirmation) {
       window.alert('A senha e a confirmação estão diferentes.');
       return;
     }
 
-    dispatch(signupAndLogin(email, password, displayName));
+    dispatch(signupAndLogin(formData.email, formData.password, formData.displayName));
   };
 
   const handleLoginClick = () => {

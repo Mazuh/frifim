@@ -9,11 +9,11 @@ import GlobalContextProvider from '../app/contexts';
 import * as firebaseMock from '../app/firebase-configs';
 
 
-// jest.mock('../features/auth/useRecaptcha', () => jest.fn(() => ({
-//   isRecaptchaVerified: true
-// })))
+jest.mock('../features/auth/useRecaptcha', () => jest.fn(() => ({
+  isRecaptchaVerified: true
+})))
 
-// jest.useFakeTimers();
+jest.useFakeTimers();
 
 describe('/signup', () => {
   beforeEach(() => 
@@ -41,18 +41,16 @@ describe('/signup', () => {
 
     const CheckAgreement = screen.getByTestId('agreement')
     const buttonNew = screen.getByTestId('button-submit')
-
-    expect(fakeSignUp).not.toHaveBeenCalledWith(NewFakeEmail, NewFakePassword)
     
-    userEvent.type(inputNewEmail, NewFakeEmail )
-    userEvent.type(inputNewName, NewFakeName )
-    userEvent.type(inputNewPassword, NewFakePassword )
-    userEvent.type(inputNewPasswordConfirm, confirmNewFakePassword )
+    userEvent.type(inputNewEmail, NewFakeEmail)
+    userEvent.type(inputNewName, NewFakeName)
+    userEvent.type(inputNewPassword, NewFakePassword)
+    userEvent.type(inputNewPasswordConfirm, confirmNewFakePassword)
 
     userEvent.click(CheckAgreement)
     userEvent.click(buttonNew)
 
-    // expect(fakeSignUp).toHaveBeenCalledWith(NewFakeEmail, NewFakePassword)
+    expect(fakeSignUp).toHaveBeenCalledWith(NewFakeEmail, NewFakePassword)
 
   });
   it.todo('should NOT register when recaptcha is unchecked')

@@ -24,6 +24,8 @@ describe('/', () => {
         </Provider>
       )
   )
+
+  afterEach(() => jest.restoreAllMocks())
   
   it('should login', async () => {
     const fakeSignIn = jest.spyOn(firebaseMock, 'signInWithEmailAndPassword')

@@ -56,14 +56,12 @@ describe('/inicio', () => {
       </Provider>
     )
 
-    store.dispatch(authSlice.actions.setUser({
-      displayName: "Marizinha", email: "teste@teste.com" , uid: 123123
-    }))
+    store.dispatch(authSlice.actions.setUser(mockBasicRequestData.user))
   })
+  
+  afterEach(() => jest.restoreAllMocks())
 
   it('should show budget', () => {
-    screen.getByTestId('page-title')
-
     expect(spyFirebaseCollection).toHaveBeenCalledWith('monthly_budgets')
 
     const total = screen.getByTestId('total-monthly-budget')

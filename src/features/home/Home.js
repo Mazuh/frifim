@@ -79,7 +79,7 @@ export default function Home() {
   return (
     <Container as="main">
       <header className="d-flex justify-content-between align-items-center">
-        <h1 className="d-inline-block" data-testid="page-title">
+        <h1 className="d-inline-block">
           Início
           {' '}
           <small className="d-none d-md-inline text-muted">

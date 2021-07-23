@@ -134,7 +134,7 @@ export const expireSession = () => (dispatch, getState) => {
 export const signupAndLogin = (email, password, displayName) => (dispatch) => {
   dispatch(authSlice.actions.setAsLoading());
 
-    createUserWithEmailAndPassword(email, password)
+  createUserWithEmailAndPassword(email, password)
     .then((credentials) => Promise.all([
       credentials,
       credentials

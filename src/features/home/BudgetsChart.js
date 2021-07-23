@@ -1,5 +1,5 @@
 import React from 'react';
-import { Chart } from "frappe-charts/dist/frappe-charts.min.esm";
+import { Chart } from "frappe-charts";
 import { v4 as uuidv4 } from "uuid";
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 import useSelectorForMonthlyBudgetStatus, { getMonthlyCalcs } from '../monthly-budget/useSelectorForMonthlyBudgetStatus';

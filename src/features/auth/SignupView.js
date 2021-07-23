@@ -96,7 +96,6 @@ export default function SignupView() {
           <Form.Group controlId="loginName">
             <Form.Label>Nome ou apelido:</Form.Label>
             <Form.Control
-              data-testid="displayName"
               name="displayName"
               placeholder="Como te chamaremos?"
               onChange={saveInputData('displayName')}
@@ -109,7 +108,6 @@ export default function SignupView() {
           <Form.Group controlId="signupEmail">
             <Form.Label>E-mail:</Form.Label>
             <Form.Control
-              data-testid="email"
               name="email"
               type="email"
               placeholder="Digite seu melhor e-mail..."
@@ -123,7 +121,6 @@ export default function SignupView() {
           <Form.Group controlId="signupPassword">
             <Form.Label>Senha:</Form.Label>
             <Form.Control
-              data-testid="password"
               name="password"
               type="password"
               placeholder="Digite pelo menos 8 caracteres de senha..."
@@ -137,7 +134,6 @@ export default function SignupView() {
           <Form.Group controlId="signupPasswordConfirmation">
             <Form.Label>Confirme a senha:</Form.Label>
             <Form.Control
-              data-testid="passwordConfirmation"
               name="passwordConfirmation"
               type="password"
               placeholder="Digite a senha acima novamente..."
@@ -148,7 +144,6 @@ export default function SignupView() {
           </Form.Group>
           <Form.Group controlId="signupAgreement">
             <Form.Check
-            data-testid="agreement"
               type="checkbox"
               name="agreement"
               label={(
@@ -179,7 +174,6 @@ export default function SignupView() {
           <Row>
             <Col xs="12">
               <Button
-                data-testid="button-submit"
                 variant="success"
                 type="submit"
                 className="w-100 mb-3 d-flex align-items-center justify-content-center"

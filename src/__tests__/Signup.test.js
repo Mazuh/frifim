@@ -37,28 +37,27 @@ describe('/signup', () => {
       )
     
     const displayName = "Test"
-    const NewFakeEmail = 'newUserFake@test.com'
-    const NewFakePassword = 'test123'
-    const confirmNewFakePassword = 'test123'
+    const email = 'newUserFake@test.com'
+    const password = 'test123'
+    const passwordConfirmation = 'test123'
 
-    const inputNewName = screen.getByTestId('displayName')
-    const inputNewEmail =  screen.getByTestId('email')
-    const inputNewPassword = screen.getByTestId('password')
-    const inputNewPasswordConfirm = screen.getByTestId('passwordConfirmation')
+    const inputName = screen.getByPlaceholderText('Como te chamaremos?')
+    const inputEmail =  screen.getByPlaceholderText('Digite seu melhor e-mail...')
+    const inputPassword = screen.getByPlaceholderText('Digite pelo menos 8 caracteres de senha...')
+    const inputPasswordConfirmation = screen.getByPlaceholderText('Digite a senha acima novamente...')
 
-    const CheckAgreement = screen.getByTestId('agreement')
-    const buttonNew = screen.getByTestId('button-submit')
+    const checkAgreement = document.querySelector('input[type="checkbox"]')
+    const button = document.querySelector('button[type="submit"]')
     
-    userEvent.type(inputNewEmail, NewFakeEmail)
-    userEvent.type(inputNewName, displayName)
-    userEvent.type(inputNewPassword, NewFakePassword)
-    userEvent.type(inputNewPasswordConfirm, confirmNewFakePassword)
+    userEvent.type(inputEmail, email)
+    userEvent.type(inputName, displayName)
+    userEvent.type(inputPassword, password)
+    userEvent.type(inputPasswordConfirmation, passwordConfirmation)
 
-    userEvent.click(CheckAgreement)
-    userEvent.click(buttonNew)
+    userEvent.click(checkAgreement)
+    userEvent.click(button)
 
+    expect(fakeSignUp).toHaveBeenCalledWith(email, password)
     waitFor(() => expect(fakeUpdateProfile).toHaveBeenCalledWith({ displayName }))
-    expect(fakeSignUp).toHaveBeenCalledWith(NewFakeEmail, NewFakePassword)
-
   });
 })

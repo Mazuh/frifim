@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useReducer } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { BsPersonPlus } from "react-icons/bs";
@@ -36,8 +36,9 @@ export default function SignupView() {
   const saveInputData = (input) => (event) => {
     dispatch(clearMessages());
     setFormData({
-    [input]: event.currentTarget.value.trim()
-  })}
+      [input]: event.currentTarget.value.trim()
+    })
+  }
 
   const handleSignupSubmit = (event) => {
     event.preventDefault();
@@ -46,28 +47,20 @@ export default function SignupView() {
       return;
     }
 
-    // const displayName = event.target.displayName.value.trim();
-    // const email = event.target.email.value.trim();
-    // const password = event.target.password.value;
-    // const passwordConfirmation = event.target.passwordConfirmation.value;
-    // const isInAgreement = event.target.agreement.checked;
-
     if (!formData.displayName) {
-      window.alert('Por favor, digite um nome ou apelido de sua preferência.');
+      return window.alert('Por favor, digite um nome ou apelido de sua preferência.');
     }
 
     if (!formData.email) {
-      window.alert('Por favor, escolha um e-mail para te identificarmos.');
+      return window.alert('Por favor, escolha um e-mail para te identificarmos.');
     }
 
-    if (!formData.isInAgreement) {
-      window.alert('Concordar com os Termos de Uso e Política de Privacidade é obrigatório.');
-      return;
+    if (formData.isInAgreement !== 'on') {
+      return window.alert('Concordar com os Termos de Uso e Política de Privacidade é obrigatório.');
     }
 
     if (formData.password !== formData.passwordConfirmation) {
-      window.alert('A senha e a confirmação estão diferentes.');
-      return;
+      return window.alert('A senha e a confirmação estão diferentes.');
     }
 
     dispatch(signupAndLogin(formData.email, formData.password, formData.displayName));
@@ -106,7 +99,7 @@ export default function SignupView() {
               data-testid="displayName"
               name="displayName"
               placeholder="Como te chamaremos?"
-              onChange={handleChange}
+              onChange={saveInputData('displayName')}
               disabled={auth.isLoading}
               minLength="2"
               maxLength="25"
@@ -120,7 +113,7 @@ export default function SignupView() {
               name="email"
               type="email"
               placeholder="Digite seu melhor e-mail..."
-              onChange={handleChange}
+              onChange={saveInputData('email')}
               disabled={auth.isLoading}
               minLength="5"
               maxLength="50"
@@ -134,7 +127,7 @@ export default function SignupView() {
               name="password"
               type="password"
               placeholder="Digite pelo menos 8 caracteres de senha..."
-              onChange={handleChange}
+              onChange={saveInputData('password')}
               disabled={auth.isLoading}
               minLength="8"
               maxLength="100"
@@ -148,7 +141,7 @@ export default function SignupView() {
               name="passwordConfirmation"
               type="password"
               placeholder="Digite a senha acima novamente..."
-              onChange={handleChange}
+              onChange={saveInputData('passwordConfirmation')}
               disabled={auth.isLoading}
               required
             />
@@ -175,7 +168,7 @@ export default function SignupView() {
                   do Frifim.
                 </span>
               )}
-              onChange={handleChange}
+              onChange={saveInputData('isInAgreement')}
               disabled={auth.isLoading}
               required
             />

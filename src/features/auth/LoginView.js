@@ -23,8 +23,9 @@ export default function LoginView() {
   const saveInputData = (input) => (event) => {
     dispatch(clearMessages());
     setFormData({
-    [input]: event.currentTarget.value
-  })}
+      [input]: event.currentTarget.value
+    })
+  }
 
   const history = useHistory();
 
@@ -91,7 +92,6 @@ export default function LoginView() {
           <Form.Group controlId="loginEmail">
             <Form.Label>E-mail:</Form.Label>
             <Form.Control
-              data-testid="email"
               name="email"
               type="email"
               onChange={saveInputData('email')}
@@ -104,7 +104,6 @@ export default function LoginView() {
             <Form.Group controlId="loginPassword">
               <Form.Label>Senha:</Form.Label>
               <Form.Control
-                data-testid="password"
                 name="password"
                 type="password"
                 onChange={saveInputData('password')}
@@ -121,7 +120,6 @@ export default function LoginView() {
               <Button
                 variant="primary"
                 type="submit"
-                data-testid="submit-button"
                 className="w-100 mb-3 d-flex align-items-center justify-content-center"
                 disabled={auth.isLoading || !isRecaptchaVerified}
               >

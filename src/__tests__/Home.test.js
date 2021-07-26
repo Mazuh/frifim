@@ -64,8 +64,6 @@ describe('/inicio', () => {
   it('should show budget', () => {
     expect(spyFirebaseCollection).toHaveBeenCalledWith('monthly_budgets')
 
-    const total = screen.getByTestId('total-monthly-budget')
-
-    expect(total.innerHTML).toEqual(`R$ ${mockIncomes.total.toFixed(2)}`)
+    screen.getByText('R$ 86.60')
   });
 })

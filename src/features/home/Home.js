@@ -109,7 +109,7 @@ export default function Home() {
                     <li>
                       <BsCalendar className="mr-1" />
                       <strong>Total dos orçamentos: </strong>
-                      <span data-testid="total-monthly-budget" className={monthlyBudgetCalcs.total.lessThan(0) ? 'text-danger' : ''}>
+                      <span className={monthlyBudgetCalcs.total.lessThan(0) ? 'text-danger' : ''}>
                         R$ {monthlyBudgetCalcs.total.toFixed(2)}
                       </span>
                     </li>

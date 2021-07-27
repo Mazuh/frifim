@@ -6,12 +6,12 @@ export const MonthContext = React.createContext();
 
 export const ProjectContext = React.createContext();
 
-export default function GlobalContextProvider({ children, testProps = {} }) {
+export default function GlobalContextProvider({ children }) {
   const isMobile = window.innerWidth <= 575;
 
   const [month, setMonth] = React.useState((new Date()).getMonth());
 
-  const [project, setProject] = React.useState(testProps.initialProject);
+  const [project, setProject] = React.useState();
 
   return (
     <ViewportContext.Provider value={{ isMobile }}>

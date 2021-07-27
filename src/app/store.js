@@ -17,6 +17,12 @@ import weeklyBudgetReducer from '../features/weekly-budget/weeklyBudgetDuck';
 import transactionsReducer from '../features/transactions/transactionsDuck';
 import projectsReducer from '../features/projects/projectsDuck';
 
+export const middleware = getDefaultMiddleware({
+  serializableCheck: {
+    ignoredActions: [FLUSH, REGISTER, PAUSE, REHYDRATE, PERSIST, PURGE],
+  },
+})
+
 export const store = configureStore({
   reducer: {
     auth: persistReducer({
@@ -30,11 +36,7 @@ export const store = configureStore({
     transactions: transactionsReducer,
     projects: projectsReducer,
   },
-  middleware: getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [FLUSH, REGISTER, PAUSE, REHYDRATE, PERSIST, PURGE],
-    },
-  }),
+  middleware,
 });
 
 export const persistor = persistStore(store);

@@ -1,0 +1,231 @@
+{
+  "auth": {
+    "user": {
+      "uid": "QovcZZVRTrd9Fq3glumc734pLrz1",
+      "displayName": "Marizinha",
+      "photoURL": null,
+      "email": "teste@teste.com",
+      "emailVerified": false,
+      "phoneNumber": null,
+      "isAnonymous": false,
+      "tenantId": null,
+      "providerData": [
+        {
+          "uid": "teste@teste.com",
+          "displayName": "Marizinha",
+          "photoURL": null,
+          "email": "teste@teste.com",
+          "phoneNumber": null,
+          "providerId": "password"
+        }
+      ],
+      "apiKey": "AIzaSyCbPBDyK3AZiZdZXykQZ899AVB94w1B2iQ",
+      "appName": "[DEFAULT]",
+      "authDomain": "frimfrim-testing.firebaseapp.com",
+      "stsTokenManager": {
+        "apiKey": "AIzaSyCbPBDyK3AZiZdZXykQZ899AVB94w1B2iQ",
+        "refreshToken": "ACzBnCgTIbcLVrAaWZcpbrcSYYqTQ9EoSU3jOl2N2oIgbZWpedZr1e5oEWj4xGKgd0XNuYhuzVDzQoj8lSZPrR7ALQ5vCBgEUOM-FTC1yavUDwMvDxSpa4_WJZfLBAfBA4eZvaSYkq-LAHVES-hOlgd0wFsIg_SLuzR_6wVxyf3BVtI5K3HJoGMTXn6HGn2SFHqEs0eyQ_Oo5hiANb939AViO5DHgN1AjfMhHikFiOude0E8I0cbs4I",
+        "accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFiYjk2MDVjMzZlOThlMzAxMTdhNjk1MTc1NjkzODY4MzAyMDJiMmQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiTWFyaXppbmhhIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2ZyaW1mcmltLXRlc3RpbmciLCJhdWQiOiJmcmltZnJpbS10ZXN0aW5nIiwiYXV0aF90aW1lIjoxNjI3MzQ1MzQ5LCJ1c2VyX2lkIjoiUW92Y1paVlJUcmQ5RnEzZ2x1bWM3MzRwTHJ6MSIsInN1YiI6IlFvdmNaWlZSVHJkOUZxM2dsdW1jNzM0cExyejEiLCJpYXQiOjE2MjczNDUzNDksImV4cCI6MTYyNzM0ODk0OSwiZW1haWwiOiJ0ZXN0ZUB0ZXN0ZS5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdGVAdGVzdGUuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.MIdnxwKGT0nYQ6dTALzw4xBYagqfj3ImsD2E5iXq8pkuk6TRTkc98RnQBA_xWgBQrpg_4guo_9gSF8heQRJbTCGdYcgzWOCjQCNrfWalP8au8T1vW3UbNUfr0a3jWmEMxX8VfR-t0bGHAgxbEp2mTmOwUCt82_ylLtdXoLzAaImMDFRKRFKXHHi6jQX94M6blTogeulBTfWi7AT7RqkODDOYas8Vrq75JQZUOk0GrNDBHMnu82iPEOSvyK-DpXrMz6t-n6Pc_02_FSTed00tP-LEbRFDWbBpIEVowczr-epnLnSE0k5Riw9sSIq1GHULd87PdxbcIvX6YTzxF24YTQ",
+        "expirationTime": 1627348949981
+      },
+      "redirectEventId": null,
+      "lastLoginAt": "1627345349855",
+      "createdAt": "1626651060211",
+      "multiFactor": { "enrolledFactors": [] }
+    },
+    "isLoading": false,
+    "isAuthorized": true,
+    "errorCode": "",
+    "infoMessage": "",
+    "lastSelectedProjectUuid": "",
+    "_persist": { "version": -1, "rehydrated": true }
+  },
+  "categories": {
+    "items": [
+      {
+        "userUid": "QovcZZVRTrd9Fq3glumc734pLrz1",
+        "color": "#ff0000",
+        "name": "Casa",
+        "project": "iRqmxVou7FVNfPTbZXOW",
+        "uuid": "qtjgoOjoQlgatil6mLnx"
+      }
+    ],
+    "relatedsTo": {},
+    "isCreating": false,
+    "isReadingBlindly": false,
+    "isReadingAll": false,
+    "reading": [],
+    "updating": [],
+    "deleting": [],
+    "isLoading": false,
+    "finishingLogs": [{ "text": "", "causedByError": null, "isError": false }],
+    "currentMessage": { "text": "", "causedByError": null, "isError": false },
+    "meta": {}
+  },
+  "monthlyBudget": {
+    "items": [
+      {
+        "name": "Caixa 2",
+        "month": 6,
+        "category": "",
+        "year": 2021,
+        "userUid": "QovcZZVRTrd9Fq3glumc734pLrz1",
+        "amount": "8.92",
+        "project": "iRqmxVou7FVNfPTbZXOW",
+        "type": "expense",
+        "uuid": "17FgbGAhpRZ7ESrQ3xgg"
+      },
+      {
+        "category": "qtjgoOjoQlgatil6mLnx",
+        "year": 2021,
+        "name": "Orçamento teste 2",
+        "amount": "9.00",
+        "userUid": "QovcZZVRTrd9Fq3glumc734pLrz1",
+        "project": "iRqmxVou7FVNfPTbZXOW",
+        "month": 6,
+        "type": "income",
+        "uuid": "3IXV7DZx3HeYwikcq3KO"
+      },
+      {
+        "amount": "1",
+        "project": "iRqmxVou7FVNfPTbZXOW",
+        "category": "qtjgoOjoQlgatil6mLnx",
+        "month": 6,
+        "name": "Orçamento teste",
+        "year": 2021,
+        "type": "income",
+        "userUid": "QovcZZVRTrd9Fq3glumc734pLrz1",
+        "uuid": "5pyTYh3Kpfp1VM1AyfSl"
+      },
+      {
+        "project": "iRqmxVou7FVNfPTbZXOW",
+        "amount": "985.48",
+        "category": "",
+        "userUid": "QovcZZVRTrd9Fq3glumc734pLrz1",
+        "name": "Bitcoin",
+        "year": 2021,
+        "type": "income",
+        "month": 6,
+        "uuid": "PfcnuWEsYIYifc7gPGUL"
+      }
+    ],
+    "relatedsTo": {},
+    "isCreating": false,
+    "isReadingBlindly": false,
+    "isReadingAll": false,
+    "reading": [],
+    "updating": [],
+    "deleting": [],
+    "isLoading": false,
+    "finishingLogs": [{ "text": "", "causedByError": null, "isError": false }],
+    "currentMessage": { "text": "", "causedByError": null, "isError": false },
+    "meta": {}
+  },
+  "weeklyBudget": {
+    "items": [
+      {
+        "category": "",
+        "project": "iRqmxVou7FVNfPTbZXOW",
+        "type": "income",
+        "day": 0,
+        "userUid": "QovcZZVRTrd9Fq3glumc734pLrz1",
+        "amount": "98.90",
+        "month": 6,
+        "name": "Propina",
+        "year": 2021,
+        "uuid": "V7OsZ589bcv6lFMGVIEJ"
+      },
+      {
+        "name": "Gasolina",
+        "userUid": "QovcZZVRTrd9Fq3glumc734pLrz1",
+        "project": "iRqmxVou7FVNfPTbZXOW",
+        "category": "",
+        "type": "income",
+        "year": 2021,
+        "amount": "12",
+        "month": 6,
+        "day": 3,
+        "uuid": "ZVJpaSORLNhpgKVmL2Fu"
+      },
+      {
+        "project": "iRqmxVou7FVNfPTbZXOW",
+        "userUid": "QovcZZVRTrd9Fq3glumc734pLrz1",
+        "category": "",
+        "type": "income",
+        "year": 2021,
+        "amount": "97.11",
+        "day": 6,
+        "month": 6,
+        "name": "Leite condensado",
+        "uuid": "b4UFLaN3IuoNRoTUtZW1"
+      },
+      {
+        "name": "Hehe",
+        "type": "income",
+        "month": 6,
+        "category": "",
+        "year": 2021,
+        "project": "iRqmxVou7FVNfPTbZXOW",
+        "userUid": "QovcZZVRTrd9Fq3glumc734pLrz1",
+        "amount": "123123",
+        "day": 0,
+        "uuid": "rtlI62gfPEuREG8Jgbld"
+      }
+    ],
+    "relatedsTo": {},
+    "isCreating": false,
+    "isReadingBlindly": false,
+    "isReadingAll": false,
+    "reading": [],
+    "updating": [],
+    "deleting": [],
+    "isLoading": false,
+    "finishingLogs": [{ "text": "", "causedByError": null, "isError": false }],
+    "currentMessage": { "text": "", "causedByError": null, "isError": false },
+    "meta": {}
+  },
+  "transactions": {
+    "items": [],
+    "relatedsTo": {},
+    "isCreating": false,
+    "isReadingBlindly": false,
+    "isReadingAll": false,
+    "reading": [],
+    "updating": [],
+    "deleting": [],
+    "isLoading": false,
+    "finishingLogs": [
+      {
+        "text": "Falha ao carregar transação.",
+        "causedByError": {
+          "code": "failed-precondition",
+          "name": "FirebaseError"
+        },
+        "isError": true
+      }
+    ],
+    "currentMessage": null,
+    "meta": {}
+  },
+  "projects": {
+    "items": [
+      {
+        "createdAt": "2021-07-18T23:31:00.842Z",
+        "name": "Principal",
+        "userUid": "QovcZZVRTrd9Fq3glumc734pLrz1",
+        "uuid": "iRqmxVou7FVNfPTbZXOW"
+      }
+    ],
+    "relatedsTo": {},
+    "isCreating": false,
+    "isReadingBlindly": false,
+    "isReadingAll": false,
+    "reading": [],
+    "updating": [],
+    "deleting": [],
+    "isLoading": false,
+    "finishingLogs": [{ "text": "", "causedByError": null, "isError": false }],
+    "currentMessage": { "text": "", "causedByError": null, "isError": false },
+    "meta": {}
+  }
+}

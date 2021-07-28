@@ -1,29 +1,29 @@
-import React from "react";
-import orderBy from "lodash.orderby";
-import debounce from "lodash.debounce";
-import uniqBy from "lodash.uniqby";
-import { useSelector, useDispatch } from "react-redux";
-import iziToast from "izitoast";
-import { Link } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Table from "react-bootstrap/Table";
-import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Badge from "react-bootstrap/Badge";
-import ListGroup from "react-bootstrap/ListGroup";
-import { BsBoxArrowInDownRight, BsPlusSquare, BsTable, BsTrash } from "react-icons/bs";
-import { EXPENSE_TYPE, INCOME_TYPE } from "../categories/constants";
-import LoadingMainContainer from "../loading/LoadingMainContainer";
-import { transactionsActions } from "./transactionsDuck";
-import BudgetForm from "../monthly-budget/BudgetForm";
-import { humanizeDatetime, currentDatetimeValue } from "./dates";
-import CategoryIndicator from "../categories/CategoryIndicator";
-import { ViewportContext } from "../../app/contexts";
-import useBasicRequestData from "../../app/useBasicRequestData";
+import React from 'react';
+import orderBy from 'lodash.orderby';
+import debounce from 'lodash.debounce';
+import uniqBy from 'lodash.uniqby';
+import { useSelector, useDispatch } from 'react-redux';
+import iziToast from 'izitoast';
+import { Link } from 'react-router-dom';
+import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Table from 'react-bootstrap/Table';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Badge from 'react-bootstrap/Badge';
+import ListGroup from 'react-bootstrap/ListGroup';
+import { BsBoxArrowInDownRight, BsPlusSquare, BsTable, BsTrash } from 'react-icons/bs';
+import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
+import LoadingMainContainer from '../loading/LoadingMainContainer';
+import { transactionsActions } from './transactionsDuck';
+import BudgetForm from '../monthly-budget/BudgetForm';
+import { humanizeDatetime, currentDatetimeValue } from './dates';
+import CategoryIndicator from '../categories/CategoryIndicator';
+import { ViewportContext } from '../../app/contexts';
+import useBasicRequestData from '../../app/useBasicRequestData';
 
 export default function TransactionsView() {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ export default function TransactionsView() {
   }
 
   if (transactionsState.isReadingAll) {
-    return <LoadingMainContainer />
+    return <LoadingMainContainer />;
   }
 
   const handleSubmit = (event) => {
@@ -60,12 +60,14 @@ export default function TransactionsView() {
     if (window.confirm(`Deletar transação "${what}" de ${when}?`)) {
       dispatch(transactionsActions.delete(transaction.uuid, basicRequestData));
     }
-  }
+  };
 
   return (
     <Container as="main">
       <Row as="header" className="align-items-center mb-2">
-        <Col xs="12" sm="10"><h1>Transações reais</h1></Col>
+        <Col xs="12" sm="10">
+          <h1>Transações reais</h1>
+        </Col>
         <Col xs="12" sm="auto">
           <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-secondary">
             O que é isso?
@@ -76,24 +78,22 @@ export default function TransactionsView() {
             </Modal.Header>
             <Modal.Body>
               <p>
-                São <strong>operações realmente feitas</strong>, você pode registrar até o
-                dia e hora em que ocorreu. Ou seja, não são apenas orçamentos planejados.
+                São <strong>operações realmente feitas</strong>, você pode registrar até o dia e
+                hora em que ocorreu. Ou seja, não são apenas orçamentos planejados.
               </p>
               <p>
-                Por exemplo, você pode ter orçado 200 reais como despesa energia elétrica,
-                mas quando a conta chegou você precisou pagar apenas 150 reais como transação.
+                Por exemplo, você pode ter orçado 200 reais como despesa energia elétrica, mas
+                quando a conta chegou você precisou pagar apenas 150 reais como transação.
+              </p>
+              <p>Ou pode ter esquecido de pagar alguma conta do orçamento, o que é perigoso.</p>
+              <p>
+                Você também pode ter encontrado uma nota de 100 reais no chão, o que será uma
+                receita de surpresa nas suas transações.
               </p>
               <p>
-                Ou pode ter esquecido de pagar alguma conta do orçamento, o que é perigoso.
-              </p>
-              <p>
-                Você também pode ter encontrado uma nota de 100 reais no chão, o que
-                será uma receita de surpresa nas suas transações.
-              </p>
-              <p>
-                Registrar isso não é "obrigatório", mas te ajuda a descobrir em que momento
-                você fugiu dos planejamentos, para evitar que se repita ou guiar a reorganizar
-                de orçamentos.
+                Registrar isso não é "obrigatório", mas te ajuda a descobrir em que momento você
+                fugiu dos planejamentos, para evitar que se repita ou guiar a reorganizar de
+                orçamentos.
               </p>
             </Modal.Body>
           </Modal>
@@ -115,11 +115,9 @@ export default function TransactionsView() {
           ) : (
             <span>
               <strong>Você já criou muitas linhas de transações.</strong>
-              <br/>
-              O uso é limitado, dada a natureza gratuita do Frifim.
-              Porém caso você realmente precise, entre em contato
-              com a manutenção do projeto, e prontamente alguma
-              exceção será pensada.
+              <br />O uso é limitado, dada a natureza gratuita do Frifim. Porém caso você realmente
+              precise, entre em contato com a manutenção do projeto, e prontamente alguma exceção
+              será pensada.
             </span>
           )}
         </Card.Body>
@@ -147,8 +145,8 @@ export default function TransactionsView() {
 function TransactionForm(props) {
   const { isMobile } = React.useContext(ViewportContext);
 
-  const hasBudgetsToImport = useSelector(state =>
-    state.monthlyBudget.items.length > 0 || state.weeklyBudget.items.length > 0
+  const hasBudgetsToImport = useSelector(
+    (state) => state.monthlyBudget.items.length > 0 || state.weeklyBudget.items.length > 0
   );
 
   const [isImportingVisible, setImportingVisible] = React.useState(false);
@@ -191,15 +189,16 @@ function TransactionForm(props) {
     <>
       <Row className="mb-3">
         <Col sm={2} className="d-flex align-items-center">
-          <p>
-            Já estava planejado?
-          </p>
+          <p>Já estava planejado?</p>
         </Col>
         <Col xs={10} sm={10}>
           {hasBudgetsToImport ? (
             <>
               <small className="text-muted">
-                Não digite de novo. <span role="img" aria-label="Blink emoji">😉</span>
+                Não digite de novo.{' '}
+                <span role="img" aria-label="Blink emoji">
+                  😉
+                </span>
               </small>
               <br />
               <Button variant="outline-secondary" onClick={handleShow}>
@@ -208,8 +207,8 @@ function TransactionForm(props) {
             </>
           ) : (
             <p>
-              Quando você criar <Link to="/orçamento-mensal">orçamentos</Link>,
-              poderá criar transações a partir deles ao invés de digitar tudo.
+              Quando você criar <Link to="/orçamento-mensal">orçamentos</Link>, poderá criar
+              transações a partir deles ao invés de digitar tudo.
             </p>
           )}
         </Col>
@@ -241,11 +240,7 @@ function TransactionForm(props) {
             Data:
           </Form.Label>
           <Col sm={10}>
-            <Form.Control
-              type="datetime-local"
-              name="datetime"
-              required
-            />
+            <Form.Control type="datetime-local" name="datetime" required />
           </Col>
         </Form.Group>
       </BudgetForm>
@@ -254,7 +249,7 @@ function TransactionForm(props) {
 }
 
 function TransactionsTable({ items, onDelete, deleting }) {
-  const orderedItems = orderBy(items, it => (new Date(it.date)).valueOf(), 'desc');
+  const orderedItems = orderBy(items, (it) => new Date(it.date).valueOf(), 'desc');
 
   return (
     <Table responsive striped bordered hover>
@@ -273,8 +268,10 @@ function TransactionsTable({ items, onDelete, deleting }) {
             <td>{transaction.name}</td>
             <td>{humanizeDatetime(transaction.datetime)}</td>
             <td
-              title={transaction.type === INCOME_TYPE.value ? INCOME_TYPE.label : EXPENSE_TYPE.label}
-              className={transaction.type === INCOME_TYPE.value ? "text-info" : "text-danger"}
+              title={
+                transaction.type === INCOME_TYPE.value ? INCOME_TYPE.label : EXPENSE_TYPE.label
+              }
+              className={transaction.type === INCOME_TYPE.value ? 'text-info' : 'text-danger'}
             >
               {transaction.type === INCOME_TYPE.value ? (
                 <INCOME_TYPE.Icon />
@@ -283,7 +280,9 @@ function TransactionsTable({ items, onDelete, deleting }) {
               )}
               <span> R$ {transaction.amount} </span>
             </td>
-            <td><CategoryIndicator categoryUUID={transaction.category} /></td>
+            <td>
+              <CategoryIndicator categoryUUID={transaction.category} />
+            </td>
             <td>
               <Button
                 variant="danger"
@@ -303,59 +302,59 @@ function TransactionsTable({ items, onDelete, deleting }) {
 
 function BudgetsSearcher({ onBudgetSelect }) {
   const [searchCriteria, unsafelySetSearchCriteria] = React.useState('');
-  const setSearchCriteria = React.useCallback(debounce((nextSearch) => {
-    unsafelySetSearchCriteria(nextSearch);
-  }, 200));
+  const setSearchCriteria = React.useCallback(
+    debounce((nextSearch) => {
+      unsafelySetSearchCriteria(nextSearch);
+    }, 200)
+  );
 
-  const weeklyBudgetItems = useSelector(state => state.weeklyBudget.items);
-  const monthlyBudgetItems = useSelector(state => state.monthlyBudget.items);
+  const weeklyBudgetItems = useSelector((state) => state.weeklyBudget.items);
+  const monthlyBudgetItems = useSelector((state) => state.monthlyBudget.items);
 
   const loweredSearchCriteria = searchCriteria.toLowerCase();
-  const reduceToSearched = (anyBudgets, tag) => anyBudgets.reduce((acc, currentBudget) => (
-    currentBudget.name.toLowerCase().includes(loweredSearchCriteria)
-      ? [...acc, { ...currentBudget, tag }]
-      : acc
-  ), []);
-  const budgets = uniqBy([
-    ...reduceToSearched(weeklyBudgetItems, 'Semanal'),
-    ...reduceToSearched(monthlyBudgetItems, 'Mensal'),
-  ], it => [it.name, it.tag, it.type, it.value, it.category].join());
+  const reduceToSearched = (anyBudgets, tag) =>
+    anyBudgets.reduce(
+      (acc, currentBudget) =>
+        currentBudget.name.toLowerCase().includes(loweredSearchCriteria)
+          ? [...acc, { ...currentBudget, tag }]
+          : acc,
+      []
+    );
+  const budgets = uniqBy(
+    [
+      ...reduceToSearched(weeklyBudgetItems, 'Semanal'),
+      ...reduceToSearched(monthlyBudgetItems, 'Mensal'),
+    ],
+    (it) => [it.name, it.tag, it.type, it.value, it.category].join()
+  );
 
   return (
     <div className="budgets-searcher">
       <Form.Group controlId="transactionSearchInput">
-        <Form.Label>
-          Parte do nome do planejamento:
-        </Form.Label>
+        <Form.Label>Parte do nome do planejamento:</Form.Label>
         <Form.Control
           type="search"
           placeholder="Filtre a pesquisa..."
-          onChange={event => setSearchCriteria(event.target.value)}
+          onChange={(event) => setSearchCriteria(event.target.value)}
           autoComplete="off"
         />
-        <Form.Text className="text-muted">
-          Deve existir nas tabelas semanal ou mensal.
-        </Form.Text>
+        <Form.Text className="text-muted">Deve existir nas tabelas semanal ou mensal.</Form.Text>
       </Form.Group>
       {budgets.length > 0 ? (
         <>
-          <p>
-            Escolha ({budgets.length} encontrados):
-          </p>
+          <p>Escolha ({budgets.length} encontrados):</p>
           <ListGroup>
-            {budgets.map(budget => (
+            {budgets.map((budget) => (
               <ListGroup.Item
                 key={budget.uuid}
                 href="#"
                 onClick={() => onBudgetSelect(budget)}
                 action
               >
-                <span title="Clique para selecionar">{budget.name}</span>
-                {' '}
+                <span title="Clique para selecionar">{budget.name}</span>{' '}
                 <Badge variant="secondary" title="De qual planejamento essa sugestão veio">
                   {budget.tag}
-                </Badge>
-                {' '}
+                </Badge>{' '}
                 {budget.type === INCOME_TYPE.value ? (
                   <Badge variant="info" title={INCOME_TYPE.label}>
                     R$ {budget.amount} <INCOME_TYPE.Icon />
@@ -370,9 +369,7 @@ function BudgetsSearcher({ onBudgetSelect }) {
           </ListGroup>
         </>
       ) : (
-        <p>
-          Nada encontrado.
-        </p>
+        <p>Nada encontrado.</p>
       )}
     </div>
   );
@@ -382,16 +379,21 @@ function UnsupportedBrowser() {
   return (
     <main className="container mt-2">
       <header>
-        <h1>Desculpe...<br /><small>Isso é constrangedor.</small></h1>
+        <h1>
+          Desculpe...
+          <br />
+          <small>Isso é constrangedor.</small>
+        </h1>
       </header>
-      <p>
-        Por ora, esta função funciona bem apenas no Google Chrome.
-      </p>
+      <p>Por ora, esta função funciona bem apenas no Google Chrome.</p>
       <p>
         Estamos em fase beta de testes. E o projeto é voluntário e free source.
-        <br/>
-        Caso queira contribuir para melhorar
-        isso, <a href="https://github.com/mazuh/frifim" target="blank">entre em contato</a>.
+        <br />
+        Caso queira contribuir para melhorar isso,{' '}
+        <a href="https://github.com/mazuh/frifim" target="blank">
+          entre em contato
+        </a>
+        .
       </p>
     </main>
   );

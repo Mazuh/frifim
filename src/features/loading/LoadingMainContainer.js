@@ -1,6 +1,6 @@
-import React from "react";
-import Spinner from "react-bootstrap/Spinner";
-import Container from "react-bootstrap/Container";
+import React from 'react';
+import Spinner from 'react-bootstrap/Spinner';
+import Container from 'react-bootstrap/Container';
 
 export default function LoadingMainContainer() {
   return (
@@ -9,4 +9,4 @@ export default function LoadingMainContainer() {
       Carregando dados...
     </Container>
   );
-};
+}

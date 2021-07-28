@@ -9,7 +9,7 @@ export const ProjectContext = React.createContext();
 export default function GlobalContextProvider({ children }) {
   const isMobile = window.innerWidth <= 575;
 
-  const [month, setMonth] = React.useState((new Date()).getMonth());
+  const [month, setMonth] = React.useState(new Date().getMonth());
 
   const [project, setProject] = React.useState(null);
 
@@ -22,4 +22,4 @@ export default function GlobalContextProvider({ children }) {
       </MonthContext.Provider>
     </ViewportContext.Provider>
   );
-};
+}

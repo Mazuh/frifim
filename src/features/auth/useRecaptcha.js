@@ -13,7 +13,7 @@ export default function useRecaptcha(widgetId) {
 
     const timer = setTimeout(() => {
       recaptchaVerifierRef.current = new firebase.auth.RecaptchaVerifier(widgetId, {
-        'callback': () => setRecaptchaVerified(true),
+        callback: () => setRecaptchaVerified(true),
         'expired-callback': () => setRecaptchaVerified(false),
       });
       recaptchaVerifierRef.current.render();

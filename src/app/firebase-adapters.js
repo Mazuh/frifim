@@ -1,10 +1,10 @@
-import omit from "lodash.omit";
-import { firedb } from "./firebase-configs";
+import omit from 'lodash.omit';
+import { firedb } from './firebase-configs';
 
 /**
  * Factory of generic Firestore client for a given `collection` name,
  * with CRUD operations and a query builder.
- * 
+ *
  * All methods will require the `basicData` param
  * (from `useBasicRequestData`) (except `.delete`).
  * Thus they're bound to such data as filters or payloads,
@@ -43,7 +43,7 @@ export function fireContextCreation(collection, basicData, entity) {
   return firedb
     .collection(collection)
     .add(toFirestoreDocData(rawCreatingData))
-    .then(responseRef => ({ ...rawCreatingData, uuid: responseRef.id }));
+    .then((responseRef) => ({ ...rawCreatingData, uuid: responseRef.id }));
 }
 
 /**
@@ -73,7 +73,7 @@ export async function fireContextDeletion(collection, basicData, entityUid) {
 
 /**
  * Map domain entity into a Firestore data.
- * 
+ *
  * Assures that `uuid` field is dropped,
  * ISO datetimes as strings will become `Date` objects
  * and `userUid` is appended.
@@ -114,7 +114,11 @@ export function parseFirestoreDocSnapshot(doc) {
 
   Object.keys(responseData).forEach((key) => {
     const value = responseData[key];
-    if (typeof value === "object" && Number.isInteger(value.seconds) && Number.isInteger(value.nanoseconds)) {
+    if (
+      typeof value === 'object' &&
+      Number.isInteger(value.seconds) &&
+      Number.isInteger(value.nanoseconds)
+    ) {
       responseData[key] = value.toDate().toISOString();
     }
   });
@@ -127,7 +131,7 @@ export function parseFirestoreDocSnapshot(doc) {
 /**
  * Make `Date` instance for the beginning of a given `monthIndex` in a certain `year`.
  */
-export function makeFirstDateOfMonth(monthIndex, year = (new Date()).getFullYear()) {
+export function makeFirstDateOfMonth(monthIndex, year = new Date().getFullYear()) {
   const firstDay = 1;
   return new Date(year, monthIndex, firstDay);
 }
@@ -136,7 +140,7 @@ export function makeFirstDateOfMonth(monthIndex, year = (new Date()).getFullYear
  * Make `Date` instance for the ending of a given `monthIndex` in a certain `year`.
  * And on its last millisecond too.
  */
-export function makeLastDateOfMonth(monthIndex, year = (new Date()).getFullYear()) {
+export function makeLastDateOfMonth(monthIndex, year = new Date().getFullYear()) {
   const nextMonthIndex = monthIndex + 1;
   const dayBeforeFirstDay = 0;
   return new Date(year, nextMonthIndex, dayBeforeFirstDay, 23, 59, 59, 999);
@@ -146,7 +150,8 @@ export function makeLastDateOfMonth(monthIndex, year = (new Date()).getFullYear(
  * Tests for ISO Datetimes, like: "2021-02-14T03:38:00.000Z"
  * See: https://stackoverflow.com/a/3143231
  */
-export const rIsoDatetime = /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)$/;
+export const rIsoDatetime =
+  /^\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)$/;
 
 /**
  * Tests for datetimes, like: "2021-02-14T00:38"

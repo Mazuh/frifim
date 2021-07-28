@@ -1,15 +1,24 @@
-import React from "react";
-import get from "lodash.get";
-import Form from "react-bootstrap/Form";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Button from "react-bootstrap/Button";
-import InputGroup from "react-bootstrap/InputGroup";
-import FormControl from "react-bootstrap/FormControl";
-import FlowTypeSelectionFieldset from "../categories/FlowTypeSelectionFieldset";
-import CategorySelectorFieldset from "../categories/CategorySelectorFieldset";
+import React from 'react';
+import get from 'lodash.get';
+import Form from 'react-bootstrap/Form';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
+import FlowTypeSelectionFieldset from '../categories/FlowTypeSelectionFieldset';
+import CategorySelectorFieldset from '../categories/CategorySelectorFieldset';
 
-export default function BudgetForm({ children, onSubmit, isLoading, isCreating, isUpdating, budget, onFormInit, getSubmitCustomLabel }) {
+export default function BudgetForm({
+  children,
+  onSubmit,
+  isLoading,
+  isCreating,
+  isUpdating,
+  budget,
+  onFormInit,
+  getSubmitCustomLabel,
+}) {
   const formRef = React.useRef();
   const isUpdateMode = !!(budget && budget.uuid);
 
@@ -51,7 +60,7 @@ export default function BudgetForm({ children, onSubmit, isLoading, isCreating, 
             name="name"
             maxLength={50}
             defaultValue={get(budget, 'name')}
-            autoComplete='off'
+            autoComplete="off"
             required
           />
         </Col>
@@ -77,14 +86,8 @@ export default function BudgetForm({ children, onSubmit, isLoading, isCreating, 
           </InputGroup>
         </Col>
       </Form.Group>
-      <FlowTypeSelectionFieldset
-        idPrefix={idPrefix}
-        defaultValue={get(budget, 'type')}
-      />
-      <CategorySelectorFieldset
-        idPrefix={idPrefix}
-        defaultValue={get(budget, 'category')}
-      />
+      <FlowTypeSelectionFieldset idPrefix={idPrefix} defaultValue={get(budget, 'type')} />
+      <CategorySelectorFieldset idPrefix={idPrefix} defaultValue={get(budget, 'category')} />
       {children}
       <Form.Group as={Row}>
         <Col sm={{ span: 10, offset: 2 }}>

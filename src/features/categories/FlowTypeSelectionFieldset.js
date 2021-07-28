@@ -1,10 +1,10 @@
-import React from "react";
-import Form from "react-bootstrap/Form";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import { EXPENSE_TYPE, INCOME_TYPE } from "./constants";
+import React from 'react';
+import Form from 'react-bootstrap/Form';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import { EXPENSE_TYPE, INCOME_TYPE } from './constants';
 
-export default function FlowTypeSelectionFieldset({ idPrefix='form', defaultValue = null }) {
+export default function FlowTypeSelectionFieldset({ idPrefix = 'form', defaultValue = null }) {
   return (
     <fieldset>
       <Form.Group as={Row}>
@@ -15,7 +15,11 @@ export default function FlowTypeSelectionFieldset({ idPrefix='form', defaultValu
           <Form.Check
             type="radio"
             name="type"
-            label={<>{INCOME_TYPE.label} <INCOME_TYPE.Icon className="text-info" /> </>}
+            label={
+              <>
+                {INCOME_TYPE.label} <INCOME_TYPE.Icon className="text-info" />{' '}
+              </>
+            }
             value={INCOME_TYPE.value}
             id={`${idPrefix}CategoryIncome`}
             defaultChecked={defaultValue === INCOME_TYPE.value}
@@ -24,7 +28,11 @@ export default function FlowTypeSelectionFieldset({ idPrefix='form', defaultValu
           <Form.Check
             type="radio"
             name="type"
-            label={<>{EXPENSE_TYPE.label} <EXPENSE_TYPE.Icon className="text-danger" /> </>}
+            label={
+              <>
+                {EXPENSE_TYPE.label} <EXPENSE_TYPE.Icon className="text-danger" />{' '}
+              </>
+            }
             value={EXPENSE_TYPE.value}
             id={`${idPrefix}CategoryExpense`}
             defaultChecked={defaultValue === EXPENSE_TYPE.value}

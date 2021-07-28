@@ -25,7 +25,7 @@ const projectsResource = makeReduxAssets({
       firedb
         .collection('projects')
         .add(toFirestoreDocData(project))
-        .then(responseRef => ({ ...project, uuid: responseRef.id })),
+        .then((responseRef) => ({ ...project, uuid: responseRef.id })),
     delete: (uuid) =>
       firedb
         .collection('projects')

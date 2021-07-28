@@ -1,9 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
-import iziToast from "izitoast";
-import firebaseApp, { googleAuthProvider, signInWithEmailAndPassword } from "../../app/firebase-configs";
+import { createSlice } from '@reduxjs/toolkit';
+import iziToast from 'izitoast';
+import firebaseApp, {
+  googleAuthProvider,
+  signInWithEmailAndPassword,
+} from '../../app/firebase-configs';
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState: {
     user: null,
     isLoading: false,
@@ -49,7 +52,7 @@ const authSlice = createSlice({
     setLastSelectedProjectUuid: (state, action) => {
       state.lastSelectedProjectUuid = action.payload;
     },
-  }
+  },
 });
 
 export const { setLastSelectedProjectUuid, clearMessages } = authSlice.actions;
@@ -59,63 +62,66 @@ export const login = (email, password) => (dispatch) => {
 
   signInWithEmailAndPassword(email, password)
     .then((credentials) => dispatch(authSlice.actions.setUser(credentials.user.toJSON())))
-    .catch(error => dispatch(authSlice.actions.setError(error.code)));
+    .catch((error) => dispatch(authSlice.actions.setError(error.code)));
 };
 
-const handlePotentialNewOAuthUser = (credentials) => Promise.all([
-  credentials,
-  credentials.additionalUserInfo.isNewUser &&
-    firebaseApp
-      .firestore()
-      .collection('projects')
-      .add({
+const handlePotentialNewOAuthUser = (credentials) =>
+  Promise.all([
+    credentials,
+    credentials.additionalUserInfo.isNewUser &&
+      firebaseApp.firestore().collection('projects').add({
         name: 'Principal',
         userUid: credentials.user.uid,
         createdAt: new Date().toISOString(),
       }),
-  credentials.additionalUserInfo.isNewUser &&
-    credentials.user.sendEmailVerification(),
-]);
+    credentials.additionalUserInfo.isNewUser && credentials.user.sendEmailVerification(),
+  ]);
 
-const postOAuthSingupHandler = (dispatch) => ([credentials, ...responses]) =>
-  credentials.user !== null && dispatch(authSlice.actions.setUser(credentials.user.toJSON()));
+const postOAuthSingupHandler =
+  (dispatch) =>
+  ([credentials, ...responses]) =>
+    credentials.user !== null && dispatch(authSlice.actions.setUser(credentials.user.toJSON()));
 
 const defaultErrorHandler = (dispatch) => (error) =>
   dispatch(authSlice.actions.setError(error.code));
 
-export const checkSignInRedirectResult = (options = {}) => (dispatch, getState) => {
-  if (getState().auth.user !== null) {
-    return;
-  }
+export const checkSignInRedirectResult =
+  (options = {}) =>
+  (dispatch, getState) => {
+    if (getState().auth.user !== null) {
+      return;
+    }
 
-  if (options.triggerLoading) {
+    if (options.triggerLoading) {
+      dispatch(authSlice.actions.setAsLoading());
+    }
+
+    firebaseApp
+      .auth()
+      .getRedirectResult()
+      .then(handlePotentialNewOAuthUser)
+      .then(postOAuthSingupHandler(dispatch))
+      .catch(defaultErrorHandler(dispatch))
+      .finally(() => dispatch(authSlice.actions.setAsNotLoading()));
+  };
+
+export const signInByGoogle =
+  (options = {}) =>
+  (dispatch) => {
     dispatch(authSlice.actions.setAsLoading());
-  }
 
-  firebaseApp
-    .auth()
-    .getRedirectResult()
-    .then(handlePotentialNewOAuthUser)
-    .then(postOAuthSingupHandler(dispatch))
-    .catch(defaultErrorHandler(dispatch))
-    .finally(() => dispatch(authSlice.actions.setAsNotLoading()));
-};
+    if (options.signInWithRedirect) {
+      firebaseApp.auth().signInWithRedirect(googleAuthProvider);
+      return;
+    }
 
-export const signInByGoogle = (options = {}) => (dispatch) => {
-  dispatch(authSlice.actions.setAsLoading());
-
-  if (options.signInWithRedirect) {
-    firebaseApp.auth().signInWithRedirect(googleAuthProvider);
-    return;
-  }
-
-  firebaseApp
-    .auth()
-    .signInWithPopup(googleAuthProvider)
-    .then(handlePotentialNewOAuthUser)
-    .then(postOAuthSingupHandler(dispatch))
-    .catch(defaultErrorHandler(dispatch));
-}
+    firebaseApp
+      .auth()
+      .signInWithPopup(googleAuthProvider)
+      .then(handlePotentialNewOAuthUser)
+      .then(postOAuthSingupHandler(dispatch))
+      .catch(defaultErrorHandler(dispatch));
+  };
 
 export const logout = () => (dispatch) => {
   firebaseApp.auth().signOut();
@@ -129,38 +135,37 @@ export const expireSession = () => (dispatch, getState) => {
 
   firebaseApp.auth().signOut();
   dispatch(authSlice.actions.expireSession());
-}
+};
 
 export const signupAndLogin = (email, password, displayName) => (dispatch) => {
   dispatch(authSlice.actions.setAsLoading());
   firebaseApp
     .auth()
     .createUserWithEmailAndPassword(email, password)
-    .then((credentials) => Promise.all([
-      credentials,
-      credentials
-        .user
-        .updateProfile({ displayName }),
-      credentials
-        .user
-        .sendEmailVerification(),
-      firebaseApp
-        .firestore()
-        .collection('projects')
-        .add({
+    .then((credentials) =>
+      Promise.all([
+        credentials,
+        credentials.user.updateProfile({ displayName }),
+        credentials.user.sendEmailVerification(),
+        firebaseApp.firestore().collection('projects').add({
           name: 'Principal',
           userUid: credentials.user.uid,
           createdAt: new Date().toISOString(),
         }),
-    ]))
-    .then(([credentials, ...responses]) => dispatch(authSlice.actions.setUser(credentials.user.toJSON())))
-    .then(() => iziToast.show({
-      title: 'Confirme seu e-mail',
-      message: `Enviando link de confirmação para ${email} (cheque a caixa de spam também).`,
-      color: 'blue',
-      position: 'topCenter',
-      timeout: 7000,
-    }))
+      ])
+    )
+    .then(([credentials, ...responses]) =>
+      dispatch(authSlice.actions.setUser(credentials.user.toJSON()))
+    )
+    .then(() =>
+      iziToast.show({
+        title: 'Confirme seu e-mail',
+        message: `Enviando link de confirmação para ${email} (cheque a caixa de spam também).`,
+        color: 'blue',
+        position: 'topCenter',
+        timeout: 7000,
+      })
+    )
     .catch(defaultErrorHandler);
 };
 

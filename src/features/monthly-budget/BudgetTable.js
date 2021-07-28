@@ -1,9 +1,9 @@
-import React from "react";
-import Decimal from "decimal.js";
-import Button from "react-bootstrap/Button";
-import Table from "react-bootstrap/Table";
-import { BsPencilSquare, BsTrash } from "react-icons/bs";
-import CategoryIndicator from "../categories/CategoryIndicator";
+import React from 'react';
+import Decimal from 'decimal.js';
+import Button from 'react-bootstrap/Button';
+import Table from 'react-bootstrap/Table';
+import { BsPencilSquare, BsTrash } from 'react-icons/bs';
+import CategoryIndicator from '../categories/CategoryIndicator';
 
 export default function BudgetTable({
   items,
@@ -16,7 +16,7 @@ export default function BudgetTable({
   EmptyComponent = null,
 }) {
   if (items.length === 0 && typeof EmptyComponent === 'function') {
-    return <EmptyComponent />
+    return <EmptyComponent />;
   }
 
   const total = items.reduce((acc, budget) => acc.plus(budget.amount), Decimal(0)).toFixed(2);
@@ -36,11 +36,15 @@ export default function BudgetTable({
           <React.Fragment key={budget.uuid}>
             <tr title={budget.tooltip ? budget.tooltip : null}>
               <td>{budget.name}</td>
-              <td><span className="text-muted">R$</span> {budget.amount}</td>
+              <td>
+                <span className="text-muted">R$</span> {budget.amount}
+              </td>
               {budget.uuid === 'weekly-incomes-sum' || budget.uuid === 'weekly-expenses-sum' ? (
                 <td />
               ) : (
-                <td><CategoryIndicator categoryUUID={budget.category} /></td>
+                <td>
+                  <CategoryIndicator categoryUUID={budget.category} />
+                </td>
               )}
               {budget.isReadOnly ? (
                 <td />
@@ -76,8 +80,14 @@ export default function BudgetTable({
           </React.Fragment>
         ))}
         <tr>
-          <td><strong>Total</strong></td>
-          <td><strong><span className="text-muted">R$</span> {total}</strong></td>
+          <td>
+            <strong>Total</strong>
+          </td>
+          <td>
+            <strong>
+              <span className="text-muted">R$</span> {total}
+            </strong>
+          </td>
           <td />
           <td />
         </tr>
@@ -85,4 +95,3 @@ export default function BudgetTable({
     </Table>
   );
 }
-

@@ -1,31 +1,31 @@
-import React, { useReducer } from "react";
-import { BsBoxArrowInRight } from "react-icons/bs";
-import { FcGoogle } from "react-icons/fc";
-import { Redirect, useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import Modal from "react-bootstrap/Modal";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Alert from "react-bootstrap/Alert";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Logo from "../../assets/frifim_logo.svg";
-import { clearMessages, login, signInByGoogle } from "./authDuck";
-import { PrivacyPolicy, TermsOfService } from "./legal-articles";
-import useRecaptcha from "./useRecaptcha";
+import React, { useReducer } from 'react';
+import { BsBoxArrowInRight } from 'react-icons/bs';
+import { FcGoogle } from 'react-icons/fc';
+import { Redirect, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import Modal from 'react-bootstrap/Modal';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Alert from 'react-bootstrap/Alert';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Logo from '../../assets/frifim_logo.svg';
+import { clearMessages, login, signInByGoogle } from './authDuck';
+import { PrivacyPolicy, TermsOfService } from './legal-articles';
+import useRecaptcha from './useRecaptcha';
 
 export default function LoginView() {
   const dispatch = useDispatch();
-  const [formData, setFormData] = useReducer((data, newData) => ({ ...data, ...newData}), {})
+  const [formData, setFormData] = useReducer((data, newData) => ({ ...data, ...newData }), {});
 
   const saveInputData = (input) => (event) => {
     dispatch(clearMessages());
     setFormData({
-      [input]: event.currentTarget.value
-    })
-  }
+      [input]: event.currentTarget.value,
+    });
+  };
 
   const history = useHistory();
 
@@ -33,11 +33,10 @@ export default function LoginView() {
 
   const [isLegalVisible, setLegalVisible] = React.useState(false);
 
-  const auth = useSelector(s => s.auth);
+  const auth = useSelector((s) => s.auth);
   if (auth.isAuthorized) {
     return <Redirect to="inicio" />;
   }
-
 
   const handleLoginSubmit = (event) => {
     event.preventDefault();
@@ -61,14 +60,12 @@ export default function LoginView() {
 
   return (
     <Container as="main" className="d-flex align-items-center login-view">
-      <Card className='m-auto login-card'>
+      <Card className="m-auto login-card">
         <Card.Header as="header" className="text-white bg-dark">
           <Row className="align-items-center">
             <Col>
               <Card.Title as="h1">Frifim</Card.Title>
-              <Card.Subtitle>
-                Gestão financeira simplificada. Gratuitamente.
-              </Card.Subtitle>
+              <Card.Subtitle>Gestão financeira simplificada. Gratuitamente.</Card.Subtitle>
               <Card.Subtitle className="mt-2">(Em beta!)</Card.Subtitle>
             </Col>
             <Col as="aside" xs="auto">
@@ -84,11 +81,7 @@ export default function LoginView() {
                 : 'Desculpe, houve um erro com seu e-mail ou senha.'}
             </Alert>
           )}
-          {!!auth.infoMessage && (
-            <Alert variant="info">
-              {auth.infoMessage}
-            </Alert>
-          )}
+          {!!auth.infoMessage && <Alert variant="info">{auth.infoMessage}</Alert>}
           <Form.Group controlId="loginEmail">
             <Form.Label>E-mail:</Form.Label>
             <Form.Control
@@ -113,7 +106,10 @@ export default function LoginView() {
             </Form.Group>
           )}
           <Row>
-            <div id="login-recaptcha" className="d-flex align-items-center justify-content-center w-100 mt-2 mb-2" />
+            <div
+              id="login-recaptcha"
+              className="d-flex align-items-center justify-content-center w-100 mt-2 mb-2"
+            />
           </Row>
           <Row>
             <Col xs="12">
@@ -150,24 +146,19 @@ export default function LoginView() {
               </Button>
             </Col>
             <Col xs="12">
-              <Button
-                variant="link"
-                className="w-100"
-                onClick={() => setLegalVisible(true)}
-              >
+              <Button variant="link" className="w-100" onClick={() => setLegalVisible(true)}>
                 Termos de Uso e Política de Privacidade
               </Button>
               <Modal show={isLegalVisible} onHide={() => setLegalVisible(false)}>
-                <Modal.Header closeButton>
-                  Termos de Uso e Política de Privacidade.
-                </Modal.Header>
+                <Modal.Header closeButton>Termos de Uso e Política de Privacidade.</Modal.Header>
                 <Modal.Body>
                   <TermsOfService />
                   <PrivacyPolicy />
                 </Modal.Body>
                 <Modal.Footer>
-                  Ao usar o Frifim, <strong>você está totalmente de acordo</strong> com esses termos acima.
-                  Os textos foram uma adaptação de boa fé dos termos de uso do serviço Mobilis.
+                  Ao usar o Frifim, <strong>você está totalmente de acordo</strong> com esses termos
+                  acima. Os textos foram uma adaptação de boa fé dos termos de uso do serviço
+                  Mobilis.
                 </Modal.Footer>
               </Modal>
             </Col>

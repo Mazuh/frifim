@@ -1,17 +1,17 @@
-import React from "react";
-import Card from "react-bootstrap/Card";
-import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Table from "react-bootstrap/Table";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import { BsPlusSquare, BsTrash, BsTable, BsTagFill } from "react-icons/bs";
-import { useSelector, useDispatch } from "react-redux";
-import LoadingMainContainer from "../loading/LoadingMainContainer";
-import { categoriesActions } from "./categoriesDuck";
-import useBasicRequestData from "../../app/useBasicRequestData";
+import React from 'react';
+import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Table from 'react-bootstrap/Table';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import { BsPlusSquare, BsTrash, BsTable, BsTagFill } from 'react-icons/bs';
+import { useSelector, useDispatch } from 'react-redux';
+import LoadingMainContainer from '../loading/LoadingMainContainer';
+import { categoriesActions } from './categoriesDuck';
+import useBasicRequestData from '../../app/useBasicRequestData';
 
 export default function CategoriesView() {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ export default function CategoriesView() {
   const [isHelpVisible, setHelpVisible] = React.useState(false);
 
   if (categoriesState.isReadingAll) {
-    return <LoadingMainContainer />
+    return <LoadingMainContainer />;
   }
 
   const handleSubmit = (event) => {
@@ -40,12 +40,14 @@ export default function CategoriesView() {
     if (window.confirm(`Deletar categoria "${category.name}"?`)) {
       dispatch(categoriesActions.delete(category.uuid, basicRequestData));
     }
-  }
+  };
 
   return (
     <Container as="main">
       <Row as="header" className="align-items-center mb-2">
-        <Col xs="12" sm="10"><h1>Categorias</h1></Col>
+        <Col xs="12" sm="10">
+          <h1>Categorias</h1>
+        </Col>
         <Col xs="12" sm="auto">
           <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-secondary">
             O que é isso?
@@ -56,8 +58,8 @@ export default function CategoriesView() {
             </Modal.Header>
             <Modal.Body>
               <p>
-                São <strong>etiquetas</strong> opcionais para agrupar orçamentos
-                e transações. Algumas sugestões que podem fazer sentido:
+                São <strong>etiquetas</strong> opcionais para agrupar orçamentos e transações.
+                Algumas sugestões que podem fazer sentido:
               </p>
               <ul>
                 <li>Moradia (para orçar água e energia)</li>
@@ -67,9 +69,8 @@ export default function CategoriesView() {
                 <li>Pets (para orçar ração e presentes a bichinhos)</li>
               </ul>
               <p>
-                Assim, no fim de cada mês você terá informações mais precisas sobre
-                em quais categorias houve exagero, para tomar decisões inteligentes
-                a respeito.
+                Assim, no fim de cada mês você terá informações mais precisas sobre em quais
+                categorias houve exagero, para tomar decisões inteligentes a respeito.
               </p>
             </Modal.Body>
           </Modal>
@@ -83,19 +84,17 @@ export default function CategoriesView() {
         </Card.Header>
         <Card.Body>
           {categoriesState.items.length < 10 ? (
-          <CategoryForm
-            onSubmit={handleSubmit}
-            isLoading={categoriesState.isLoading}
-            isCreating={categoriesState.isCreating}
-          />
+            <CategoryForm
+              onSubmit={handleSubmit}
+              isLoading={categoriesState.isLoading}
+              isCreating={categoriesState.isCreating}
+            />
           ) : (
             <span>
               <strong>Você já criou muitas categorias.</strong>
-              <br/>
-              O uso é limitado, dada a natureza gratuita do Frifim.
-              Porém caso você realmente precise, entre em contato
-              com a manutenção do projeto, e prontamente alguma
-              exceção será pensada.
+              <br />O uso é limitado, dada a natureza gratuita do Frifim. Porém caso você realmente
+              precise, entre em contato com a manutenção do projeto, e prontamente alguma exceção
+              será pensada.
             </span>
           )}
         </Card.Body>
@@ -106,7 +105,7 @@ export default function CategoriesView() {
         <section>
           <header className="card-header bg-dark text-light">
             <h2>
-              <BsTable/> Dados
+              <BsTable /> Dados
             </h2>
           </header>
           <CategoriesTable
@@ -142,12 +141,7 @@ function CategoryForm({ onSubmit, isLoading, isCreating }) {
           Cor:
         </Form.Label>
         <Col sm={10}>
-          <Form.Control
-            type="color"
-            name="color"
-            className="w-25"
-            required
-          />
+          <Form.Control type="color" name="color" className="w-25" required />
         </Col>
       </Form.Group>
       <Form.Group as={Row}>
@@ -176,9 +170,7 @@ function CategoriesTable({ items, onDelete, deleting }) {
           <tr key={category.uuid}>
             <td>{category.name}</td>
             <td>
-              <BsTagFill style={{ color: category.color }} />
-              {" "}
-              {category.color}
+              <BsTagFill style={{ color: category.color }} /> {category.color}
             </td>
             <td>
               <Button

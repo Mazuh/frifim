@@ -1,13 +1,13 @@
 import React from 'react';
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { useSelector } from 'react-redux';
 import { BsTagFill } from 'react-icons/bs';
 
-export default function CategorySelectorFieldset ({ idPrefix='form', defaultValue = null }) {
-  const categories = useSelector(state => state.categories.items);
-  const isLoading = useSelector(state => state.categories.isLoading);
+export default function CategorySelectorFieldset({ idPrefix = 'form', defaultValue = null }) {
+  const categories = useSelector((state) => state.categories.items);
+  const isLoading = useSelector((state) => state.categories.isLoading);
 
   const [selectedColor, setSelecteColor] = React.useState('inherit');
   const isColorTagVisible = selectedColor !== 'inherit';
@@ -20,7 +20,7 @@ export default function CategorySelectorFieldset ({ idPrefix='form', defaultValu
 
   const handleChange = (event) => {
     const searching = event.target.value;
-    const foundCategory = categories.find(it => it.uuid === searching);
+    const foundCategory = categories.find((it) => it.uuid === searching);
     const foundColor = foundCategory ? foundCategory.color : 'inherit';
     setSelecteColor(foundColor || 'inherit');
     setValue(foundCategory ? foundCategory.uuid : '');
@@ -40,7 +40,7 @@ export default function CategorySelectorFieldset ({ idPrefix='form', defaultValu
           value={value}
         >
           <option value="">Sem categoria</option>
-          {categories.map(category => (
+          {categories.map((category) => (
             <option key={category.uuid} value={category.uuid}>
               {category.name}
             </option>
@@ -49,7 +49,7 @@ export default function CategorySelectorFieldset ({ idPrefix='form', defaultValu
       </Col>
       {isColorTagVisible && (
         <Col xs={2} sm={1} className="d-flex align-items-center justify-content-center">
-        <BsTagFill style={{ color: selectedColor }} />
+          <BsTagFill style={{ color: selectedColor }} />
         </Col>
       )}
     </Form.Group>

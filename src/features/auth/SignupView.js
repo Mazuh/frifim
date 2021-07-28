@@ -1,18 +1,18 @@
-import React from "react";
-import { Redirect, useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { BsPersonPlus } from "react-icons/bs";
-import Modal from "react-bootstrap/Modal";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-import Alert from "react-bootstrap/Alert";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import { clearMessages, signupAndLogin } from "./authDuck";
-import { PrivacyPolicy, TermsOfService } from "./legal-articles";
-import useRecaptcha from "./useRecaptcha";
+import React from 'react';
+import { Redirect, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { BsPersonPlus } from 'react-icons/bs';
+import Modal from 'react-bootstrap/Modal';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Alert from 'react-bootstrap/Alert';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import { clearMessages, signupAndLogin } from './authDuck';
+import { PrivacyPolicy, TermsOfService } from './legal-articles';
+import useRecaptcha from './useRecaptcha';
 
 export default function SignupView() {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ export default function SignupView() {
     dispatch(clearMessages());
   }, [dispatch]);
 
-  const auth = useSelector(s => s.auth);
+  const auth = useSelector((s) => s.auth);
   if (auth.isAuthorized) {
     return <Redirect to="inicio" />;
   }
@@ -78,24 +78,17 @@ export default function SignupView() {
       <Card className="m-auto signup-card">
         <Card.Header className="text-white bg-dark">
           <Card.Title as="h1">Frifim</Card.Title>
-          <Card.Subtitle className="mb-2">
-            Criando primeiro acesso...
-          </Card.Subtitle>
+          <Card.Subtitle className="mb-2">Criando primeiro acesso...</Card.Subtitle>
         </Card.Header>
         <Card.Body as={Form} onSubmit={handleSignupSubmit}>
           {!!auth.errorCode && (
             <Alert variant="danger">
               {auth.errorCode === 'auth/email-already-in-use'
                 ? 'E-mail já em uso.'
-                : 'Desculpe, houve um erro inesperado.'
-              }
+                : 'Desculpe, houve um erro inesperado.'}
             </Alert>
           )}
-          {!!auth.infoMessage && (
-            <Alert variant="info">
-              {auth.infoMessage}
-            </Alert>
-          )}
+          {!!auth.infoMessage && <Alert variant="info">{auth.infoMessage}</Alert>}
           <Form.Group controlId="loginName">
             <Form.Label>Nome ou apelido:</Form.Label>
             <Form.Control
@@ -149,30 +142,29 @@ export default function SignupView() {
             <Form.Check
               type="checkbox"
               name="agreement"
-              label={(
+              label={
                 <span>
-                  Declaro que li, compreendi e concordo com os
-                  {' '}
+                  Declaro que li, compreendi e concordo com os{' '}
                   <Button variant="link" className="p-0" onClick={() => setLegalVisible(true)}>
                     Termos de Uso
-                  </Button>
-                  {' '}
-                  e
-                  {' '}
+                  </Button>{' '}
+                  e{' '}
                   <Button variant="link" className="p-0" onClick={() => setLegalVisible(true)}>
                     Política de Privacidade
-                  </Button>
-                  {' '}
+                  </Button>{' '}
                   do Frifim.
                 </span>
-              )}
+              }
               onChange={handleChange}
               disabled={auth.isLoading}
               required
             />
           </Form.Group>
           <Row>
-            <div id="signup-recaptcha" className="d-flex align-items-center justify-content-center w-100 mt-2 mb-2" />
+            <div
+              id="signup-recaptcha"
+              className="d-flex align-items-center justify-content-center w-100 mt-2 mb-2"
+            />
           </Row>
           <Row>
             <Col xs="12">
@@ -200,9 +192,7 @@ export default function SignupView() {
         </Card.Body>
       </Card>
       <Modal show={isLegalVisible} onHide={() => setLegalVisible(false)}>
-        <Modal.Header closeButton>
-          Termos de Uso e Política de Privacidade.
-        </Modal.Header>
+        <Modal.Header closeButton>Termos de Uso e Política de Privacidade.</Modal.Header>
         <Modal.Body>
           <TermsOfService />
           <PrivacyPolicy />

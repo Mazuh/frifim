@@ -1,8 +1,8 @@
-import React from "react";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
+import React from 'react';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import { MonthContext } from '../../app/contexts';
-import useProjectPeriods, { periodToString } from "./useProjectPeriods";
+import useProjectPeriods, { periodToString } from './useProjectPeriods';
 
 export default function PeriodSelector({ className }) {
   const periods = useProjectPeriods().reverse();
@@ -27,10 +27,7 @@ export default function PeriodSelector({ className }) {
       onSelect={handleMonthsDropdownSelect}
     >
       {periods.map((period, index) => (
-        <Dropdown.Item
-          key={index + '/' + period.month + period.year}
-          eventKey={period.month + 1}
-        >
+        <Dropdown.Item key={index + '/' + period.month + period.year} eventKey={period.month + 1}>
           {periodToString(period)}
         </Dropdown.Item>
       ))}

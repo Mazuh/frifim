@@ -1,15 +1,13 @@
-import React from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Card from "react-bootstrap/Card";
+import React from 'react';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Card from 'react-bootstrap/Card';
 
 export function MainContainer({ children }) {
-  return (
-    <Container as="main">{children}</Container>
-  );
+  return <Container as="main">{children}</Container>;
 }
 
 export function MainHeader({ title, hint }) {
@@ -17,7 +15,9 @@ export function MainHeader({ title, hint }) {
 
   return (
     <Row as="header" className="align-items-center mb-2">
-      <Col xs="12" sm="10"><h1>{title}</h1></Col>
+      <Col xs="12" sm="10">
+        <h1>{title}</h1>
+      </Col>
       {!!hint && (
         <Col xs="12" sm="auto">
           <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-secondary">
@@ -27,9 +27,7 @@ export function MainHeader({ title, hint }) {
             <Modal.Header closeButton>
               <Modal.Title>{title}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-              {hint}
-            </Modal.Body>
+            <Modal.Body>{hint}</Modal.Body>
           </Modal>
         </Col>
       )}
@@ -45,9 +43,7 @@ export function MainSection({ icon, title, children }) {
           {icon} {title}
         </Card.Title>
       </Card.Header>
-      <Card.Body>
-        {children}
-      </Card.Body>
+      <Card.Body>{children}</Card.Body>
     </Card>
   );
 }

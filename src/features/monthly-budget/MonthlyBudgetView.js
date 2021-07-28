@@ -1,19 +1,19 @@
-import React from "react";
-import Card from "react-bootstrap/Card";
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Modal from "react-bootstrap/Modal";
-import { useSelector, useDispatch } from "react-redux";
-import { BsPlusSquare } from "react-icons/bs";
-import LoadingMainContainer from "../loading/LoadingMainContainer";
-import { EXPENSE_TYPE, INCOME_TYPE } from "../categories/constants";
-import { monthlyBudgetActions } from "./monthlyBudgetDuck";
-import BudgetTable from "./BudgetTable";
-import BudgetForm from "./BudgetForm";
+import React from 'react';
+import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Modal from 'react-bootstrap/Modal';
+import { useSelector, useDispatch } from 'react-redux';
+import { BsPlusSquare } from 'react-icons/bs';
+import LoadingMainContainer from '../loading/LoadingMainContainer';
+import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
+import { monthlyBudgetActions } from './monthlyBudgetDuck';
+import BudgetTable from './BudgetTable';
+import BudgetForm from './BudgetForm';
 import useSelectorForMonthlyBudgetStatus from './useSelectorForMonthlyBudgetStatus';
-import useBasicRequestData from "../../app/useBasicRequestData";
+import useBasicRequestData from '../../app/useBasicRequestData';
 
 export default function MonthlyBudgetView() {
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ export default function MonthlyBudgetView() {
   const [enabledUpdateUuid, setEnabledUpdateUuid] = React.useState(null);
 
   if (monthlySituation.isReadingAll) {
-    return <LoadingMainContainer />
+    return <LoadingMainContainer />;
   }
 
   const handleSubmit = (event) => {
@@ -75,12 +75,14 @@ export default function MonthlyBudgetView() {
     if (window.confirm(`Deletar do orçamento "${budget.name}"?`)) {
       dispatch(monthlyBudgetActions.delete(budget.uuid, basicRequestData));
     }
-  }
+  };
 
   return (
     <Container as="main">
       <Row as="header" className="align-items-center mb-2">
-        <Col xs="12" sm="10"><h1>Orçamento mensal</h1></Col>
+        <Col xs="12" sm="10">
+          <h1>Orçamento mensal</h1>
+        </Col>
         <Col xs="12" sm="auto">
           <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-secondary">
             O que é isso?
@@ -91,18 +93,21 @@ export default function MonthlyBudgetView() {
             </Modal.Header>
             <Modal.Body>
               <p>
-                <strong>Estimativa ou planejamento</strong> de dinheiro
-                que <strong>entra (receita)</strong> e <strong>sai (despesa)</strong> todos
-                os meses. Exemplos:
+                <strong>Estimativa ou planejamento</strong> de dinheiro que{' '}
+                <strong>entra (receita)</strong> e <strong>sai (despesa)</strong> todos os meses.
+                Exemplos:
               </p>
               <ul>
                 <li>Receitas: salário, mesada, bolsa, comissões etc.</li>
-                <li>Despesas: água, energia, feira do mês, ração pro pet, remédios, serviços por assinatura etc.</li>
+                <li>
+                  Despesas: água, energia, feira do mês, ração pro pet, remédios, serviços por
+                  assinatura etc.
+                </li>
               </ul>
               <p>
-                Quando preencher tudo, vai saber quando estiver gastando algo não planejado e pensará
-                duas vezes. Ou até descobrir que, sem querer, seu subconsciente planeja mensalmente gastar
-                mais do que ganha!
+                Quando preencher tudo, vai saber quando estiver gastando algo não planejado e
+                pensará duas vezes. Ou até descobrir que, sem querer, seu subconsciente planeja
+                mensalmente gastar mais do que ganha!
               </p>
             </Modal.Body>
           </Modal>
@@ -124,11 +129,9 @@ export default function MonthlyBudgetView() {
           ) : (
             <span>
               <strong>Você já criou muitas linhas de orçamento mensal.</strong>
-              <br/>
-              O uso é limitado, dada a natureza gratuita do Frifim.
-              Porém caso você realmente precise, entre em contato
-              com a manutenção do projeto, e prontamente alguma
-              exceção será pensada.
+              <br />O uso é limitado, dada a natureza gratuita do Frifim. Porém caso você realmente
+              precise, entre em contato com a manutenção do projeto, e prontamente alguma exceção
+              será pensada.
             </span>
           )}
         </Card.Body>
@@ -180,8 +183,8 @@ const MonthlyBudgetForm = BudgetForm;
 function MonthlyBudgetTableRowExtension({ budget }) {
   const dispatch = useDispatch();
   const basicRequestData = useBasicRequestData();
-  const isUpdating = useSelector(state => state.monthlyBudget.updating.includes(budget.uuid));
-  const isLoading = useSelector(state => state.monthlyBudget.isLoading);
+  const isUpdating = useSelector((state) => state.monthlyBudget.updating.includes(budget.uuid));
+  const isLoading = useSelector((state) => state.monthlyBudget.isLoading);
 
   const handleSubmit = (event) => {
     event.preventDefault();

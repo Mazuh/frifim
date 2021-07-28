@@ -1,9 +1,9 @@
 import React from 'react';
-import { useHistory, useLocation } from "react-router-dom";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import Button from "react-bootstrap/Button";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
+import { useHistory, useLocation } from 'react-router-dom';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Button from 'react-bootstrap/Button';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 import {
   BsArrowLeftRight,
   BsBoxArrowLeft,
@@ -34,17 +34,17 @@ export default function MainMenu() {
 
   const onBrandClick = () => {
     history.push('/');
-  }
+  };
 
   const onToggleClick = () => {
     setExpanded(!isExpanded);
-  }
+  };
 
   const handleLogoutClick = () => {
     if (window.confirm('Terminar sessão no Frifim?')) {
       dispatch(logout());
     }
-  }
+  };
 
   const handleSelect = (url) => {
     if (!Number.isNaN(parseInt(url, 10))) {
@@ -82,23 +82,33 @@ export default function MainMenu() {
       <Navbar.Toggle aria-controls="main-navbar-collase" onClick={onToggleClick} />
       <Navbar.Collapse id="main-navbar-collase">
         <Nav className="mr-auto">
-          {menuLinks.map((link, index) => Array.isArray(link.options) ? (
-            <NavDropdown key={index} title={<>{link.icon} {link.label}</>} id={link.id}>
-              {link.options.map((subLink, subIndex) => (
-                <NavDropdown.Item
-                  key={`${link.id}-${subIndex}`}
-                  eventKey={subLink.url}
-                  active={subLink.url === location.pathname}
-                >
-                  {subLink.icon} {subLink.label}
-                </NavDropdown.Item>
-              ))}
-            </NavDropdown>
-          ) : (
-            <Nav.Link key={index} eventKey={link.url} active={link.url === location.pathname}>
-              {link.icon} {link.label}
-            </Nav.Link>
-          ))}
+          {menuLinks.map((link, index) =>
+            Array.isArray(link.options) ? (
+              <NavDropdown
+                key={index}
+                title={
+                  <>
+                    {link.icon} {link.label}
+                  </>
+                }
+                id={link.id}
+              >
+                {link.options.map((subLink, subIndex) => (
+                  <NavDropdown.Item
+                    key={`${link.id}-${subIndex}`}
+                    eventKey={subLink.url}
+                    active={subLink.url === location.pathname}
+                  >
+                    {subLink.icon} {subLink.label}
+                  </NavDropdown.Item>
+                ))}
+              </NavDropdown>
+            ) : (
+              <Nav.Link key={index} eventKey={link.url} active={link.url === location.pathname}>
+                {link.icon} {link.label}
+              </Nav.Link>
+            )
+          )}
         </Nav>
         <br />
         <PeriodSelector className="mr-2" />
@@ -123,11 +133,16 @@ export default function MainMenu() {
 const menuLinks = [
   { url: '/inicio', label: 'Início', icon: <BsFillHouseDoorFill /> },
   { url: '/orçamento-mensal', label: 'Orçamento mensal', icon: <BsCalendarFill /> },
-  { id: 'more-configs-dropdown', label: 'Mais', icon: <BsPlusCircleFill />, options: [
-    { url: '/orçamento-semanal', label: 'Orçamento semanal', icon: <BsCalendar /> },
-    { url: '/transacoes', label: 'Transações reais', icon: <BsArrowLeftRight /> },
-    { url: '/categorias', label: 'Categorias', icon: <BsFillTagFill /> },
-    { url: '/projeto', label: 'Projeto', icon: <BsFolder /> },
-    { url: '/ajuda', label: 'Central de ajuda', icon: <BsQuestionCircle /> },
-  ]},
+  {
+    id: 'more-configs-dropdown',
+    label: 'Mais',
+    icon: <BsPlusCircleFill />,
+    options: [
+      { url: '/orçamento-semanal', label: 'Orçamento semanal', icon: <BsCalendar /> },
+      { url: '/transacoes', label: 'Transações reais', icon: <BsArrowLeftRight /> },
+      { url: '/categorias', label: 'Categorias', icon: <BsFillTagFill /> },
+      { url: '/projeto', label: 'Projeto', icon: <BsFolder /> },
+      { url: '/ajuda', label: 'Central de ajuda', icon: <BsQuestionCircle /> },
+    ],
+  },
 ];

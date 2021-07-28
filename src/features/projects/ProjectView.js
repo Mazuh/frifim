@@ -1,31 +1,30 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
-import { BsFolderFill, BsGear } from "react-icons/bs";
-import { ProjectContext } from "../../app/contexts";
-import { MainContainer, MainHeader, MainSection } from "../main-pages/main-pages";
-import { projectsActions } from "./projectsDuck";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import { BsFolderFill, BsGear } from 'react-icons/bs';
+import { ProjectContext } from '../../app/contexts';
+import { MainContainer, MainHeader, MainSection } from '../main-pages/main-pages';
+import { projectsActions } from './projectsDuck';
 
 export default function ProjectView() {
   const dispatch = useDispatch();
 
   const {
-    project: {
-      uuid: selectedProjectUuid,
-      name: selectedProjectName,
-    },
+    project: { uuid: selectedProjectUuid, name: selectedProjectName },
     setProject,
   } = React.useContext(ProjectContext);
-  const project = useSelector(state => state.projects.items.find(it => it.uuid === selectedProjectUuid));
+  const project = useSelector((state) =>
+    state.projects.items.find((it) => it.uuid === selectedProjectUuid)
+  );
   const { name: loadedProjectName } = project;
   const originalLoadedProjectRef = React.useRef(project);
   const [name, setName] = React.useState(project.name);
   const handleNameChange = (event) => setName(event.target.value);
   const noDiff = project.name.trim() === name.trim();
-  const isEditing = useSelector(state => state.projects.updating.includes(project.uuid));
+  const isEditing = useSelector((state) => state.projects.updating.includes(project.uuid));
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -49,7 +48,7 @@ export default function ProjectView() {
   return (
     <MainContainer>
       <MainHeader title="Projeto" hint={projectHint} />
-      <MainSection icon={<BsGear/>} title="Configuração">
+      <MainSection icon={<BsGear />} title="Configuração">
         <Form onSubmit={handleSubmit}>
           <Form.Group
             as={Row}
@@ -100,12 +99,9 @@ export default function ProjectView() {
       </MainSection>
       <MainSection icon={<BsFolderFill />} title="Criar ou trocar">
         <p>
-          Use o <strong>seletor de projetos</strong> no menu principal
-          do sistema. ⬆️
+          Use o <strong>seletor de projetos</strong> no menu principal do sistema. ⬆️
         </p>
-        <p>
-          Fica ao lado do seletor de meses. Use sempre que quiser.
-        </p>
+        <p>Fica ao lado do seletor de meses. Use sempre que quiser.</p>
       </MainSection>
     </MainContainer>
   );
@@ -114,13 +110,12 @@ export default function ProjectView() {
 const projectHint = (
   <>
     <p>
-      Projetos são como <strong>pastas para organizar</strong> seus
-      orçamentos, transações e categorias.
+      Projetos são como <strong>pastas para organizar</strong> seus orçamentos, transações e
+      categorias.
     </p>
     <p>
-      Por exemplo, você pode ter um projeto para suas
-      finanças particulares, mas também ter outro para
-      as finanças da família. Tudo isolado um do outro!
+      Por exemplo, você pode ter um projeto para suas finanças particulares, mas também ter outro
+      para as finanças da família. Tudo isolado um do outro!
     </p>
   </>
 );

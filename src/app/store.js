@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import {
   persistStore,
   persistReducer,
@@ -8,8 +8,8 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from "redux-persist";
-import localPersitence from "redux-persist/lib/storage";
+} from 'redux-persist';
+import localPersitence from 'redux-persist/lib/storage';
 import authReducer from '../features/auth/authDuck';
 import categoriesReducer from '../features/categories/categoriesDuck';
 import monthlyBudgetReducer from '../features/monthly-budget/monthlyBudgetDuck';
@@ -19,11 +19,14 @@ import projectsReducer from '../features/projects/projectsDuck';
 
 export const store = configureStore({
   reducer: {
-    auth: persistReducer({
-      key: 'auth',
-      storage: localPersitence,
-      blacklist: ['infoMessage', 'errorCode', 'isLoading'],
-    }, authReducer),
+    auth: persistReducer(
+      {
+        key: 'auth',
+        storage: localPersitence,
+        blacklist: ['infoMessage', 'errorCode', 'isLoading'],
+      },
+      authReducer
+    ),
     categories: categoriesReducer,
     monthlyBudget: monthlyBudgetReducer,
     weeklyBudget: weeklyBudgetReducer,

@@ -1,30 +1,36 @@
-import Decimal from "decimal.js";
-import { useSelector } from "react-redux";
-import { EXPENSE_TYPE, INCOME_TYPE } from "../categories/constants";
+import Decimal from 'decimal.js';
+import { useSelector } from 'react-redux';
+import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 
 export default function useSelectorForMonthlyBudgetStatus() {
-  const monthlyBudgetState = useSelector(state => state.monthlyBudget);
-  const weeklyBudgetState = useSelector(state => state.weeklyBudget);
+  const monthlyBudgetState = useSelector((state) => state.monthlyBudget);
+  const weeklyBudgetState = useSelector((state) => state.weeklyBudget);
 
-  const { totalEachWeeklyIncomes, totalEachWeeklyExpenses } = weeklyBudgetState.items.reduce((acc, weeklyBudget) => {
-    if (weeklyBudget.type === INCOME_TYPE.value) {
-      acc.totalEachWeeklyIncomes = acc.totalEachWeeklyIncomes.plus(weeklyBudget.amount);
-    } else if (weeklyBudget.type === EXPENSE_TYPE.value) {
-      acc.totalEachWeeklyExpenses = acc.totalEachWeeklyExpenses.plus(weeklyBudget.amount);
-    }
+  const { totalEachWeeklyIncomes, totalEachWeeklyExpenses } = weeklyBudgetState.items.reduce(
+    (acc, weeklyBudget) => {
+      if (weeklyBudget.type === INCOME_TYPE.value) {
+        acc.totalEachWeeklyIncomes = acc.totalEachWeeklyIncomes.plus(weeklyBudget.amount);
+      } else if (weeklyBudget.type === EXPENSE_TYPE.value) {
+        acc.totalEachWeeklyExpenses = acc.totalEachWeeklyExpenses.plus(weeklyBudget.amount);
+      }
 
-    return acc;
-  }, { totalEachWeeklyIncomes: Decimal(0), totalEachWeeklyExpenses: Decimal(0) });
+      return acc;
+    },
+    { totalEachWeeklyIncomes: Decimal(0), totalEachWeeklyExpenses: Decimal(0) }
+  );
 
-  const { onlyMonthlyIncomes, onlyMonthlyExpenses } = monthlyBudgetState.items.reduce((acc, monthlyBudget) => {
-    if (monthlyBudget.type === INCOME_TYPE.value) {
-      acc.onlyMonthlyIncomes.push(monthlyBudget);
-    } else if (monthlyBudget.type === EXPENSE_TYPE.value) {
-      acc.onlyMonthlyExpenses.push(monthlyBudget);
-    }
+  const { onlyMonthlyIncomes, onlyMonthlyExpenses } = monthlyBudgetState.items.reduce(
+    (acc, monthlyBudget) => {
+      if (monthlyBudget.type === INCOME_TYPE.value) {
+        acc.onlyMonthlyIncomes.push(monthlyBudget);
+      } else if (monthlyBudget.type === EXPENSE_TYPE.value) {
+        acc.onlyMonthlyExpenses.push(monthlyBudget);
+      }
 
-    return acc;
-  }, { onlyMonthlyIncomes: [], onlyMonthlyExpenses: [] });
+      return acc;
+    },
+    { onlyMonthlyIncomes: [], onlyMonthlyExpenses: [] }
+  );
 
   return {
     weeklyBudgetState,
@@ -63,7 +69,9 @@ export function getMonthlyCalcs(monthlySituation) {
     monthlyCalcs.total = monthlyCalcs.total.minus(amount);
   });
 
-  monthlyCalcs.totalExpenses = monthlyCalcs.totalExpenses.plus(monthlySituation.totalWeeklyExpenses);
+  monthlyCalcs.totalExpenses = monthlyCalcs.totalExpenses.plus(
+    monthlySituation.totalWeeklyExpenses
+  );
   monthlyCalcs.total = monthlyCalcs.total.minus(monthlySituation.totalWeeklyExpenses);
 
   return monthlyCalcs;

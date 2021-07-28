@@ -13,9 +13,13 @@ import { setLastSelectedProjectUuid } from '../auth/authDuck';
 export default function ProjectSelector({ className }) {
   const dispatch = useDispatch();
   const { project, setProject } = React.useContext(ProjectContext);
-  const projectsState = useSelector(s => s.projects);
+  const projectsState = useSelector((s) => s.projects);
 
-  const newProjectSpan = <span><BsFolderPlus /> Novo projeto</span>;
+  const newProjectSpan = (
+    <span>
+      <BsFolderPlus /> Novo projeto
+    </span>
+  );
   const [isCreationVisible, setCreationVisible] = React.useState(false);
   const openCreation = () => setCreationVisible(true);
   const closeCreation = () => setCreationVisible(false);
@@ -30,7 +34,9 @@ export default function ProjectSelector({ className }) {
           disabled={projectsState.isLoading}
         >
           {projectsState.isLoading ? (
-            <><BsFolder /> Carregando...</>
+            <>
+              <BsFolder /> Carregando...
+            </>
           ) : (
             newProjectSpan
           )}
@@ -50,8 +56,8 @@ export default function ProjectSelector({ className }) {
     }
 
     const projectUUID = eventKey.replace('project-selector_', '');
-    const selecting = projectsState.items.find(it => it.uuid === projectUUID)
-      || projectsState.items[0];
+    const selecting =
+      projectsState.items.find((it) => it.uuid === projectUUID) || projectsState.items[0];
     if (!selecting) {
       return;
     }
@@ -132,9 +138,7 @@ function CreationModal({ isVisible, isBlocked, close }) {
         </Modal.Header>
         <Modal.Body>
           <Form.Group controlId="projectCreationInput">
-            <Form.Label>
-              Projeto:
-            </Form.Label>
+            <Form.Label>Projeto:</Form.Label>
             <Form.Control
               placeholder="Nome do novo projeto..."
               autoComplete="off"
@@ -159,4 +163,4 @@ function CreationModal({ isVisible, isBlocked, close }) {
       </form>
     </Modal>
   );
-};
+}

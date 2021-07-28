@@ -1,4 +1,4 @@
-import { BsBoxArrowInLeft, BsBoxArrowRight } from "react-icons/bs";
+import { BsBoxArrowInLeft, BsBoxArrowRight } from 'react-icons/bs';
 
 export const INCOME_TYPE = Object.freeze({
   value: 'income',

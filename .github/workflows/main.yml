@@ -20,10 +20,10 @@ jobs:
         uses: borales/actions-yarn@v2.3.0
         with:
           cmd: install
-      # - name: Create bundles
-      #   uses: borales/actions-yarn@v2.3.0
-      #   with:
-      #     cmd: build
+      - name: Create bundles
+        uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: build
       - name: Run tests
         uses: borales/actions-yarn@v2.3.0
         with:

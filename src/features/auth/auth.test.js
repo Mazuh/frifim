@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import store from '../../app/store';
-import App from '../../App';
+import LoginView from '../../features/auth/LoginView';
 import GlobalContextProvider from '../../app/contexts';
 import * as firebaseMock from '../../app/firebase-configs';
 
@@ -14,20 +14,14 @@ jest.mock('../auth/useRecaptcha', () =>
 );
 
 describe('/', () => {
-  let container = null;
-
-  beforeEach(
-    () =>
-      (container = render(
-        <Provider store={store}>
-          <GlobalContextProvider>
-            <App />
-          </GlobalContextProvider>
-        </Provider>
-      ))
-  );
-
   it('calls firebase on sign in using e-mail', async () => {
+    const container = render(
+      <Provider store={store}>
+        <GlobalContextProvider>
+          <LoginView />
+        </GlobalContextProvider>
+      </Provider>
+    );
     const fakeSignIn = jest.spyOn(firebaseMock, 'signInWithEmailAndPassword');
 
     const fakeEmail = 'user@provider.com';

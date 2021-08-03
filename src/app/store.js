@@ -17,28 +17,31 @@ import weeklyBudgetReducer from '../features/weekly-budget/weeklyBudgetDuck';
 import transactionsReducer from '../features/transactions/transactionsDuck';
 import projectsReducer from '../features/projects/projectsDuck';
 
-export const store = configureStore({
-  reducer: {
-    auth: persistReducer(
-      {
-        key: 'auth',
-        storage: localPersitence,
-        blacklist: ['infoMessage', 'errorCode', 'isLoading'],
-      },
-      authReducer
-    ),
-    categories: categoriesReducer,
-    monthlyBudget: monthlyBudgetReducer,
-    weeklyBudget: weeklyBudgetReducer,
-    transactions: transactionsReducer,
-    projects: projectsReducer,
-  },
-  middleware: getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [FLUSH, REGISTER, PAUSE, REHYDRATE, PERSIST, PURGE],
+export const makeConfiguredStore = () =>
+  configureStore({
+    reducer: {
+      auth: persistReducer(
+        {
+          key: 'auth',
+          storage: localPersitence,
+          blacklist: ['infoMessage', 'errorCode', 'isLoading'],
+        },
+        authReducer
+      ),
+      categories: categoriesReducer,
+      monthlyBudget: monthlyBudgetReducer,
+      weeklyBudget: weeklyBudgetReducer,
+      transactions: transactionsReducer,
+      projects: projectsReducer,
     },
-  }),
-});
+    middleware: getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REGISTER, PAUSE, REHYDRATE, PERSIST, PURGE],
+      },
+    }),
+  });
+
+export const store = makeConfiguredStore();
 
 export const persistor = persistStore(store);
 

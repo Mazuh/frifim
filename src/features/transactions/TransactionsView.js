@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import orderBy from 'lodash.orderby';
 import debounce from 'lodash.debounce';
 import uniqBy from 'lodash.uniqby';
@@ -24,6 +24,7 @@ import { humanizeDatetime, currentDatetimeValue } from './dates';
 import CategoryIndicator from '../categories/CategoryIndicator';
 import { ViewportContext } from '../../app/contexts';
 import useBasicRequestData from '../../app/useBasicRequestData';
+import TransationDatetime from './TransactionDatetime';
 
 export default function TransactionsView() {
   const dispatch = useDispatch();
@@ -32,15 +33,11 @@ export default function TransactionsView() {
 
   const [isHelpVisible, setHelpVisible] = React.useState(false);
 
-  if (!window.chrome) {
-    return <UnsupportedBrowser />;
-  }
-
   if (transactionsState.isReadingAll) {
     return <LoadingMainContainer />;
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (transactionDate) => (event) => {
     event.preventDefault();
 
     const formElement = event.target;
@@ -49,7 +46,7 @@ export default function TransactionsView() {
       amount: formElement.amount.value,
       type: formElement.type.value,
       category: formElement.category.value,
-      datetime: formElement.datetime.value,
+      datetime: transactionDate || formElement.datetime.value,
     };
     dispatch(transactionsActions.create(creatingTransaction, basicRequestData));
   };
@@ -145,6 +142,11 @@ export default function TransactionsView() {
 function TransactionForm(props) {
   const { isMobile } = React.useContext(ViewportContext);
 
+  const [transactionDate, setTransactionDate] = useState(new Date());
+  const handleChangeDate = React.useCallback(
+    debounce(setTransactionDate, 200)
+  );
+
   const hasBudgetsToImport = useSelector(
     (state) => state.monthlyBudget.items.length > 0 || state.weeklyBudget.items.length > 0
   );
@@ -167,10 +169,6 @@ function TransactionForm(props) {
       position: isMobile ? 'bottomCenter' : 'topRight',
       timeout: 3500,
     });
-  };
-
-  const handleSelectedBudgetEffect = (formRef) => {
-    formRef.current.datetime.value = currentDatetimeValue();
   };
 
   const { uuid, ...budget } = props.budget || importedBudget || {};
@@ -232,15 +230,14 @@ function TransactionForm(props) {
         {...props}
         budget={budget}
         getSubmitCustomLabel={getFormSubmitLabel}
-        onFormInit={handleSelectedBudgetEffect}
-        onSubmit={(...args) => props.onSubmit(...args) & clearBudgetSelect()}
+        onSubmit={(...args) => props.onSubmit(transactionDate)(...args) & clearBudgetSelect()}
       >
         <Form.Group as={Row} controlId={`${idPrefix}budgetDate`}>
           <Form.Label column sm={2}>
             Data:
           </Form.Label>
           <Col sm={10}>
-            <Form.Control type="datetime-local" name="datetime" required />
+            <TransationDatetime onChange={handleChangeDate} value={transactionDate}/>
           </Col>
         </Form.Group>
       </BudgetForm>
@@ -372,29 +369,5 @@ function BudgetsSearcher({ onBudgetSelect }) {
         <p>Nada encontrado.</p>
       )}
     </div>
-  );
-}
-
-function UnsupportedBrowser() {
-  return (
-    <main className="container mt-2">
-      <header>
-        <h1>
-          Desculpe...
-          <br />
-          <small>Isso é constrangedor.</small>
-        </h1>
-      </header>
-      <p>Por ora, esta função funciona bem apenas no Google Chrome.</p>
-      <p>
-        Estamos em fase beta de testes. E o projeto é voluntário e free source.
-        <br />
-        Caso queira contribuir para melhorar isso,{' '}
-        <a href="https://github.com/mazuh/frifim" target="blank">
-          entre em contato
-        </a>
-        .
-      </p>
-    </main>
   );
 }

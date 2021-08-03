@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsPersonPlus } from 'react-icons/bs';
@@ -18,22 +18,33 @@ export default function SignupView() {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [displayName, setDisplayName] = useState('');
+  const handleDisplayNameChange = (event) => setDisplayName(event.target.value);
+
+  const [email, setEmail] = useState('');
+  const handleEmailChange = (event) => setEmail(event.target.value);
+
+  const [password, setPassword] = useState('');
+  const handlePasswordChange = (event) => setPassword(event.target.value);
+
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const handlePasswordConfirmationChange = (event) => setPasswordConfirmation(event.target.value);
+
+  const [isInAgreement, setIsInAgreement] = useState(false);
+  const handleAgreementChange = (event) => setIsInAgreement(event.target.checked);
+
   const { isRecaptchaVerified } = useRecaptcha('signup-recaptcha');
 
-  const [isLegalVisible, setLegalVisible] = React.useState(false);
+  const [isLegalVisible, setLegalVisible] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(clearMessages());
-  }, [dispatch]);
+  }, [dispatch, displayName, email, password, passwordConfirmation, isInAgreement]);
 
   const auth = useSelector((s) => s.auth);
   if (auth.isAuthorized) {
     return <Redirect to="inicio" />;
   }
-
-  const handleChange = () => {
-    dispatch(clearMessages());
-  };
 
   const handleSignupSubmit = (event) => {
     event.preventDefault();
@@ -42,17 +53,11 @@ export default function SignupView() {
       return;
     }
 
-    const displayName = event.target.displayName.value.trim();
-    const email = event.target.email.value.trim();
-    const password = event.target.password.value;
-    const passwordConfirmation = event.target.passwordConfirmation.value;
-    const isInAgreement = event.target.agreement.checked;
-
-    if (!displayName) {
+    if (!displayName.trim()) {
       window.alert('Por favor, digite um nome ou apelido de sua preferência.');
     }
 
-    if (!email) {
+    if (!email.trim()) {
       window.alert('Por favor, escolha um e-mail para te identificarmos.');
     }
 
@@ -93,8 +98,9 @@ export default function SignupView() {
             <Form.Label>Nome ou apelido:</Form.Label>
             <Form.Control
               name="displayName"
+              value={displayName}
+              onChange={handleDisplayNameChange}
               placeholder="Como te chamaremos?"
-              onChange={handleChange}
               disabled={auth.isLoading}
               minLength="2"
               maxLength="25"
@@ -105,9 +111,10 @@ export default function SignupView() {
             <Form.Label>E-mail:</Form.Label>
             <Form.Control
               name="email"
+              value={email}
+              onChange={handleEmailChange}
               type="email"
               placeholder="Digite seu melhor e-mail..."
-              onChange={handleChange}
               disabled={auth.isLoading}
               minLength="5"
               maxLength="50"
@@ -118,9 +125,10 @@ export default function SignupView() {
             <Form.Label>Senha:</Form.Label>
             <Form.Control
               name="password"
+              value={password}
+              onChange={handlePasswordChange}
               type="password"
               placeholder="Digite pelo menos 8 caracteres de senha..."
-              onChange={handleChange}
               disabled={auth.isLoading}
               minLength="8"
               maxLength="100"
@@ -131,9 +139,10 @@ export default function SignupView() {
             <Form.Label>Confirme a senha:</Form.Label>
             <Form.Control
               name="passwordConfirmation"
+              value={passwordConfirmation}
+              onChange={handlePasswordConfirmationChange}
               type="password"
               placeholder="Digite a senha acima novamente..."
-              onChange={handleChange}
               disabled={auth.isLoading}
               required
             />
@@ -142,6 +151,9 @@ export default function SignupView() {
             <Form.Check
               type="checkbox"
               name="agreement"
+              checked={isInAgreement}
+              onChange={handleAgreementChange}
+              aria-label="Declaro que li, compreendi e concordo com os Termos de Uso e Política de Privacidade do Frifim."
               label={
                 <span>
                   Declaro que li, compreendi e concordo com os{' '}
@@ -155,7 +167,6 @@ export default function SignupView() {
                   do Frifim.
                 </span>
               }
-              onChange={handleChange}
               disabled={auth.isLoading}
               required
             />

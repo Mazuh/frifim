@@ -20,7 +20,7 @@ import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 import LoadingMainContainer from '../loading/LoadingMainContainer';
 import { transactionsActions } from './transactionsDuck';
 import BudgetForm from '../monthly-budget/BudgetForm';
-import { humanizeDatetime, currentDatetimeValue } from './dates';
+import { humanizeDatetime } from './dates';
 import CategoryIndicator from '../categories/CategoryIndicator';
 import { ViewportContext } from '../../app/contexts';
 import useBasicRequestData from '../../app/useBasicRequestData';
@@ -143,9 +143,7 @@ function TransactionForm(props) {
   const { isMobile } = React.useContext(ViewportContext);
 
   const [transactionDate, setTransactionDate] = useState(new Date());
-  const handleChangeDate = React.useCallback(
-    debounce(setTransactionDate, 200)
-  );
+  const handleChangeDate = React.useCallback(debounce(setTransactionDate, 200));
 
   const hasBudgetsToImport = useSelector(
     (state) => state.monthlyBudget.items.length > 0 || state.weeklyBudget.items.length > 0
@@ -237,7 +235,7 @@ function TransactionForm(props) {
             Data:
           </Form.Label>
           <Col sm={10}>
-            <TransationDatetime onChange={handleChangeDate} value={transactionDate}/>
+            <TransationDatetime onChange={handleChangeDate} value={transactionDate} />
           </Col>
         </Form.Group>
       </BudgetForm>

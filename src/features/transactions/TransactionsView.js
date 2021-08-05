@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import orderBy from 'lodash.orderby';
 import debounce from 'lodash.debounce';
 import uniqBy from 'lodash.uniqby';
@@ -20,10 +20,11 @@ import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 import LoadingMainContainer from '../loading/LoadingMainContainer';
 import { transactionsActions } from './transactionsDuck';
 import BudgetForm from '../monthly-budget/BudgetForm';
-import { humanizeDatetime, currentDatetimeValue } from './dates';
+import { humanizeDatetime } from './dates';
 import CategoryIndicator from '../categories/CategoryIndicator';
 import { ViewportContext } from '../../app/contexts';
 import useBasicRequestData from '../../app/useBasicRequestData';
+import TransationDatetime from './TransactionDatetime';
 
 export default function TransactionsView() {
   const dispatch = useDispatch();
@@ -32,26 +33,12 @@ export default function TransactionsView() {
 
   const [isHelpVisible, setHelpVisible] = React.useState(false);
 
-  if (!window.chrome) {
-    return <UnsupportedBrowser />;
-  }
-
   if (transactionsState.isReadingAll) {
     return <LoadingMainContainer />;
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const formElement = event.target;
-    const creatingTransaction = {
-      name: formElement.name.value,
-      amount: formElement.amount.value,
-      type: formElement.type.value,
-      category: formElement.category.value,
-      datetime: formElement.datetime.value,
-    };
-    dispatch(transactionsActions.create(creatingTransaction, basicRequestData));
+  const handleSubmitData = (data) => {
+    dispatch(transactionsActions.create(data, basicRequestData));
   };
 
   const handleDelete = (transaction) => {
@@ -108,7 +95,7 @@ export default function TransactionsView() {
         <Card.Body>
           {transactionsState.items.length < 50 ? (
             <TransactionForm
-              onSubmit={handleSubmit}
+              onSubmitData={handleSubmitData}
               isLoading={transactionsState.isLoading}
               isCreating={transactionsState.isCreating}
             />
@@ -145,6 +132,9 @@ export default function TransactionsView() {
 function TransactionForm(props) {
   const { isMobile } = React.useContext(ViewportContext);
 
+  const [datetime, setDatetime] = useState(new Date());
+  const resetDatetime = useCallback(() => setDatetime(new Date()), []);
+
   const hasBudgetsToImport = useSelector(
     (state) => state.monthlyBudget.items.length > 0 || state.weeklyBudget.items.length > 0
   );
@@ -169,13 +159,24 @@ function TransactionForm(props) {
     });
   };
 
-  const handleSelectedBudgetEffect = (formRef) => {
-    formRef.current.datetime.value = currentDatetimeValue();
-  };
-
   const { uuid, ...budget } = props.budget || importedBudget || {};
   const isUpdateMode = !!(props.budget && props.budget.uuid);
   const idPrefix = isUpdateMode ? props.budget.uuid : 'form';
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = {
+      name: event.target.name.value,
+      amount: event.target.amount.value,
+      type: event.target.type.value,
+      category: event.target.category.value,
+      datetime: datetime.toISOString(),
+    };
+    props.onSubmitData(formData);
+
+    clearBudgetSelect();
+  };
 
   const getFormSubmitLabel = (isUpdateMode, isUpdating, isCreating) => {
     if (isUpdateMode) {
@@ -232,15 +233,15 @@ function TransactionForm(props) {
         {...props}
         budget={budget}
         getSubmitCustomLabel={getFormSubmitLabel}
-        onFormInit={handleSelectedBudgetEffect}
-        onSubmit={(...args) => props.onSubmit(...args) & clearBudgetSelect()}
+        onFormInit={resetDatetime}
+        onSubmit={handleSubmit}
       >
         <Form.Group as={Row} controlId={`${idPrefix}budgetDate`}>
           <Form.Label column sm={2}>
             Data:
           </Form.Label>
           <Col sm={10}>
-            <Form.Control type="datetime-local" name="datetime" required />
+            <TransationDatetime onChange={setDatetime} value={datetime} />
           </Col>
         </Form.Group>
       </BudgetForm>
@@ -372,29 +373,5 @@ function BudgetsSearcher({ onBudgetSelect }) {
         <p>Nada encontrado.</p>
       )}
     </div>
-  );
-}
-
-function UnsupportedBrowser() {
-  return (
-    <main className="container mt-2">
-      <header>
-        <h1>
-          Desculpe...
-          <br />
-          <small>Isso é constrangedor.</small>
-        </h1>
-      </header>
-      <p>Por ora, esta função funciona bem apenas no Google Chrome.</p>
-      <p>
-        Estamos em fase beta de testes. E o projeto é voluntário e free source.
-        <br />
-        Caso queira contribuir para melhorar isso,{' '}
-        <a href="https://github.com/mazuh/frifim" target="blank">
-          entre em contato
-        </a>
-        .
-      </p>
-    </main>
   );
 }

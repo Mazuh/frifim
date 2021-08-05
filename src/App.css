@@ -24,3 +24,13 @@ main.login-view,
 main.signup-view {
   margin-top: -40px;
 }
+
+.react-datetime-picker__wrapper {
+  color: #495057;
+  border: 0 !important;
+}
+
+.react-datetime-picker--open {
+  border: 1px solid #80bdff;
+  box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+}

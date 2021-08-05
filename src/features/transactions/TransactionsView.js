@@ -37,18 +37,8 @@ export default function TransactionsView() {
     return <LoadingMainContainer />;
   }
 
-  const handleSubmit = (transactionDate) => (event) => {
-    event.preventDefault();
-
-    const formElement = event.target;
-    const creatingTransaction = {
-      name: formElement.name.value,
-      amount: formElement.amount.value,
-      type: formElement.type.value,
-      category: formElement.category.value,
-      datetime: transactionDate || formElement.datetime.value,
-    };
-    dispatch(transactionsActions.create(creatingTransaction, basicRequestData));
+  const handleSubmitData = (data) => {
+    dispatch(transactionsActions.create(data, basicRequestData));
   };
 
   const handleDelete = (transaction) => {
@@ -105,7 +95,7 @@ export default function TransactionsView() {
         <Card.Body>
           {transactionsState.items.length < 50 ? (
             <TransactionForm
-              onSubmit={handleSubmit}
+              onSubmitData={handleSubmitData}
               isLoading={transactionsState.isLoading}
               isCreating={transactionsState.isCreating}
             />
@@ -142,8 +132,7 @@ export default function TransactionsView() {
 function TransactionForm(props) {
   const { isMobile } = React.useContext(ViewportContext);
 
-  const [transactionDate, setTransactionDate] = useState(new Date());
-  const handleChangeDate = React.useCallback(debounce(setTransactionDate, 200));
+  const [datetime, setDatetime] = useState(new Date());
 
   const hasBudgetsToImport = useSelector(
     (state) => state.monthlyBudget.items.length > 0 || state.weeklyBudget.items.length > 0
@@ -172,6 +161,21 @@ function TransactionForm(props) {
   const { uuid, ...budget } = props.budget || importedBudget || {};
   const isUpdateMode = !!(props.budget && props.budget.uuid);
   const idPrefix = isUpdateMode ? props.budget.uuid : 'form';
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = {
+      name: event.target.name.value,
+      amount: event.target.amount.value,
+      type: event.target.type.value,
+      category: event.target.category.value,
+      datetime: datetime.toISOString(),
+    };
+    props.onSubmitData(formData);
+
+    clearBudgetSelect();
+  };
 
   const getFormSubmitLabel = (isUpdateMode, isUpdating, isCreating) => {
     if (isUpdateMode) {
@@ -228,14 +232,14 @@ function TransactionForm(props) {
         {...props}
         budget={budget}
         getSubmitCustomLabel={getFormSubmitLabel}
-        onSubmit={(...args) => props.onSubmit(transactionDate)(...args) & clearBudgetSelect()}
+        onSubmit={handleSubmit}
       >
         <Form.Group as={Row} controlId={`${idPrefix}budgetDate`}>
           <Form.Label column sm={2}>
             Data:
           </Form.Label>
           <Col sm={10}>
-            <TransationDatetime onChange={handleChangeDate} value={transactionDate} />
+            <TransationDatetime onChange={setDatetime} value={datetime} />
           </Col>
         </Form.Group>
       </BudgetForm>

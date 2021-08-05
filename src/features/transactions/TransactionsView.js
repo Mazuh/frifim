@@ -241,7 +241,13 @@ function TransactionForm(props) {
             Data:
           </Form.Label>
           <Col sm={10}>
-            <TransationDatetime onChange={setDatetime} value={datetime} />
+            <TransationDatetime
+              onChange={setDatetime}
+              value={datetime}
+              clearIcon={null}
+              required
+              disableClock
+            />
           </Col>
         </Form.Group>
       </BudgetForm>

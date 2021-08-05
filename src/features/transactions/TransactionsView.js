@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import orderBy from 'lodash.orderby';
 import debounce from 'lodash.debounce';
 import uniqBy from 'lodash.uniqby';
@@ -133,6 +133,7 @@ function TransactionForm(props) {
   const { isMobile } = React.useContext(ViewportContext);
 
   const [datetime, setDatetime] = useState(new Date());
+  const resetDatetime = useCallback(() => setDatetime(new Date()), []);
 
   const hasBudgetsToImport = useSelector(
     (state) => state.monthlyBudget.items.length > 0 || state.weeklyBudget.items.length > 0
@@ -232,6 +233,7 @@ function TransactionForm(props) {
         {...props}
         budget={budget}
         getSubmitCustomLabel={getFormSubmitLabel}
+        onFormInit={resetDatetime}
         onSubmit={handleSubmit}
       >
         <Form.Group as={Row} controlId={`${idPrefix}budgetDate`}>

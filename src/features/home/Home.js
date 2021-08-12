@@ -119,7 +119,7 @@ export default function Home() {
             {hasFinantialData ? (
               <Card.Body>
                 <ul>
-                  <li>
+                  <li data-monthly="budget">
                     <BsCalendar className="mr-1" />
                     <strong>Total dos orçamentos: </strong>
                     <span className={monthlyBudgetCalcs.total.lessThan(0) ? 'text-danger' : ''}>

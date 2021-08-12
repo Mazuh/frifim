@@ -107,4 +107,8 @@ describe('home', () => {
 
     expect(container.getByText('R$ 550.00')).toBeVisible();
   });
+
+  it('calculates transactions correctly, with incomes and expenses', () => {
+    // TODO
+  });
 });

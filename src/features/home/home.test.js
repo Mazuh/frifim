@@ -105,7 +105,9 @@ describe('home', () => {
       </Provider>
     );
 
-    expect(container.getByText('R$ 550.00')).toBeVisible();
+    const budget = container.baseElement.querySelector('*[data-monthly="budget"]');
+    expect(budget).toBeVisible();
+    expect(budget.textContent).toBe('Total dos orçamentos: R$ 550.00');
   });
 
   it('calculates transactions correctly, with incomes and expenses', () => {

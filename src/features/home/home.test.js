@@ -39,7 +39,7 @@ jest.mock('./BudgetsChart', () => ({
 }));
 
 describe('home', () => {
-  it('remders', async () => {
+  it('renders', async () => {
     const container = render(
       <Provider store={makeConfiguredStore()}>
         <GlobalContextProvider>

@@ -22,6 +22,8 @@ const monthlyBudgetResource = makeReduxAssets({
   },
 });
 
+export const { plainActions: monthlyBudgetPlainActions } = monthlyBudgetResource;
+
 export const { actionThunks: monthlyBudgetActions } = monthlyBudgetResource;
 
 export default monthlyBudgetResource.reducer;

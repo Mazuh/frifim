@@ -51,7 +51,7 @@ jest.mock('firebase/app', () => ({
   },
 }));
 
-describe('/', () => {
+describe('auth', () => {
   beforeEach(() => {
     Redirect.mockClear();
     firebase.initializeApp.mock.results[0].value.auth.mockClear();

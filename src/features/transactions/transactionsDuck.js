@@ -26,6 +26,7 @@ const transactionsResource = makeReduxAssets({
   },
 });
 
-export const { actionThunks: transactionsActions } = transactionsResource;
+export const { actionThunks: transactionsActions, plainActions: monthlyTransactionsPlainActions } =
+  transactionsResource;
 
 export default transactionsResource.reducer;

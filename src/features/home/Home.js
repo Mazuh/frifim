@@ -119,14 +119,14 @@ export default function Home() {
             {hasFinantialData ? (
               <Card.Body>
                 <ul>
-                  <li data-monthly="budget">
+                  <li data-monthly-total="budgets">
                     <BsCalendar className="mr-1" />
                     <strong>Total dos orçamentos: </strong>
                     <span className={monthlyBudgetCalcs.total.lessThan(0) ? 'text-danger' : ''}>
                       R$ {monthlyBudgetCalcs.total.toFixed(2)}
                     </span>
                   </li>
-                  <li>
+                  <li data-monthly-total="transactions">
                     <BsArrowLeftRight className="mr-1" />
                     <strong>Total das transações: </strong>
                     <span className={transactionsCalcs.total.lessThan(0) ? 'text-danger' : ''}>

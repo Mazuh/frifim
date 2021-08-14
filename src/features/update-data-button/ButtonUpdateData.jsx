@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LastUpdateContext } from '../../app/contexts';
 import useBasicRequestData from '../../app/useBasicRequestData';
 import { categoriesActions } from '../categories/categoriesDuck';
@@ -8,10 +8,15 @@ import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { transactionsActions } from '../transactions/transactionsDuck';
 import { weeklyBudgetActions } from '../weekly-budget/weeklyBudgetDuck';
 
+const RESOURCES = ['transactions', 'monthlyBudget', 'weeklyBudget', 'categories', 'projects'];
+
 export default function ButtonUpdateData({ className }) {
   const dispatch = useDispatch();
   const { setLastUpdate } = React.useContext(LastUpdateContext);
   const [disabled, setDisabled] = React.useState(false);
+  const messages = useSelector((state) =>
+    RESOURCES.map((resource) => state[resource].currentMessage)
+  );
   const basicRequestData = useBasicRequestData();
 
   const handleUpdateData = () => {
@@ -20,7 +25,11 @@ export default function ButtonUpdateData({ className }) {
     dispatch(weeklyBudgetActions.readAll(basicRequestData));
     dispatch(transactionsActions.readAll(basicRequestData));
     setDisabled(true);
-    setLastUpdate(new Date().toLocaleString());
+    const isAnyError = messages.some((message) => !message || message.isError);
+
+    if (!isAnyError) {
+      setLastUpdate(new Date().toLocaleString());
+    }
   };
 
   React.useEffect(() => {

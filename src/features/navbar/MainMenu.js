@@ -20,8 +20,9 @@ import { logout } from '../auth/authDuck';
 import ProjectSelector from '../projects/ProjectSelector';
 import PeriodSelector from '../periods/PeriodSelector';
 import LastUpdateFlag from '../last-update-flag/LastUpdateFlag';
+import ButtonUpdateData from '../update-data-button/ButtonUpdateData';
 
-export default function MainMenu({ handleUpdateData }) {
+export default function MainMenu() {
   const dispatch = useDispatch();
   const isAuthorized = useSelector((s) => s.auth.isAuthorized);
   const history = useHistory();
@@ -114,9 +115,7 @@ export default function MainMenu({ handleUpdateData }) {
         <br />
         <LastUpdateFlag className="mr-2 text-light" />
         <br />
-        <Button className="mr-2" variant="secondary" onClick={handleUpdateData}>
-          <span>Atualizar dados</span>
-        </Button>
+        <ButtonUpdateData className="mr-2" />
         <br />
         <br />
         <PeriodSelector className="mr-2" />

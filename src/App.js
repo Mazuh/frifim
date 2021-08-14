@@ -22,7 +22,7 @@ import { transactionsActions } from './features/transactions/transactionsDuck';
 import LoginView from './features/auth/LoginView';
 import useBasicRequestData from './app/useBasicRequestData';
 import { projectsActions } from './features/projects/projectsDuck';
-import { LastUpdateContext, ProjectContext } from './app/contexts';
+import { ProjectContext } from './app/contexts';
 import LoadingMainContainer from './features/loading/LoadingMainContainer';
 import SignupView from './features/auth/SignupView';
 import firebaseApp from './app/firebase-configs';
@@ -33,7 +33,6 @@ import HelpView from './features/help/HelpView';
 export default function App() {
   const dispatch = useDispatch();
   const { project, setProject } = React.useContext(ProjectContext);
-  const { setLastUpdate } = React.useContext(LastUpdateContext);
   const lastSelectedProject = useSelector((state) =>
     state.projects.items.length && state.auth.lastSelectedProjectUuid
       ? state.projects.items.find((it) => it.uuid === state.auth.lastSelectedProjectUuid)
@@ -42,14 +41,6 @@ export default function App() {
   const defaultProject = useSelector((state) => state.projects.items[0]);
   const isProjectsLoading = useSelector((state) => state.projects.isLoading);
   const basicRequestData = useBasicRequestData();
-
-  const readAllData = React.useCallback(() => {
-    setLastUpdate(new Date().toLocaleString());
-    dispatch(categoriesActions.readAll(basicRequestData));
-    dispatch(monthlyBudgetActions.readAll(basicRequestData));
-    dispatch(weeklyBudgetActions.readAll(basicRequestData));
-    dispatch(transactionsActions.readAll(basicRequestData));
-  }, [dispatch, basicRequestData, setLastUpdate]);
 
   React.useEffect(() => {
     if (!basicRequestData.user) {
@@ -73,7 +64,10 @@ export default function App() {
       return;
     }
 
-    readAllData();
+    dispatch(categoriesActions.readAll(basicRequestData));
+    dispatch(monthlyBudgetActions.readAll(basicRequestData));
+    dispatch(weeklyBudgetActions.readAll(basicRequestData));
+    dispatch(transactionsActions.readAll(basicRequestData));
   }, [
     dispatch,
     basicRequestData,
@@ -81,7 +75,6 @@ export default function App() {
     lastSelectedProject,
     defaultProject,
     setProject,
-    readAllData,
   ]);
 
   React.useEffect(() => {
@@ -100,7 +93,7 @@ export default function App() {
   return (
     <ErrorGuard>
       <BrowserRouter>
-        <MainMenu handleUpdateData={readAllData} />
+        <MainMenu />
         <Page>
           <Switch>
             <ProtectedRoute exact path="/ajuda">

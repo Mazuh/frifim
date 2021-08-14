@@ -8,7 +8,7 @@ import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { transactionsActions } from '../transactions/transactionsDuck';
 import { weeklyBudgetActions } from '../weekly-budget/weeklyBudgetDuck';
 
-const ButtonUpdateData = ({ className }) => {
+export default function ButtonUpdateData({ className }) {
   const dispatch = useDispatch();
   const { setLastUpdate } = React.useContext(LastUpdateContext);
   const basicRequestData = useBasicRequestData();
@@ -26,6 +26,4 @@ const ButtonUpdateData = ({ className }) => {
       <span>Atualizar dados</span>
     </Button>
   );
-};
-
-export default ButtonUpdateData;
+}

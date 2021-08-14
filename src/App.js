@@ -42,6 +42,13 @@ export default function App() {
   const isProjectsLoading = useSelector((state) => state.projects.isLoading);
   const basicRequestData = useBasicRequestData();
 
+  const readAllData = React.useCallback(() => {
+    dispatch(categoriesActions.readAll(basicRequestData));
+    dispatch(monthlyBudgetActions.readAll(basicRequestData));
+    dispatch(weeklyBudgetActions.readAll(basicRequestData));
+    dispatch(transactionsActions.readAll(basicRequestData));
+  }, [dispatch, basicRequestData]);
+
   React.useEffect(() => {
     if (!basicRequestData.user) {
       return;
@@ -64,10 +71,7 @@ export default function App() {
       return;
     }
 
-    dispatch(categoriesActions.readAll(basicRequestData));
-    dispatch(monthlyBudgetActions.readAll(basicRequestData));
-    dispatch(weeklyBudgetActions.readAll(basicRequestData));
-    dispatch(transactionsActions.readAll(basicRequestData));
+    readAllData();
   }, [
     dispatch,
     basicRequestData,
@@ -75,6 +79,7 @@ export default function App() {
     lastSelectedProject,
     defaultProject,
     setProject,
+    readAllData,
   ]);
 
   React.useEffect(() => {
@@ -93,7 +98,7 @@ export default function App() {
   return (
     <ErrorGuard>
       <BrowserRouter>
-        <MainMenu />
+        <MainMenu handleUpdateData={readAllData} />
         <Page>
           <Switch>
             <ProtectedRoute exact path="/ajuda">

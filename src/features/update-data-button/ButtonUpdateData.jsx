@@ -11,18 +11,35 @@ import { weeklyBudgetActions } from '../weekly-budget/weeklyBudgetDuck';
 export default function ButtonUpdateData({ className }) {
   const dispatch = useDispatch();
   const { setLastUpdate } = React.useContext(LastUpdateContext);
+  const [disabled, setDisabled] = React.useState(false);
   const basicRequestData = useBasicRequestData();
 
   const handleUpdateData = () => {
-    setLastUpdate(new Date().toLocaleString());
     dispatch(categoriesActions.readAll(basicRequestData));
     dispatch(monthlyBudgetActions.readAll(basicRequestData));
     dispatch(weeklyBudgetActions.readAll(basicRequestData));
     dispatch(transactionsActions.readAll(basicRequestData));
+    setDisabled(true);
+    setLastUpdate(new Date().toLocaleString());
   };
 
+  React.useEffect(() => {
+    if (!disabled) return;
+
+    const disabledTimeout = setTimeout(() => {
+      setDisabled(false);
+    }, 10000);
+
+    return () => clearTimeout(disabledTimeout);
+  }, [disabled]);
+
   return (
-    <Button className={className} variant="secondary" onClick={handleUpdateData}>
+    <Button
+      className={className}
+      variant="secondary"
+      disabled={disabled}
+      onClick={handleUpdateData}
+    >
       <span>Atualizar dados</span>
     </Button>
   );

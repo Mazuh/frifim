@@ -6,6 +6,8 @@ export const MonthContext = React.createContext();
 
 export const ProjectContext = React.createContext();
 
+export const LastUpdateContext = React.createContext();
+
 export default function GlobalContextProvider({ children }) {
   const isMobile = window.innerWidth <= 575;
 
@@ -13,11 +15,15 @@ export default function GlobalContextProvider({ children }) {
 
   const [project, setProject] = React.useState(null);
 
+  const [lastUpdate, setLastUpdate] = React.useState('');
+
   return (
     <ViewportContext.Provider value={{ isMobile }}>
       <MonthContext.Provider value={{ month, setMonth }}>
         <ProjectContext.Provider value={{ project, setProject }}>
-          {children}
+          <LastUpdateContext.Provider value={{ lastUpdate, setLastUpdate }}>
+            {children}
+          </LastUpdateContext.Provider>
         </ProjectContext.Provider>
       </MonthContext.Provider>
     </ViewportContext.Provider>

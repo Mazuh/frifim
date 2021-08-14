@@ -19,12 +19,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../auth/authDuck';
 import ProjectSelector from '../projects/ProjectSelector';
 import PeriodSelector from '../periods/PeriodSelector';
+import { LastUpdateContext } from '../../app/contexts';
 
 export default function MainMenu({ handleUpdateData }) {
   const dispatch = useDispatch();
   const isAuthorized = useSelector((s) => s.auth.isAuthorized);
   const history = useHistory();
   const location = useLocation();
+  const { lastUpdate } = React.useContext(LastUpdateContext);
 
   const [isExpanded, setExpanded] = React.useState(false);
 
@@ -111,9 +113,16 @@ export default function MainMenu({ handleUpdateData }) {
           )}
         </Nav>
         <br />
-        <Button className="mx-2" onClick={handleUpdateData}>
+        {lastUpdate && (
+          <>
+            <span className="mr-2 text-light">Última atualização: {lastUpdate}</span>
+            <br />
+          </>
+        )}
+        <Button className="mr-2" variant="secondary" onClick={handleUpdateData}>
           <span>Atualizar dados</span>
         </Button>
+        <br />
         <br />
         <PeriodSelector className="mr-2" />
         <br />

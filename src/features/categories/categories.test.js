@@ -5,7 +5,7 @@ import { makeConfiguredStore } from '../../app/store';
 import GlobalContextProvider from '../../app/contexts';
 import CategoriesView from './CategoriesView';
 
-describe('should render without error', () => {
+describe('categories', () => {
   it('renders', async () => {
     const container = render(
       <Provider store={makeConfiguredStore()}>
@@ -16,4 +16,4 @@ describe('should render without error', () => {
     );
     expect(container.getByText('Categorias')).toBeVisible();
   });
-})
+});

@@ -40,4 +40,4 @@ export const defaultCategories = [
     name: 'Lazer',
     color: '#EBE7E0',
   },
-]
+];

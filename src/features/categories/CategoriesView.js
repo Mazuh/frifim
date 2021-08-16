@@ -16,7 +16,6 @@ import { categoriesActions } from './categoriesDuck';
 import useBasicRequestData from '../../app/useBasicRequestData';
 import { defaultCategories } from './constants';
 
-
 export default function CategoriesView() {
   const dispatch = useDispatch();
   const categoriesState = useSelector((s) => s.categories);
@@ -40,7 +39,7 @@ export default function CategoriesView() {
     event.target.reset();
   };
 
-  const addCategorySuggested = suggestedCategory =>
+  const addCategorySuggested = (suggestedCategory) =>
     dispatch(categoriesActions.create(suggestedCategory, basicRequestData));
 
   const handleDelete = (category) => {
@@ -129,23 +128,26 @@ export default function CategoriesView() {
 }
 
 function CategoryForm({
-    onSubmit,
-    addCategorySuggested,
-    isLoading,
-    isCreating,
-    categories: existingCategories,
-  }) {
+  onSubmit,
+  addCategorySuggested,
+  isLoading,
+  isCreating,
+  categories: existingCategories,
+}) {
   const typeaheadRef = useRef();
 
   const handleSubmit = (...props) => {
     onSubmit(...props);
     typeaheadRef.current.clear();
-  }
+  };
 
-  const filteredCategories = defaultCategories.filter(category =>
-    !existingCategories.some(existingCategory =>
-      existingCategory.name.toLowerCase() === category.name.toLocaleLowerCase()
-    ));
+  const filteredCategories = defaultCategories.filter(
+    (category) =>
+      !existingCategories.some(
+        (existingCategory) =>
+          existingCategory.name.toLowerCase() === category.name.toLocaleLowerCase()
+      )
+  );
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -172,7 +174,7 @@ function CategoryForm({
           Sugestões:
         </Form.Label>
         <Col sm={10}>
-          {filteredCategories.map(category => (
+          {filteredCategories.map((category) => (
             <Badge
               role="button"
               key={category.name}

@@ -17,21 +17,27 @@ export const FLOW_TYPES = Object.freeze([INCOME_TYPE, EXPENSE_TYPE]);
 
 export const defaultCategories = [
   {
-    name: 'Moradia'
+    name: 'Moradia',
+    color: '#A569BD',
   },
   {
-    name: 'Transporte'
+    name: 'Transporte',
+    color: '#48C9B0 ',
   },
   {
-    name: 'Educação'
+    name: 'Educação',
+    color: '#3498DB',
   },
   {
-    name: 'Alimentaçao'
+    name: 'Alimentaçao',
+    color: '#E67E22',
   },
   {
-    name: 'Saúde'
+    name: 'Saúde',
+    color: '#E74C3C',
   },
   {
-    name: 'Lazer'
+    name: 'Lazer',
+    color: '#F4D03F',
   },
 ]

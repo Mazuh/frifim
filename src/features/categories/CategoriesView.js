@@ -8,6 +8,7 @@ import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Badge from 'react-bootstrap/Badge';
 import { BsPlusSquare, BsTrash, BsTable, BsTagFill } from 'react-icons/bs';
 import { useSelector, useDispatch } from 'react-redux';
 import LoadingMainContainer from '../loading/LoadingMainContainer';
@@ -38,6 +39,9 @@ export default function CategoriesView() {
 
     event.target.reset();
   };
+
+  const addCategorySuggested = suggestedCategory =>
+    dispatch(categoriesActions.create(suggestedCategory, basicRequestData));
 
   const handleDelete = (category) => {
     if (window.confirm(`Deletar categoria "${category.name}"?`)) {
@@ -89,6 +93,7 @@ export default function CategoriesView() {
           {categoriesState.items.length < 10 ? (
             <CategoryForm
               onSubmit={handleSubmit}
+              addCategorySuggested={addCategorySuggested}
               isLoading={categoriesState.isLoading}
               isCreating={categoriesState.isCreating}
               categories={categoriesState.items}
@@ -125,15 +130,22 @@ export default function CategoriesView() {
 
 function CategoryForm({
     onSubmit,
+    addCategorySuggested,
     isLoading,
     isCreating,
     categories: existingCategories,
   }) {
-  const typeaheadRef = useRef()
+  const typeaheadRef = useRef();
+
   const handleSubmit = (...props) => {
     onSubmit(...props);
     typeaheadRef.current.clear();
   }
+
+  const filteredCategories = defaultCategories.filter(category =>
+    !existingCategories.some(existingCategory =>
+      existingCategory.name.toLowerCase() === category.name.toLocaleLowerCase()
+    ));
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -151,12 +163,26 @@ function CategoryForm({
             autoComplete="off"
             required
             labelKey="name"
-            options={defaultCategories.filter(category =>
-              !existingCategories.some(existingCategory =>
-                existingCategory.name.toLowerCase() === category.name.toLocaleLowerCase()
-              )
-            )}
+            options={filteredCategories}
           />
+        </Col>
+      </Form.Group>
+      <Form.Group as={Row} controlId="formSuggestion">
+        <Form.Label column sm={2}>
+          Sugestões:
+        </Form.Label>
+        <Col sm={10}>
+          {filteredCategories.map(category => (
+            <Badge
+              href="#"
+              key={category.name}
+              style={{ backgroundColor: category.color, margin: '10px', cursor: 'pointer' }}
+              onClick={() => addCategorySuggested(category)}
+              pill
+            >
+              {category.name}
+            </Badge>
+          ))}
         </Col>
       </Form.Group>
       <Form.Group as={Row} controlId="formColor">

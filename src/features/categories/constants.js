@@ -14,3 +14,33 @@ export const EXPENSE_TYPE = Object.freeze({
 });
 
 export const FLOW_TYPES = Object.freeze([INCOME_TYPE, EXPENSE_TYPE]);
+
+export const defaultCategories = [
+  {
+    name: 'Moradia',
+    color: '#F5793A',
+    textColor: '#fff',
+  },
+  {
+    name: 'Transporte',
+    color: '#A95AA1',
+    textColor: '#fff',
+  },
+  {
+    name: 'Educação',
+    color: '#85C0F9',
+  },
+  {
+    name: 'Alimentaçao',
+    color: '#ABC3C9',
+  },
+  {
+    name: 'Saúde',
+    color: '#63ACBE',
+    textColor: '#fff',
+  },
+  {
+    name: 'Lazer',
+    color: '#EBE7E0',
+  },
+];

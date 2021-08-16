@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Card from 'react-bootstrap/Card';
+import { Typeahead } from 'react-bootstrap-typeahead';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -7,11 +8,13 @@ import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Badge from 'react-bootstrap/Badge';
 import { BsPlusSquare, BsTrash, BsTable, BsTagFill } from 'react-icons/bs';
 import { useSelector, useDispatch } from 'react-redux';
 import LoadingMainContainer from '../loading/LoadingMainContainer';
 import { categoriesActions } from './categoriesDuck';
 import useBasicRequestData from '../../app/useBasicRequestData';
+import { defaultCategories } from './constants';
 
 export default function CategoriesView() {
   const dispatch = useDispatch();
@@ -35,6 +38,9 @@ export default function CategoriesView() {
 
     event.target.reset();
   };
+
+  const addCategorySuggested = (suggestedCategory) =>
+    dispatch(categoriesActions.create(suggestedCategory, basicRequestData));
 
   const handleDelete = (category) => {
     if (window.confirm(`Deletar categoria "${category.name}"?`)) {
@@ -86,8 +92,10 @@ export default function CategoriesView() {
           {categoriesState.items.length < 10 ? (
             <CategoryForm
               onSubmit={handleSubmit}
+              addCategorySuggested={addCategorySuggested}
               isLoading={categoriesState.isLoading}
               isCreating={categoriesState.isCreating}
+              categories={categoriesState.items}
             />
           ) : (
             <span>
@@ -119,20 +127,66 @@ export default function CategoriesView() {
   );
 }
 
-function CategoryForm({ onSubmit, isLoading, isCreating }) {
+function CategoryForm({
+  onSubmit,
+  addCategorySuggested,
+  isLoading,
+  isCreating,
+  categories: existingCategories,
+}) {
+  const typeaheadRef = useRef();
+
+  const handleSubmit = (event) => {
+    event.persist();
+    onSubmit(event);
+    typeaheadRef.current.clear();
+  };
+
+  const filteredCategories = defaultCategories.filter(
+    (category) =>
+      !existingCategories.some(
+        (existingCategory) =>
+          existingCategory.name.trim().toLowerCase() === category.name.trim().toLowerCase()
+      )
+  );
+
   return (
-    <Form onSubmit={onSubmit}>
+    <Form onSubmit={handleSubmit}>
+      <Form.Group as={Row} controlId="formSuggestion">
+        <Form.Label column sm={2}>
+          Sugestões:
+        </Form.Label>
+        <Col sm={10}>
+          {filteredCategories.map((category) => (
+            <Badge
+              role="button"
+              key={category.name}
+              className="cursor-pointer p-2"
+              style={{ backgroundColor: category.color, color: category.textColor, margin: '10px' }}
+              onClick={() => addCategorySuggested(category)}
+              pill
+            >
+              {category.name}
+            </Badge>
+          ))}
+        </Col>
+      </Form.Group>
       <Form.Group as={Row} controlId="formCategoryName">
         <Form.Label column sm={2}>
           Nome:
         </Form.Label>
         <Col sm={10}>
-          <Form.Control
+          <Typeahead
+            ref={typeaheadRef}
             placeholder="Etiqueta curta para orçamentos e transações."
-            name="name"
+            inputProps={{ name: 'name' }}
+            id="typeahead"
             maxLength={25}
             autoComplete="off"
             required
+            labelKey="name"
+            open={filteredCategories.length ? undefined : false}
+            options={filteredCategories}
           />
         </Col>
       </Form.Group>

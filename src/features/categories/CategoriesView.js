@@ -174,9 +174,10 @@ function CategoryForm({
         <Col sm={10}>
           {filteredCategories.map(category => (
             <Badge
-              href="#"
+              role="button"
               key={category.name}
-              style={{ backgroundColor: category.color, margin: '10px', cursor: 'pointer' }}
+              className="cursor-pointer"
+              style={{ backgroundColor: category.color, margin: '10px' }}
               onClick={() => addCategorySuggested(category)}
               pill
             >

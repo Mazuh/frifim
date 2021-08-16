@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Card from 'react-bootstrap/Card';
+import { Typeahead } from 'react-bootstrap-typeahead';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -12,6 +13,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import LoadingMainContainer from '../loading/LoadingMainContainer';
 import { categoriesActions } from './categoriesDuck';
 import useBasicRequestData from '../../app/useBasicRequestData';
+import { defaultCategories } from './constants';
+
 
 export default function CategoriesView() {
   const dispatch = useDispatch();
@@ -88,6 +91,7 @@ export default function CategoriesView() {
               onSubmit={handleSubmit}
               isLoading={categoriesState.isLoading}
               isCreating={categoriesState.isCreating}
+              categories={categoriesState.items}
             />
           ) : (
             <span>
@@ -119,20 +123,39 @@ export default function CategoriesView() {
   );
 }
 
-function CategoryForm({ onSubmit, isLoading, isCreating }) {
+function CategoryForm({
+    onSubmit,
+    isLoading,
+    isCreating,
+    categories: existingCategories,
+  }) {
+  const typeaheadRef = useRef()
+  const handleSubmit = (...props) => {
+    onSubmit(...props);
+    typeaheadRef.current.clear();
+  }
+
   return (
-    <Form onSubmit={onSubmit}>
+    <Form onSubmit={handleSubmit}>
       <Form.Group as={Row} controlId="formCategoryName">
         <Form.Label column sm={2}>
           Nome:
         </Form.Label>
         <Col sm={10}>
-          <Form.Control
+          <Typeahead
+            ref={typeaheadRef}
             placeholder="Etiqueta curta para orçamentos e transações."
-            name="name"
+            inputProps={{ name: 'name' }}
+            id="typeahead"
             maxLength={25}
             autoComplete="off"
             required
+            labelKey="name"
+            options={defaultCategories.filter(category =>
+              !existingCategories.some(existingCategory =>
+                existingCategory.name.toLowerCase() === category.name.toLocaleLowerCase()
+              )
+            )}
           />
         </Col>
       </Form.Group>

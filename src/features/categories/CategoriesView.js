@@ -136,8 +136,9 @@ function CategoryForm({
 }) {
   const typeaheadRef = useRef();
 
-  const handleSubmit = (...props) => {
-    onSubmit(...props);
+  const handleSubmit = (event) => {
+    event.persist();
+    onSubmit(event);
     typeaheadRef.current.clear();
   };
 
@@ -145,12 +146,31 @@ function CategoryForm({
     (category) =>
       !existingCategories.some(
         (existingCategory) =>
-          existingCategory.name.toLowerCase() === category.name.toLocaleLowerCase()
+          existingCategory.name.trim().toLowerCase() === category.name.trim().toLowerCase()
       )
   );
 
   return (
     <Form onSubmit={handleSubmit}>
+      <Form.Group as={Row} controlId="formSuggestion">
+        <Form.Label column sm={2}>
+          Sugestões:
+        </Form.Label>
+        <Col sm={10}>
+          {filteredCategories.map((category) => (
+            <Badge
+              role="button"
+              key={category.name}
+              className="cursor-pointer p-2"
+              style={{ backgroundColor: category.color, color: category.textColor, margin: '10px' }}
+              onClick={() => addCategorySuggested(category)}
+              pill
+            >
+              {category.name}
+            </Badge>
+          ))}
+        </Col>
+      </Form.Group>
       <Form.Group as={Row} controlId="formCategoryName">
         <Form.Label column sm={2}>
           Nome:
@@ -165,27 +185,9 @@ function CategoryForm({
             autoComplete="off"
             required
             labelKey="name"
+            open={filteredCategories.length ? undefined : false}
             options={filteredCategories}
           />
-        </Col>
-      </Form.Group>
-      <Form.Group as={Row} controlId="formSuggestion">
-        <Form.Label column sm={2}>
-          Sugestões:
-        </Form.Label>
-        <Col sm={10}>
-          {filteredCategories.map((category) => (
-            <Badge
-              role="button"
-              key={category.name}
-              className="cursor-pointer"
-              style={{ backgroundColor: category.color, margin: '10px' }}
-              onClick={() => addCategorySuggested(category)}
-              pill
-            >
-              {category.name}
-            </Badge>
-          ))}
         </Col>
       </Form.Group>
       <Form.Group as={Row} controlId="formColor">

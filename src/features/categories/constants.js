@@ -19,10 +19,12 @@ export const defaultCategories = [
   {
     name: 'Moradia',
     color: '#F5793A',
+    textColor: '#fff',
   },
   {
     name: 'Transporte',
-    color: '#A95AA1 ',
+    color: '#A95AA1',
+    textColor: '#fff',
   },
   {
     name: 'Educação',
@@ -35,6 +37,7 @@ export const defaultCategories = [
   {
     name: 'Saúde',
     color: '#63ACBE',
+    textColor: '#fff',
   },
   {
     name: 'Lazer',

@@ -29,7 +29,7 @@ export default function ButtonUpdateData({ className }) {
     const isAnyError = messages.some((message) => !message || message.isError);
 
     if (!isAnyError) {
-      setLastUpdate(new Date().toLocaleString());
+      setLastUpdate(new Date());
     }
   };
 

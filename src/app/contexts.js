@@ -15,7 +15,7 @@ export default function GlobalContextProvider({ children }) {
 
   const [project, setProject] = React.useState(null);
 
-  const [lastUpdate, setLastUpdate] = React.useState('');
+  const [lastUpdate, setLastUpdate] = React.useState(new Date());
 
   return (
     <ViewportContext.Provider value={{ isMobile }}>

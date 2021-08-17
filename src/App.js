@@ -4,6 +4,7 @@ import './App.css';
 import './app/fixtures';
 import React from 'react';
 import { Route, Switch, BrowserRouter, Redirect, Link } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsExclamationTriangle } from 'react-icons/bs';
 import ProtectedRoute from './features/auth/ProtectedRoute';
@@ -29,6 +30,8 @@ import firebaseApp from './app/firebase-configs';
 import { expireSession } from './features/auth/authDuck';
 import ProjectView from './features/projects/ProjectView';
 import HelpView from './features/help/HelpView';
+import LastUpdateFlag from './features/last-update-flag/LastUpdateFlag';
+import ButtonUpdateData from './features/update-data-button/ButtonUpdateData';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -149,7 +152,15 @@ const useAllResourceToasts = () => {
 function Page(props) {
   useAllResourceToasts();
 
-  return <div className="mt-4 pt-5" {...props} />;
+  return (
+    <div className="mt-4 pt-5">
+      <Container className="d-flex flex-row-reverse align-items-end mt-2">
+        <ButtonUpdateData />
+        <LastUpdateFlag className="mr-2" />
+      </Container>
+      <div {...props} />
+    </div>
+  );
 }
 
 class ErrorGuard extends React.PureComponent {

@@ -19,8 +19,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../auth/authDuck';
 import ProjectSelector from '../projects/ProjectSelector';
 import PeriodSelector from '../periods/PeriodSelector';
-import LastUpdateFlag from '../last-update-flag/LastUpdateFlag';
-import ButtonUpdateData from '../update-data-button/ButtonUpdateData';
 
 export default function MainMenu() {
   const dispatch = useDispatch();
@@ -112,11 +110,6 @@ export default function MainMenu() {
             )
           )}
         </Nav>
-        <br />
-        <LastUpdateFlag className="mr-2 text-light" />
-        <br />
-        <ButtonUpdateData className="mr-2" />
-        <br />
         <br />
         <PeriodSelector className="mr-2" />
         <br />

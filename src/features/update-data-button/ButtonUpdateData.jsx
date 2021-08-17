@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
+import { BsArrowRepeat } from 'react-icons/bs';
 import { LastUpdateContext } from '../../app/contexts';
 import useBasicRequestData from '../../app/useBasicRequestData';
 import { categoriesActions } from '../categories/categoriesDuck';
@@ -44,12 +45,13 @@ export default function ButtonUpdateData({ className }) {
 
   return (
     <Button
-      className={className}
+      className={`d-flex align-items-center ${className}`}
       variant="secondary"
       disabled={disabled}
       onClick={handleUpdateData}
     >
-      <span>Atualizar dados</span>
+      <BsArrowRepeat className="mr-1" title="Atualizar dados" />
+      <span>Atualizar</span>
     </Button>
   );
 }

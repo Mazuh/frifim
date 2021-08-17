@@ -6,5 +6,5 @@ export default function LastUpdateFlag({ className }) {
 
   if (!lastUpdate) return <></>;
 
-  return <span className={className}>Última atualização: {lastUpdate}</span>;
+  return <small className={`text-muted ${className}`}>Última atualização: {lastUpdate}</small>;
 }

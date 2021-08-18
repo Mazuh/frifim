@@ -24,7 +24,6 @@ export default function useSelectorForMonthlyBudgetStatus() {
     },
     { totalEachWeeklyIncomes: Decimal(0), totalEachWeeklyExpenses: Decimal(0) }
   );
-  console.log(weeklyBudgetState);
 
   const { onlyMonthlyIncomes, onlyMonthlyExpenses } = monthlyBudgetState.items.reduce(
     (acc, monthlyBudget) => {

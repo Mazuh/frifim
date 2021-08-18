@@ -10,7 +10,7 @@ export function getWeekdaysOccurences(weekDayIndex) {
     date.setDate(date.getDate() + 1);
   }
 
-  // Get all the others occurences of the wanted weekday
+  // Get all the occurences of the wanted weekday
   while (date.getMonth() === month) {
     weekDaysOccurences.push(new Date(date.getTime()));
     date.setDate(date.getDate() + 7);

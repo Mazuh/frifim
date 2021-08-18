@@ -3,7 +3,8 @@ export function getWeekdaysOccurences(weekDayIndex) {
   const month = date.getMonth();
   const weekDaysOccurences = [];
 
-  date.setDate(weekDayIndex);
+  // Set the first day of the current month
+  date.setDate(1);
 
   // Get the first occurrence of the wanted weekday in the current month
   while (date.getDay() !== weekDayIndex) {

@@ -1,7 +1,7 @@
 export function getWeekdaysOccurences(weekDayIndex) {
   const date = new Date();
   const month = date.getMonth();
-  const weekDaysOccurences = [];
+  var weekDaysOccurences = 0;
 
   // Set the first day of the current month
   date.setDate(1);
@@ -13,9 +13,9 @@ export function getWeekdaysOccurences(weekDayIndex) {
 
   // Get all the occurences of the wanted weekday
   while (date.getMonth() === month) {
-    weekDaysOccurences.push(new Date(date.getTime()));
+    weekDaysOccurences += 1;
     date.setDate(date.getDate() + 7);
   }
 
-  return weekDaysOccurences.length;
+  return weekDaysOccurences;
 }

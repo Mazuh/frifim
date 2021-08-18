@@ -6,7 +6,7 @@ export function getWeekdaysOccurences(weekDayIndex) {
   // Set the first day of the current month
   date.setDate(1);
 
-  // Get the first occurrence of the wanted weekday in the current month
+  // Set the first occurrence of the wanted weekday in the current month
   while (date.getDay() !== weekDayIndex) {
     date.setDate(date.getDate() + 1);
   }

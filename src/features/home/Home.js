@@ -1,5 +1,7 @@
 import React from 'react';
 import get from 'lodash.get';
+import groupBy from 'lodash.groupby';
+import Decimal from 'decimal.js';
 import { useDispatch, useSelector } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -23,6 +25,7 @@ import { weeklyBudgetActions } from '../weekly-budget/weeklyBudgetDuck';
 import BudgetsChart from './BudgetsChart';
 
 export default function Home() {
+  window.groupBy = groupBy;
   const dispatch = useDispatch();
 
   const history = useHistory();
@@ -49,6 +52,11 @@ export default function Home() {
     Object.keys(state).some((slice) => slice !== 'projects' && state[slice].isLoading)
   );
   const monthlySituation = useSelectorForMonthlyBudgetStatus();
+  const { onlyMonthlyIncomes, onlyWeeklyIncomes } = monthlySituation;
+  console.log(
+    'groupIncomesAmountsByCategories',
+    groupIncomesAmountsByCategories(onlyMonthlyIncomes, onlyWeeklyIncomes)
+  );
   const transactions = useSelector((state) => state.transactions.items);
 
   if (isLoading) {
@@ -209,4 +217,19 @@ export default function Home() {
       </Row>
     </Container>
   );
+}
+
+function groupIncomesAmountsByCategories(monthlyBudgetIncomes, weeklyBudgetIncomes) {
+  const allBudgetItems = monthlyBudgetIncomes.concat(weeklyBudgetIncomes);
+
+  const incomesGroupebByCategories = groupBy(allBudgetItems, 'category');
+
+  return Object.keys(incomesGroupebByCategories).reduce((groupedAmounts, categoryId) => {
+    const categoryAmount = incomesGroupebByCategories[categoryId].reduce(
+      (amount, income) => Decimal(amount).plus(income.amount).toFixed(2),
+      0
+    );
+    groupedAmounts[categoryId] = categoryAmount;
+    return groupedAmounts;
+  }, {});
 }

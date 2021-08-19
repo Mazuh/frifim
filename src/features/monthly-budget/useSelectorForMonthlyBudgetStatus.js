@@ -1,5 +1,6 @@
 import Decimal from 'decimal.js';
 import { useSelector } from 'react-redux';
+import { getWeekdaysOccurences } from '../../utils/weekly-budget-utils';
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 
 export default function useSelectorForMonthlyBudgetStatus() {
@@ -8,10 +9,15 @@ export default function useSelectorForMonthlyBudgetStatus() {
 
   const { totalEachWeeklyIncomes, totalEachWeeklyExpenses } = weeklyBudgetState.items.reduce(
     (acc, weeklyBudget) => {
+      const weekDayOccurences = getWeekdaysOccurences(weeklyBudget.day);
       if (weeklyBudget.type === INCOME_TYPE.value) {
-        acc.totalEachWeeklyIncomes = acc.totalEachWeeklyIncomes.plus(weeklyBudget.amount);
+        acc.totalEachWeeklyIncomes = acc.totalEachWeeklyIncomes.plus(
+          Decimal(weeklyBudget.amount).times(weekDayOccurences)
+        );
       } else if (weeklyBudget.type === EXPENSE_TYPE.value) {
-        acc.totalEachWeeklyExpenses = acc.totalEachWeeklyExpenses.plus(weeklyBudget.amount);
+        acc.totalEachWeeklyExpenses = acc.totalEachWeeklyExpenses.plus(
+          Decimal(weeklyBudget.amount).times(weekDayOccurences)
+        );
       }
 
       return acc;
@@ -39,10 +45,10 @@ export default function useSelectorForMonthlyBudgetStatus() {
     monthlyBudgetSize: onlyMonthlyIncomes.length + onlyMonthlyExpenses.length,
     onlyMonthlyIncomes,
     totalEachWeeklyIncomes,
-    totalWeeklyIncomes: totalEachWeeklyIncomes.times(4),
+    totalWeeklyIncomes: totalEachWeeklyIncomes,
     onlyMonthlyExpenses,
     totalEachWeeklyExpenses,
-    totalWeeklyExpenses: totalEachWeeklyExpenses.times(4),
+    totalWeeklyExpenses: totalEachWeeklyExpenses,
     isLoading: monthlyBudgetState.isLoading || weeklyBudgetState.isLoading,
     isCreating: monthlyBudgetState.isCreating || weeklyBudgetState.isCreating,
     isReadingAll: monthlyBudgetState.isReadingAll || weeklyBudgetState.isReadingAll,

@@ -21,7 +21,10 @@ import useProjectPeriods, { periodToString } from '../periods/useProjectPeriods'
 import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { weeklyBudgetActions } from '../weekly-budget/weeklyBudgetDuck';
 import BudgetsChart from './BudgetsChart';
-import { groupIncomesAmountsByCategories } from '../../utils/categories-utils';
+import {
+  groupExpensesAmountsByCategories,
+  groupIncomesAmountsByCategories,
+} from '../../utils/categories-utils';
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -50,10 +53,15 @@ export default function Home() {
     Object.keys(state).some((slice) => slice !== 'projects' && state[slice].isLoading)
   );
   const monthlySituation = useSelectorForMonthlyBudgetStatus();
-  const { onlyMonthlyIncomes, onlyWeeklyIncomes } = monthlySituation;
+  const { onlyMonthlyIncomes, onlyWeeklyIncomes, onlyMonthlyExpenses, onlyWeeklyExpenses } =
+    monthlySituation;
   console.log(
     'groupIncomesAmountsByCategories',
     groupIncomesAmountsByCategories(onlyMonthlyIncomes, onlyWeeklyIncomes)
+  );
+  console.log(
+    'groupExpensesAmountsByCategories',
+    groupExpensesAmountsByCategories(onlyMonthlyExpenses, onlyWeeklyExpenses)
   );
   const transactions = useSelector((state) => state.transactions.items);
 

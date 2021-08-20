@@ -20,3 +20,22 @@ export function groupIncomesAmountsByCategories(monthlyBudgetIncomes, weeklyBudg
     return groupedAmounts;
   }, {});
 }
+
+export function groupExpensesAmountsByCategories(monthlyBudgetExpenses, weeklyBudgetExpenses) {
+  const weeklyExpensesTotals = weeklyBudgetExpenses.map((expense) => {
+    const amountInTheMonth = Decimal(expense.amount).times(getWeekdaysOccurences(expense.day));
+    return { ...expense, amount: amountInTheMonth };
+  });
+  const allBudgetExpenses = monthlyBudgetExpenses.concat(weeklyExpensesTotals);
+
+  const expensesGroupebByCategories = groupBy(allBudgetExpenses, 'category');
+
+  return Object.keys(expensesGroupebByCategories).reduce((groupedAmounts, categoryId) => {
+    const categoryAmount = expensesGroupebByCategories[categoryId].reduce(
+      (amount, expense) => Decimal(amount).plus(expense.amount).toFixed(2),
+      0
+    );
+    groupedAmounts[categoryId] = categoryAmount;
+    return groupedAmounts;
+  }, {});
+}

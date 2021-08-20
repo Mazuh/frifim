@@ -25,6 +25,7 @@ import {
   groupExpensesAmountsByCategories,
   groupIncomesAmountsByCategories,
 } from '../../utils/categories-utils';
+import RelevantsCategoriesCart from './RelevantsCategoriesCart';
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -204,21 +205,34 @@ export default function Home() {
           </Card>
         </Col>
         <Col as="section" md={4}>
-          <Card>
-            <Card.Header className="bg-dark text-light">
-              <Card.Title as="h2">
-                <BsPieChartFill /> Em breve...
-              </Card.Title>
-            </Card.Header>
-            <Card.Body>
-              <Card.Text>
-                <strong>Aguarde novas atualizações!</strong> Haverá mais gráficos, como estatisticas
-                de categorias mais usadas (tanto linha de orçamento quanto de transações), dias do
-                mês com picos de transações (gráfico de linha) e quanto de valor ainda pode ser
-                transacionado antes alcançar o orçado.
-              </Card.Text>
-            </Card.Body>
-          </Card>
+          {hasFinantialData && (
+            <>
+              <Row>
+                <Col>
+                  <RelevantsCategoriesCart
+                    cardIcon={<BsPieChartFill />}
+                    cardTitle="Receitas"
+                    groupedAmountsByCategory={groupIncomesAmountsByCategories(
+                      onlyMonthlyIncomes,
+                      onlyWeeklyIncomes
+                    )}
+                  />
+                </Col>
+              </Row>
+              <Row className="pt-3">
+                <Col>
+                  <RelevantsCategoriesCart
+                    cardIcon={<BsPieChartFill />}
+                    cardTitle="Dispesas"
+                    groupedAmountsByCategory={groupExpensesAmountsByCategories(
+                      onlyMonthlyExpenses,
+                      onlyWeeklyExpenses
+                    )}
+                  />
+                </Col>
+              </Row>
+            </>
+          )}
         </Col>
       </Row>
     </Container>

@@ -16,9 +16,9 @@ export function groupIncomesAmountsByCategories(monthlyBudgetIncomes, weeklyBudg
       (amount, income) => Decimal(amount).plus(income.amount).toFixed(2),
       0
     );
-    groupedAmounts[categoryId] = categoryAmount;
+    groupedAmounts.push({ category: categoryId, amount: categoryAmount });
     return groupedAmounts;
-  }, {});
+  }, []);
 }
 
 export function groupExpensesAmountsByCategories(monthlyBudgetExpenses, weeklyBudgetExpenses) {
@@ -35,7 +35,7 @@ export function groupExpensesAmountsByCategories(monthlyBudgetExpenses, weeklyBu
       (amount, expense) => Decimal(amount).plus(expense.amount).toFixed(2),
       0
     );
-    groupedAmounts[categoryId] = categoryAmount;
+    groupedAmounts.push({ category: categoryId, amount: categoryAmount });
     return groupedAmounts;
-  }, {});
+  }, []);
 }

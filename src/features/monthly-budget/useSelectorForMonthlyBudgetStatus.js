@@ -9,7 +9,7 @@ export default function useSelectorForMonthlyBudgetStatus() {
 
   const { totalEachWeeklyIncomes, totalEachWeeklyExpenses } = weeklyBudgetState.items.reduce(
     (acc, weeklyBudget) => {
-      const weekDayOccurences = getWeekdaysOccurences(weeklyBudget.day);
+      const weekDayOccurences = getWeekdaysOccurences(weeklyBudget);
       if (weeklyBudget.type === INCOME_TYPE.value) {
         acc.totalEachWeeklyIncomes = acc.totalEachWeeklyIncomes.plus(
           Decimal(weeklyBudget.amount).times(weekDayOccurences)

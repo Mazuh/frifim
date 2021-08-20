@@ -1,13 +1,16 @@
-export function getWeekdaysOccurences(weekDayIndex) {
+export function getWeekdaysOccurences(weeklyBudget) {
+  // Set the first day of the budget month
   const date = new Date();
-  const month = date.getMonth();
-  var weekDaysOccurences = 0;
-
-  // Set the first day of the current month
   date.setDate(1);
+  date.setMonth(weeklyBudget.month);
+  date.setYear(weeklyBudget.year);
 
-  // Set the first occurrence of the wanted weekday in the current month
-  while (date.getDay() !== weekDayIndex) {
+  const month = date.getMonth();
+
+  let weekDaysOccurences = 0;
+
+  // Set the first occurrence of the wanted weekday in the budget month
+  while (date.getDay() !== weeklyBudget.day) {
     date.setDate(date.getDate() + 1);
   }
 

@@ -7,6 +7,7 @@ import Home from './Home';
 import { monthlyBudgetPlainActions } from '../monthly-budget/monthlyBudgetDuck';
 import { monthlyTransactionsPlainActions } from '../transactions/transactionsDuck';
 import { weeklyBudgetPlainActions } from '../weekly-budget/weeklyBudgetDuck';
+import MockDate from 'mockdate';
 
 jest.mock('react-router-dom', () => ({
   Redirect: jest.fn(() => <div />),
@@ -41,7 +42,11 @@ jest.mock('./BudgetsChart', () => ({
 }));
 
 describe('home', () => {
-  it('renders', async () => {
+  beforeEach(() => {
+    MockDate.set(new Date('08/19/2021'));
+  });
+
+  it('renders', () => {
     const container = render(
       <Provider store={makeConfiguredStore()}>
         <GlobalContextProvider>
@@ -298,5 +303,40 @@ describe('home', () => {
     const budget = container.baseElement.querySelector('*[data-monthly-total="budgets"]');
     expect(budget).toBeVisible();
     expect(budget.textContent).toBe('Total dos orçamentos: R$ 300.40');
+  });
+
+  it('weekly incomes will be consider the month of the income on calcs, not the month of the system', () => {
+    const septemberHumanizedDate = '09/19/2021';
+    MockDate.set(new Date(septemberHumanizedDate));
+
+    const augustIndex = 7;
+    const incomeWithFiveOccurencesInAugustButFourInSeptember = {
+      name: 'Freela extra',
+      type: 'income',
+      amount: '100',
+      category: '',
+      day: 1,
+      month: augustIndex,
+      year: 2021,
+      project: 'ndBPE5akhKHBcbtHdzce',
+      uuid: 'B261OiZRozfyWHumsgLX',
+    };
+
+    const store = makeConfiguredStore();
+    store.dispatch(
+      weeklyBudgetPlainActions.setRead(null, [incomeWithFiveOccurencesInAugustButFourInSeptember])
+    );
+
+    const container = render(
+      <Provider store={store}>
+        <GlobalContextProvider>
+          <Home />
+        </GlobalContextProvider>
+      </Provider>
+    );
+
+    expect(container.baseElement.querySelector('*[data-monthly-total="budgets"]').textContent).toBe(
+      'Total dos orçamentos: R$ 500.00'
+    );
   });
 });

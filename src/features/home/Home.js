@@ -25,7 +25,7 @@ import {
   groupExpensesAmountsByCategories,
   groupIncomesAmountsByCategories,
 } from '../../utils/categories-utils';
-import RelevantsCategoriesCart from './RelevantsCategoriesCart';
+import RelevantsCategoriesCard from './RelevantsCategoriesCard';
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 
 export default function Home() {
@@ -57,14 +57,6 @@ export default function Home() {
   const monthlySituation = useSelectorForMonthlyBudgetStatus();
   const { onlyMonthlyIncomes, onlyWeeklyIncomes, onlyMonthlyExpenses, onlyWeeklyExpenses } =
     monthlySituation;
-  console.log(
-    'groupIncomesAmountsByCategories',
-    groupIncomesAmountsByCategories(onlyMonthlyIncomes, onlyWeeklyIncomes)
-  );
-  console.log(
-    'groupExpensesAmountsByCategories',
-    groupExpensesAmountsByCategories(onlyMonthlyExpenses, onlyWeeklyExpenses)
-  );
   const transactions = useSelector((state) => state.transactions.items);
 
   if (isLoading) {
@@ -210,7 +202,7 @@ export default function Home() {
             <>
               <Row>
                 <Col>
-                  <RelevantsCategoriesCart
+                  <RelevantsCategoriesCard
                     cardIcon={<INCOME_TYPE.Icon />}
                     cardTitle="Receitas"
                     groupedAmountsByCategory={groupIncomesAmountsByCategories(
@@ -222,7 +214,7 @@ export default function Home() {
               </Row>
               <Row className="pt-3">
                 <Col>
-                  <RelevantsCategoriesCart
+                  <RelevantsCategoriesCard
                     cardIcon={<EXPENSE_TYPE.Icon />}
                     cardTitle="Dispesas"
                     groupedAmountsByCategory={groupExpensesAmountsByCategories(

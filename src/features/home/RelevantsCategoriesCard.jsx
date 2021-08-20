@@ -3,7 +3,7 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import { useSelector } from 'react-redux';
 
-export default function RelevantsCategoriesCart({ cardTitle, cardIcon, groupedAmountsByCategory }) {
+export default function RelevantsCategoriesCard({ cardTitle, cardIcon, groupedAmountsByCategory }) {
   const categories = useSelector((state) => state.categories.items);
   return (
     <Card>

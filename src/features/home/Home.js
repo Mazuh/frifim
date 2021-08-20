@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import { BsArrowLeftRight, BsBarChartFill, BsCalendar, BsPieChartFill } from 'react-icons/bs';
+import { BsArrowLeftRight, BsBarChartFill, BsCalendar } from 'react-icons/bs';
 import { useHistory } from 'react-router';
 import Dropdown from 'react-bootstrap/Dropdown';
 import LoadingMainContainer from '../loading/LoadingMainContainer';
@@ -26,6 +26,7 @@ import {
   groupIncomesAmountsByCategories,
 } from '../../utils/categories-utils';
 import RelevantsCategoriesCart from './RelevantsCategoriesCart';
+import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -210,7 +211,7 @@ export default function Home() {
               <Row>
                 <Col>
                   <RelevantsCategoriesCart
-                    cardIcon={<BsPieChartFill />}
+                    cardIcon={<INCOME_TYPE.Icon />}
                     cardTitle="Receitas"
                     groupedAmountsByCategory={groupIncomesAmountsByCategories(
                       onlyMonthlyIncomes,
@@ -222,7 +223,7 @@ export default function Home() {
               <Row className="pt-3">
                 <Col>
                   <RelevantsCategoriesCart
-                    cardIcon={<BsPieChartFill />}
+                    cardIcon={<EXPENSE_TYPE.Icon />}
                     cardTitle="Dispesas"
                     groupedAmountsByCategory={groupExpensesAmountsByCategories(
                       onlyMonthlyExpenses,

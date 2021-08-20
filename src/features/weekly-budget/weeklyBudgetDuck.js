@@ -22,6 +22,7 @@ const weeklyBudgetResource = makeReduxAssets({
   },
 });
 
-export const { actionThunks: weeklyBudgetActions } = weeklyBudgetResource;
+export const { actionThunks: weeklyBudgetActions, plainActions: weeklyBudgetPlainActions } =
+  weeklyBudgetResource;
 
 export default weeklyBudgetResource.reducer;

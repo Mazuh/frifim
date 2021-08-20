@@ -1,11 +1,13 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import MockDate from 'mockdate';
 import { makeConfiguredStore } from '../../app/store';
 import GlobalContextProvider from '../../app/contexts';
 import Home from './Home';
 import { monthlyBudgetPlainActions } from '../monthly-budget/monthlyBudgetDuck';
 import { monthlyTransactionsPlainActions } from '../transactions/transactionsDuck';
+import { weeklyBudgetPlainActions } from '../weekly-budget/weeklyBudgetDuck';
 
 jest.mock('react-router-dom', () => ({
   Redirect: jest.fn(() => <div />),
@@ -40,7 +42,11 @@ jest.mock('./BudgetsChart', () => ({
 }));
 
 describe('home', () => {
-  it('renders', async () => {
+  beforeEach(() => {
+    MockDate.set(new Date('08/19/2021'));
+  });
+
+  it('renders', () => {
     const container = render(
       <Provider store={makeConfiguredStore()}>
         <GlobalContextProvider>
@@ -169,5 +175,168 @@ describe('home', () => {
     const budget = container.baseElement.querySelector('*[data-monthly-total="transactions"]');
     expect(budget).toBeVisible();
     expect(budget.textContent).toBe('Total das transações: R$ 550.15');
+  });
+
+  it('weekly incomes will be considered on monthly summary multiplied by how many week days such month has', () => {
+    const store = makeConfiguredStore();
+
+    const incomeWithFiveOccurencesInGivenMonth = {
+      name: 'Freela extra',
+      type: 'income',
+      amount: '100',
+      category: '',
+      day: 1,
+      month: 7,
+      year: 2021,
+      project: 'ndBPE5akhKHBcbtHdzce',
+      uuid: 'B261OiZRozfyWHumsgLX',
+    };
+    store.dispatch(weeklyBudgetPlainActions.setRead(null, [incomeWithFiveOccurencesInGivenMonth]));
+
+    const container = render(
+      <Provider store={store}>
+        <GlobalContextProvider>
+          <Home />
+        </GlobalContextProvider>
+      </Provider>
+    );
+
+    const budget = container.baseElement.querySelector('*[data-monthly-total="budgets"]');
+    expect(budget).toBeVisible();
+    expect(budget.textContent).toBe('Total dos orçamentos: R$ 500.00');
+  });
+
+  it('weekly expenses will be considered on monthly summary multiplied by how many week days such month has', () => {
+    const store = makeConfiguredStore();
+
+    const expenseWithFourOccurencesInGivenMonth = {
+      name: 'Lanche',
+      type: 'expense',
+      amount: '50',
+      category: '',
+      day: 5,
+      month: 7,
+      year: 2021,
+      project: 'ndBPE5akhKHBcbtHdzce',
+      uuid: 'RRw1l5Pi4N7hVNGTcbQu',
+    };
+    store.dispatch(weeklyBudgetPlainActions.setRead(null, [expenseWithFourOccurencesInGivenMonth]));
+
+    const container = render(
+      <Provider store={store}>
+        <GlobalContextProvider>
+          <Home />
+        </GlobalContextProvider>
+      </Provider>
+    );
+
+    const budget = container.baseElement.querySelector('*[data-monthly-total="budgets"]');
+    expect(budget).toBeVisible();
+    expect(budget.textContent).toBe('Total dos orçamentos: R$ -200.00');
+  });
+
+  it('several weekly budgets will impact summary calculations along with existing monthly data', () => {
+    const store = makeConfiguredStore();
+
+    store.dispatch(
+      monthlyBudgetPlainActions.setRead(null, [
+        {
+          name: 'Sorte',
+          type: 'income',
+          amount: '0.50',
+          category: '',
+          year: 2021,
+          month: 7,
+          project: 'ndBPE5akhKHBcbtHdzce',
+          uuid: 'CqnTV257JrveuEA73UST',
+        },
+        {
+          name: 'Azar',
+          type: 'expense',
+          amount: '0.10',
+          category: '',
+          year: 2021,
+          month: 7,
+          project: 'ndBPE5akhKHBcbtHdzce',
+          uuid: '6pJkoUjqIXAvpsSkg9py',
+        },
+      ])
+    );
+
+    const incomeWithFiveOccurencesInGivenMonth = {
+      name: 'Freela extra',
+      type: 'income',
+      amount: '100',
+      category: '',
+      day: 1,
+      month: 7,
+      year: 2021,
+      project: 'ndBPE5akhKHBcbtHdzce',
+      uuid: 'B261OiZRozfyWHumsgLX',
+    };
+    const expenseWithFourOccurencesInGivenMonth = {
+      name: 'Lanche',
+      type: 'expense',
+      amount: '50',
+      category: '',
+      day: 5,
+      month: 7,
+      year: 2021,
+      project: 'ndBPE5akhKHBcbtHdzce',
+      uuid: 'RRw1l5Pi4N7hVNGTcbQu',
+    };
+    store.dispatch(
+      weeklyBudgetPlainActions.setRead(null, [
+        incomeWithFiveOccurencesInGivenMonth,
+        expenseWithFourOccurencesInGivenMonth,
+      ])
+    );
+
+    const container = render(
+      <Provider store={store}>
+        <GlobalContextProvider>
+          <Home />
+        </GlobalContextProvider>
+      </Provider>
+    );
+
+    const budget = container.baseElement.querySelector('*[data-monthly-total="budgets"]');
+    expect(budget).toBeVisible();
+    expect(budget.textContent).toBe('Total dos orçamentos: R$ 300.40');
+  });
+
+  it('weekly incomes will be consider the month of the income on calcs, not the month of the system', () => {
+    const septemberHumanizedDate = '09/19/2021';
+    MockDate.set(new Date(septemberHumanizedDate));
+
+    const augustIndex = 7;
+    const incomeWithFiveOccurencesInAugustButFourInSeptember = {
+      name: 'Freela extra',
+      type: 'income',
+      amount: '100',
+      category: '',
+      day: 1,
+      month: augustIndex,
+      year: 2021,
+      project: 'ndBPE5akhKHBcbtHdzce',
+      uuid: 'B261OiZRozfyWHumsgLX',
+    };
+
+    const store = makeConfiguredStore();
+    store.dispatch(
+      weeklyBudgetPlainActions.setRead(null, [incomeWithFiveOccurencesInAugustButFourInSeptember])
+    );
+
+    const container = render(
+      <Provider store={store}>
+        <GlobalContextProvider>
+          <Home />
+        </GlobalContextProvider>
+      </Provider>
+    );
+
+    expect(container.baseElement.querySelector('*[data-monthly-total="budgets"]').textContent).toBe(
+      'Total dos orçamentos: R$ 500.00'
+    );
   });
 });

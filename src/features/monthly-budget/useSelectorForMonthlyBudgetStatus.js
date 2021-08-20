@@ -1,6 +1,6 @@
 import Decimal from 'decimal.js';
 import { useSelector } from 'react-redux';
-import { getWeekdaysOccurences } from '../../utils/weekly-budget-utils';
+import { getWeekdaysOccurences } from '../weekly-budget/weekly-budget-calcs';
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 
 export default function useSelectorForMonthlyBudgetStatus() {
@@ -9,7 +9,7 @@ export default function useSelectorForMonthlyBudgetStatus() {
 
   const { totalEachWeeklyIncomes, totalEachWeeklyExpenses } = weeklyBudgetState.items.reduce(
     (acc, weeklyBudget) => {
-      const weekDayOccurences = getWeekdaysOccurences(weeklyBudget.day);
+      const weekDayOccurences = getWeekdaysOccurences(weeklyBudget);
       if (weeklyBudget.type === INCOME_TYPE.value) {
         acc.totalEachWeeklyIncomes = acc.totalEachWeeklyIncomes.plus(
           Decimal(weeklyBudget.amount).times(weekDayOccurences)

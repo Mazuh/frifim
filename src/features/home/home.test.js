@@ -1,13 +1,13 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import MockDate from 'mockdate';
 import { makeConfiguredStore } from '../../app/store';
 import GlobalContextProvider from '../../app/contexts';
 import Home from './Home';
 import { monthlyBudgetPlainActions } from '../monthly-budget/monthlyBudgetDuck';
 import { monthlyTransactionsPlainActions } from '../transactions/transactionsDuck';
 import { weeklyBudgetPlainActions } from '../weekly-budget/weeklyBudgetDuck';
-import MockDate from 'mockdate';
 
 jest.mock('react-router-dom', () => ({
   Redirect: jest.fn(() => <div />),

@@ -1,6 +1,6 @@
 import Decimal from 'decimal.js';
 import { useSelector } from 'react-redux';
-import { getWeekdaysOccurences } from '../../utils/weekly-budget-utils';
+import { getWeekdaysOccurences } from '../weekly-budget/weekly-budget-calcs';
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 
 export default function useSelectorForMonthlyBudgetStatus() {

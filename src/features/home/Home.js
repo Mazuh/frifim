@@ -117,7 +117,7 @@ export default function Home() {
         </p>
       </header>
       <Row>
-        <Col as="section" md={8}>
+        <Col as="section">
           <Card>
             <Card.Header className="bg-dark text-light">
               <Card.Title as="h2">
@@ -197,37 +197,31 @@ export default function Home() {
             )}
           </Card>
         </Col>
-        <Col as="section" md={4}>
-          {hasFinantialData && (
-            <>
-              <Row>
-                <Col>
-                  <RelevantsCategoriesCard
-                    cardIcon={<INCOME_TYPE.Icon />}
-                    cardTitle="Receitas"
-                    groupedAmountsByCategory={groupIncomesAmountsByCategories(
-                      onlyMonthlyIncomes,
-                      onlyWeeklyIncomes
-                    )}
-                  />
-                </Col>
-              </Row>
-              <Row className="pt-3">
-                <Col>
-                  <RelevantsCategoriesCard
-                    cardIcon={<EXPENSE_TYPE.Icon />}
-                    cardTitle="Dispesas"
-                    groupedAmountsByCategory={groupExpensesAmountsByCategories(
-                      onlyMonthlyExpenses,
-                      onlyWeeklyExpenses
-                    )}
-                  />
-                </Col>
-              </Row>
-            </>
-          )}
-        </Col>
       </Row>
+      {hasFinantialData && (
+        <Row>
+          <Col className="mt-3" as="section">
+            <RelevantsCategoriesCard
+              cardIcon={<INCOME_TYPE.Icon />}
+              cardTitle="Receitas"
+              groupedAmountsByCategory={groupIncomesAmountsByCategories(
+                onlyMonthlyIncomes,
+                onlyWeeklyIncomes
+              )}
+            />
+          </Col>
+          <Col className="mt-3" as="section">
+            <RelevantsCategoriesCard
+              cardIcon={<EXPENSE_TYPE.Icon />}
+              cardTitle="Dispesas"
+              groupedAmountsByCategory={groupExpensesAmountsByCategories(
+                onlyMonthlyExpenses,
+                onlyWeeklyExpenses
+              )}
+            />
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 }

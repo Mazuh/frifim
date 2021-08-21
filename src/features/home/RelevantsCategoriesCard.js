@@ -2,6 +2,7 @@ import Decimal from 'decimal.js';
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import { useSelector } from 'react-redux';
+import RelevantsCategoriesChart from './RelevantsCategoriesChart';
 
 export default function RelevantsCategoriesCard({ cardTitle, cardIcon, groupedAmountsByCategory }) {
   const categories = useSelector((state) => state.categories.items);
@@ -30,6 +31,10 @@ export default function RelevantsCategoriesCard({ cardTitle, cardIcon, groupedAm
               );
             })}
         </ol>
+        <RelevantsCategoriesChart
+          datasetName={cardTitle}
+          groupedAmountsByCategory={groupedAmountsByCategory}
+        />
       </Card.Body>
     </Card>
   );

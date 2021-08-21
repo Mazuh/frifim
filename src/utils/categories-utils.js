@@ -2,6 +2,7 @@ import Decimal from 'decimal.js';
 import groupBy from 'lodash.groupby';
 import { getWeekdaysOccurences } from '../features/weekly-budget/weekly-budget-calcs';
 
+// FIXME: It could be single function to group the incomes and expenses
 export function groupIncomesAmountsByCategories(monthlyBudgetIncomes, weeklyBudgetIncomes) {
   const weeklyIncomesTotals = weeklyBudgetIncomes.map((income) => {
     const amountInTheMonth = Decimal(income.amount).times(getWeekdaysOccurences(income));
@@ -23,6 +24,7 @@ export function groupIncomesAmountsByCategories(monthlyBudgetIncomes, weeklyBudg
   }, []);
 }
 
+// FIXME: It could be single function to group the incomes and expenses
 export function groupExpensesAmountsByCategories(monthlyBudgetExpenses, weeklyBudgetExpenses) {
   const weeklyExpensesTotals = weeklyBudgetExpenses.map((expense) => {
     const amountInTheMonth = Decimal(expense.amount).times(getWeekdaysOccurences(expense));

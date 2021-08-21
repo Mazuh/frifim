@@ -9,7 +9,9 @@ export function groupIncomesAmountsByCategories(monthlyBudgetIncomes, weeklyBudg
   });
   const allBudgetIncomes = monthlyBudgetIncomes.concat(weeklyIncomesTotals);
 
-  const incomesGroupebByCategories = groupBy(allBudgetIncomes, 'category');
+  const incomesGroupebByCategories = groupBy(allBudgetIncomes, (income) =>
+    !income.category ? 'Sem categoria' : income.category
+  );
 
   return Object.keys(incomesGroupebByCategories).reduce((groupedAmounts, categoryId) => {
     const categoryAmount = incomesGroupebByCategories[categoryId].reduce(
@@ -28,7 +30,9 @@ export function groupExpensesAmountsByCategories(monthlyBudgetExpenses, weeklyBu
   });
   const allBudgetExpenses = monthlyBudgetExpenses.concat(weeklyExpensesTotals);
 
-  const expensesGroupebByCategories = groupBy(allBudgetExpenses, 'category');
+  const expensesGroupebByCategories = groupBy(allBudgetExpenses, (expense) =>
+    !expense.category ? 'Sem categoria' : expense.category
+  );
 
   return Object.keys(expensesGroupebByCategories).reduce((groupedAmounts, categoryId) => {
     const categoryAmount = expensesGroupebByCategories[categoryId].reduce(

@@ -1,10 +1,10 @@
 import Decimal from 'decimal.js';
 import groupBy from 'lodash.groupby';
-import { getWeekdaysOccurences } from './weekly-budget-utils';
+import { getWeekdaysOccurences } from '../features/weekly-budget/weekly-budget-calcs';
 
 export function groupIncomesAmountsByCategories(monthlyBudgetIncomes, weeklyBudgetIncomes) {
   const weeklyIncomesTotals = weeklyBudgetIncomes.map((income) => {
-    const amountInTheMonth = Decimal(income.amount).times(getWeekdaysOccurences(income.day));
+    const amountInTheMonth = Decimal(income.amount).times(getWeekdaysOccurences(income));
     return { ...income, amount: amountInTheMonth };
   });
   const allBudgetIncomes = monthlyBudgetIncomes.concat(weeklyIncomesTotals);
@@ -23,7 +23,7 @@ export function groupIncomesAmountsByCategories(monthlyBudgetIncomes, weeklyBudg
 
 export function groupExpensesAmountsByCategories(monthlyBudgetExpenses, weeklyBudgetExpenses) {
   const weeklyExpensesTotals = weeklyBudgetExpenses.map((expense) => {
-    const amountInTheMonth = Decimal(expense.amount).times(getWeekdaysOccurences(expense.day));
+    const amountInTheMonth = Decimal(expense.amount).times(getWeekdaysOccurences(expense));
     return { ...expense, amount: amountInTheMonth };
   });
   const allBudgetExpenses = monthlyBudgetExpenses.concat(weeklyExpensesTotals);

@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 export default function RelevantsCategoriesCard({ cardTitle, cardIcon, groupedAmountsByCategory }) {
   const categories = useSelector((state) => state.categories.items);
+  console.log('blabla');
   return (
     <Card>
       <Card.Header className="bg-dark text-light">
@@ -23,7 +24,9 @@ export default function RelevantsCategoriesCard({ cardTitle, cardIcon, groupedAm
               );
               return (
                 <li key={income.category}>
-                  {`${currentCategory ? currentCategory.name : 'Sem categoria'} - ${income.amount}`}
+                  {`${currentCategory ? currentCategory.name : 'Sem categoria'}: R$ ${
+                    income.amount
+                  }`}
                 </li>
               );
             })}

@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 
 export default function RelevantsCategoriesCard({ cardTitle, cardIcon, groupedAmountsByCategory }) {
   const categories = useSelector((state) => state.categories.items);
-  console.log('blabla');
   return (
     <Card>
       <Card.Header className="bg-dark text-light">

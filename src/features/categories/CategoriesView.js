@@ -171,7 +171,7 @@ function CategoryForm({
                   color: category.textColor,
                   margin: '10px',
                 }}
-                onClick={() => addCategorySuggested(category)}
+                onClick={() => !isLoading && addCategorySuggested(category)}
                 pill
               >
                 {category.name}

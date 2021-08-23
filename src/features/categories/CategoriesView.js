@@ -152,25 +152,33 @@ function CategoryForm({
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Group as={Row} controlId="formSuggestion">
-        <Form.Label column sm={2}>
-          Sugestões:
-        </Form.Label>
-        <Col sm={10}>
-          {filteredCategories.map((category) => (
-            <Badge
-              role="button"
-              key={category.name}
-              className="cursor-pointer p-2"
-              style={{ backgroundColor: category.color, color: category.textColor, margin: '10px' }}
-              onClick={() => addCategorySuggested(category)}
-              pill
-            >
-              {category.name}
-            </Badge>
-          ))}
-        </Col>
-      </Form.Group>
+      {filteredCategories.length > 0 && (
+        <Form.Group as={Row} controlId="formSuggestion">
+          <Form.Label column sm={2}>
+            Sugestões:
+            <br />
+            <small className="text-muted">Clique para adicionar.</small>
+          </Form.Label>
+          <Col sm={10}>
+            {filteredCategories.map((category) => (
+              <Badge
+                role="button"
+                key={category.name}
+                className="cursor-pointer p-2"
+                style={{
+                  backgroundColor: category.color,
+                  color: category.textColor,
+                  margin: '10px',
+                }}
+                onClick={() => addCategorySuggested(category)}
+                pill
+              >
+                {category.name}
+              </Badge>
+            ))}
+          </Col>
+        </Form.Group>
+      )}
       <Form.Group as={Row} controlId="formCategoryName">
         <Form.Label column sm={2}>
           Nome:

@@ -51,13 +51,13 @@ export default function MonthlyBudgetView() {
     return <LoadingMainContainer />;
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event, amount) => {
     event.preventDefault();
 
     const creatingBudget = {
       name: event.target.name.value,
       type: event.target.type.value,
-      amount: event.target.amount.value,
+      amount,
       category: event.target.category.value,
       year: basicRequestData.year,
       month: basicRequestData.month,

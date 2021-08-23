@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import get from 'lodash.get';
+import NumberFormat from 'react-number-format';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -19,6 +20,7 @@ export default function BudgetForm({
   onFormInit,
   getSubmitCustomLabel,
 }) {
+  const [amountCurrency, setAmountCurrency] = useState(get(budget, 'amount'));
   const formRef = React.useRef();
   const isUpdateMode = !!(budget && budget.uuid);
 
@@ -48,8 +50,17 @@ export default function BudgetForm({
     }
   }, [onFormInit]);
 
+  const handleSubmit = (event) => {
+    if (!amountCurrency.value) {
+      return;
+    }
+
+    event.persist();
+    onSubmit(event, amountCurrency.value);
+  }
+
   return (
-    <Form ref={formRef} onSubmit={onSubmit}>
+    <Form ref={formRef} onSubmit={handleSubmit}>
       <Form.Group as={Row} controlId={`${idPrefix}budgetName`}>
         <Form.Label column sm={2}>
           Nome:
@@ -74,14 +85,17 @@ export default function BudgetForm({
             <InputGroup.Prepend>
               <InputGroup.Text>R$</InputGroup.Text>
             </InputGroup.Prepend>
-            <FormControl
-              type="number"
-              placeholder="Valor planejado (até 2 casas decimais para centavos)."
+            <NumberFormat
               name="amount"
-              step=".01"
-              min={0}
+              value={amountCurrency && amountCurrency.floatValue}
               defaultValue={get(budget, 'amount')}
-              required
+              onValueChange={(values) => setAmountCurrency(values)}
+              displayType={'input'}
+              fixedDecimalScale
+              decimalSeparator={','}
+              thousandSeparator={'.'}
+              decimalScale={2}
+              className="form-control"
             />
           </InputGroup>
         </Col>

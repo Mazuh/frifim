@@ -124,17 +124,16 @@ export default function Home() {
                     <BsCalendar className="mr-1" />
                     <strong>Total dos orçamentos: </strong>
                     <NumberFormat
-                      value={monthlyBudgetCalcs.total.toFixed()}
-                      defaultValue={monthlyBudgetCalcs.total.toFixed()}
+                      value={Number(monthlyBudgetCalcs.total)}
+                      defaultValue={Number(monthlyBudgetCalcs.total)}
                       displayType="text"
                       fixedDecimalScale
                       decimalSeparator={','}
                       thousandSeparator={'.'}
                       decimalScale={2}
-                      prefix={'R$ '}
                       renderText={value => (
                         <span className={monthlyBudgetCalcs.total.lessThan(0) ? 'text-danger' : ''}>
-                          {value}
+                          R$ {value}
                         </span>
                       )}
                     />
@@ -143,17 +142,16 @@ export default function Home() {
                     <BsArrowLeftRight className="mr-1" />
                     <strong>Total das transações: </strong>
                     <NumberFormat
-                      value={transactionsCalcs.total.toFixed()}
-                      defaultValue={transactionsCalcs.total.toFixed()}
+                      value={Number(transactionsCalcs.total)}
+                      defaultValue={Number(transactionsCalcs.total)}
                       displayType="text"
                       fixedDecimalScale
                       decimalSeparator={','}
                       thousandSeparator={'.'}
                       decimalScale={2}
-                      prefix={'R$ '}
                       renderText={value => (
                         <span className={transactionsCalcs.total.lessThan(0) ? 'text-danger' : ''}>
-                          {value}
+                          R$ {value}
                         </span>
                       )}
                     />

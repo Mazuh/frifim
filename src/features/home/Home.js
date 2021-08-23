@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import NumberFormat from 'react-number-format';
 import { BsArrowLeftRight, BsBarChartFill, BsCalendar, BsPieChartFill } from 'react-icons/bs';
 import { useHistory } from 'react-router';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -91,7 +92,7 @@ export default function Home() {
         );
       });
   };
-
+  console.log(monthlyBudgetCalcs)
   return (
     <Container as="main">
       <header className="d-flex justify-content-between align-items-center">
@@ -122,16 +123,40 @@ export default function Home() {
                   <li data-monthly-total="budgets">
                     <BsCalendar className="mr-1" />
                     <strong>Total dos orçamentos: </strong>
-                    <span className={monthlyBudgetCalcs.total.lessThan(0) ? 'text-danger' : ''}>
-                      R$ {monthlyBudgetCalcs.total.toFixed(2)}
-                    </span>
+                    <NumberFormat
+                      value={monthlyBudgetCalcs.total.toFixed()}
+                      defaultValue={monthlyBudgetCalcs.total.toFixed()}
+                      displayType="text"
+                      fixedDecimalScale
+                      decimalSeparator={','}
+                      thousandSeparator={'.'}
+                      decimalScale={2}
+                      prefix={'R$ '}
+                      renderText={value => (
+                        <span className={monthlyBudgetCalcs.total.lessThan(0) ? 'text-danger' : ''}>
+                          {value}
+                        </span>
+                      )}
+                    />
                   </li>
                   <li data-monthly-total="transactions">
                     <BsArrowLeftRight className="mr-1" />
                     <strong>Total das transações: </strong>
-                    <span className={transactionsCalcs.total.lessThan(0) ? 'text-danger' : ''}>
-                      R$ {transactionsCalcs.total.toFixed(2)}
-                    </span>
+                    <NumberFormat
+                      value={transactionsCalcs.total.toFixed()}
+                      defaultValue={transactionsCalcs.total.toFixed()}
+                      displayType="text"
+                      fixedDecimalScale
+                      decimalSeparator={','}
+                      thousandSeparator={'.'}
+                      decimalScale={2}
+                      prefix={'R$ '}
+                      renderText={value => (
+                        <span className={transactionsCalcs.total.lessThan(0) ? 'text-danger' : ''}>
+                          {value}
+                        </span>
+                      )}
+                    />
                   </li>
                 </ul>
                 <div className="mt-3">

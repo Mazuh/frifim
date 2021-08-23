@@ -16,11 +16,17 @@ export default function LastUpdateFlag({ className }) {
     return () => clearTimeout(lastUpdateTimeout);
   }, [lastUpdate, timeElapsed]);
 
-  if (!lastUpdate) return <></>;
+  if (!lastUpdate) {
+    return null;
+  }
+
+  const elapsedMinutes = new Decimal(timeElapsed).dividedBy(60);
 
   return (
     <small className={`text-muted ${className}`}>
-      Atualizado há {new Decimal(timeElapsed).dividedBy(60).toFixed(0)} minutos.
+      {elapsedMinutes.lessThan(1)
+        ? 'Atualizado há segundos.'
+        : `Atualizado há ${elapsedMinutes.toFixed(0)}min.`}
     </small>
   );
 }

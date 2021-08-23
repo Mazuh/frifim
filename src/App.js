@@ -154,9 +154,9 @@ function Page(props) {
 
   return (
     <div className="mt-4 pt-5">
-      <Container className="d-flex flex-row-reverse align-items-end mt-2">
-        <ButtonUpdateData />
+      <Container className="d-flex align-items-center justify-content-end mt-2">
         <LastUpdateFlag className="mr-2" />
+        <ButtonUpdateData />
       </Container>
       <div {...props} />
     </div>

@@ -51,7 +51,8 @@ export default function MonthlyBudgetView() {
     return <LoadingMainContainer />;
   }
 
-  const handleSubmit = (event, amount) => {
+  const handleSubmit = (data) => {
+    const { event, amount } = data;
     event.preventDefault();
 
     const creatingBudget = {
@@ -62,6 +63,7 @@ export default function MonthlyBudgetView() {
       year: basicRequestData.year,
       month: basicRequestData.month,
     };
+
     dispatch(monthlyBudgetActions.create(creatingBudget, basicRequestData));
 
     event.target.reset();

@@ -92,7 +92,7 @@ export default function Home() {
         );
       });
   };
-  console.log(monthlyBudgetCalcs)
+
   return (
     <Container as="main">
       <header className="d-flex justify-content-between align-items-center">

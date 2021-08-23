@@ -6,7 +6,6 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
 import FlowTypeSelectionFieldset from '../categories/FlowTypeSelectionFieldset';
 import CategorySelectorFieldset from '../categories/CategorySelectorFieldset';
 
@@ -56,7 +55,11 @@ export default function BudgetForm({
     }
 
     event.persist();
-    onSubmit(event, amountCurrency.value);
+
+    onSubmit({ 
+      event,
+      amount: amountCurrency.value
+    });
   }
 
   return (

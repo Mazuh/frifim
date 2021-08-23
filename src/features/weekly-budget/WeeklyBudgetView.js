@@ -63,7 +63,7 @@ export default function WeeklyBudgetView() {
           <h1>Orçamento semanal</h1>
         </Col>
         <Col xs="12" sm="auto">
-          <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-secondary">
+          <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-info">
             O que é isso?
           </Button>
           <Modal show={isHelpVisible} onHide={() => setHelpVisible(false)}>

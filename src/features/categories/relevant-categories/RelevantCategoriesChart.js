@@ -43,7 +43,7 @@ export default function RelevantCategoriesChart({ datasetName, groupedAmountsByC
 }
 
 function getChartSizeClass(dataLength) {
-  if (dataLength < 3) {
+  if (dataLength <= 3) {
     return 'relevance-chart-sm';
   }
 

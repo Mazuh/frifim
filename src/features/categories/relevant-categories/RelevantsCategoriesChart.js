@@ -3,6 +3,7 @@ import React from 'react';
 import { Chart } from 'frappe-charts';
 import { v4 as uuidv4 } from 'uuid';
 import { useSelector } from 'react-redux';
+import './relevantCategories.css';
 
 export default function RelevantsCategoriesChart({ datasetName, groupedAmountsByCategory }) {
   const chartRef = React.useRef(null);

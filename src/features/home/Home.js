@@ -22,7 +22,7 @@ import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { weeklyBudgetActions } from '../weekly-budget/weeklyBudgetDuck';
 import BudgetsChart from './BudgetsChart';
 import { groupAmountsByCategories } from '../../utils/categories-utils';
-import RelevantsCategoriesCard from './RelevantsCategoriesCard';
+import RelevantsCategoriesCard from '../categories/relevant-categories/RelevantsCategoriesCard';
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 
 export default function Home() {
@@ -200,7 +200,7 @@ export default function Home() {
           <Col className="mt-3" as="section">
             <RelevantsCategoriesCard
               cardIcon={<INCOME_TYPE.Icon />}
-              cardTitle="Receitas"
+              cardTitle={INCOME_TYPE.pluralLabel}
               groupedAmountsByCategory={groupAmountsByCategories(
                 onlyMonthlyIncomes,
                 onlyWeeklyIncomes
@@ -210,7 +210,7 @@ export default function Home() {
           <Col className="mt-3" as="section">
             <RelevantsCategoriesCard
               cardIcon={<EXPENSE_TYPE.Icon />}
-              cardTitle="Dispesas"
+              cardTitle={EXPENSE_TYPE.pluralLabel}
               groupedAmountsByCategory={groupAmountsByCategories(
                 onlyMonthlyExpenses,
                 onlyWeeklyExpenses

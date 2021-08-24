@@ -23,6 +23,12 @@ import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { weeklyBudgetActions } from '../weekly-budget/weeklyBudgetDuck';
 import BudgetsChart from './BudgetsChart';
 
+const renderNumberFormatText = total => amount => (
+  <span className={total.lessThan(0) ? 'text-danger' : ''}>
+    R$ {amount}
+  </span>
+);
+
 export default function Home() {
   const dispatch = useDispatch();
 
@@ -131,11 +137,7 @@ export default function Home() {
                       decimalSeparator={','}
                       thousandSeparator={'.'}
                       decimalScale={2}
-                      renderText={value => (
-                        <span className={monthlyBudgetCalcs.total.lessThan(0) ? 'text-danger' : ''}>
-                          R$ {value}
-                        </span>
-                      )}
+                      renderText={renderNumberFormatText(monthlyBudgetCalcs.total)}
                     />
                   </li>
                   <li data-monthly-total="transactions">
@@ -149,11 +151,7 @@ export default function Home() {
                       decimalSeparator={','}
                       thousandSeparator={'.'}
                       decimalScale={2}
-                      renderText={value => (
-                        <span className={transactionsCalcs.total.lessThan(0) ? 'text-danger' : ''}>
-                          R$ {value}
-                        </span>
-                      )}
+                      renderText={renderNumberFormatText(transactionsCalcs.total)}
                     />
                   </li>
                 </ul>

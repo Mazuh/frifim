@@ -6,6 +6,10 @@ import NumberFormat from 'react-number-format';
 import { BsPencilSquare, BsTrash } from 'react-icons/bs';
 import CategoryIndicator from '../categories/CategoryIndicator';
 
+const renderMoneyMuted = value => (
+  <><span className="text-muted">R$</span> {value}</>
+);
+
 export default function BudgetTable({
   items,
   onDelete,
@@ -105,9 +109,7 @@ export default function BudgetTable({
                   decimalSeparator={','}
                   thousandSeparator={'.'}
                   decimalScale={2}
-                  renderText={value => (
-                    <><span className="text-muted">R$</span> {value}</>
-                  )}
+                  renderText={renderMoneyMuted}
                 />
             </strong>
           </td>

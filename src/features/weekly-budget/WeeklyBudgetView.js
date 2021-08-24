@@ -68,16 +68,18 @@ export default function WeeklyBudgetView() {
             <Modal.Body>
               <p>
                 Semelhante ao orçamento mensal, são <strong>estimativas ou planejamentos</strong> de
-                fluxo de dinheiro, mas que se repetem <strong>toda semana</strong>. Ou seja, são
-                orçamentos que acontecem <strong>aproximadamente 4 vezes por mês</strong>.
+                fluxo de dinheiro, mas que se repetem <strong>toda semana</strong>.
               </p>
               <p>
                 Como exemplo de despesa semanal, talvez alguma feira que você faça toda
                 quarta-feira.
               </p>
               <p>
-                <strong>Atenção</strong>: o total de orçamento semanal irá aparecer magicamente no
-                orçamento do mês, já multiplicado por 4.
+                <strong>Atenção</strong>: o <strong>total</strong> de orçamento semanal irá aparecer
+                magicamente no <strong>orçamento do mês</strong>, já <strong>multiplicado</strong>{' '}
+                pela quantidade de vezes em que os dias se repetem no dado mês. Por exemplo, em um
+                mês que tem 5 segundas-feiras, um orçamento marcado na segunda-feira irá ser
+                multiplicado por 5 antes de ir para o orçamento mensal.
               </p>
             </Modal.Body>
           </Modal>

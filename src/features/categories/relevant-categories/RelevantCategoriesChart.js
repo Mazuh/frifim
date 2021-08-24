@@ -39,5 +39,17 @@ export default function RelevantCategoriesChart({ datasetName, groupedAmountsByC
     });
   }, [idSelector, categories, sortedAmounts, datasetName]);
 
-  return <div id={id} />;
+  return <div className={getChartSizeClass(sortedAmounts.length)} id={id} />;
+}
+
+function getChartSizeClass(dataLength) {
+  if (dataLength < 3) {
+    return 'relevance-chart-sm';
+  }
+
+  if (dataLength < 6) {
+    return 'relevance-chart-md';
+  }
+
+  return 'relevance-chart-lg';
 }

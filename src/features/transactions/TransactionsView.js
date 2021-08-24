@@ -66,7 +66,7 @@ export default function TransactionsView() {
             <Modal.Body>
               <p>
                 São <strong>operações realmente feitas</strong>, você pode registrar até o dia e
-                hora em que ocorreu. Ou seja, não são apenas orçamentos planejados.
+                hora em que ocorreu. Ou seja, não são só planos, mas são fatos.
               </p>
               <p>
                 Por exemplo, você pode ter orçado 200 reais como despesa energia elétrica, mas
@@ -78,9 +78,8 @@ export default function TransactionsView() {
                 receita de surpresa nas suas transações.
               </p>
               <p>
-                Registrar isso não é "obrigatório", mas te ajuda a descobrir em que momento você
-                fugiu dos planejamentos, para evitar que se repita ou guiar a reorganizar de
-                orçamentos.
+                Registrar isso te ajuda a descobrir em que momento você fugiu do orçamento, para que
+                você consiga parar um consumo inconsciente e reorganizar os planos.
               </p>
             </Modal.Body>
           </Modal>
@@ -163,19 +162,17 @@ function TransactionForm(props) {
   const isUpdateMode = !!(props.budget && props.budget.uuid);
   const idPrefix = isUpdateMode ? props.budget.uuid : 'form';
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const formData = {
-      name: event.target.name.value,
-      amount: event.target.amount.value,
+  const handleSubmit = (transactionFormData, event, resetParent) => {
+    const transaction = {
+      ...transactionFormData,
       type: event.target.type.value,
       category: event.target.category.value,
       datetime: datetime.toISOString(),
     };
-    props.onSubmitData(formData);
+    props.onSubmitData(transaction);
 
     clearBudgetSelect();
+    resetParent();
   };
 
   const getFormSubmitLabel = (isUpdateMode, isUpdating, isCreating) => {

@@ -29,21 +29,16 @@ export default function WeeklyBudgetView() {
     return <LoadingMainContainer />;
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const handleSubmit = (budgetFormData, event, resetParent) => {
     const creatingBudget = {
-      name: event.target.name.value,
-      type: event.target.type.value,
-      amount: event.target.amount.value,
-      category: event.target.category.value,
+      ...budgetFormData,
       day: parseInt(event.target.day.value, 10),
       month: basicRequestData.month,
       year: basicRequestData.year,
     };
     dispatch(weeklyBudgetActions.create(creatingBudget, basicRequestData));
 
-    event.target.reset();
+    resetParent();
   };
 
   const handleUpdate = (budget) => {
@@ -187,15 +182,10 @@ function WeeklyBudgetTableRowExtension({ budget }) {
   const isUpdating = useSelector((state) => state.weeklyBudget.updating.includes(budget.uuid));
   const isLoading = useSelector((state) => state.weeklyBudget.isLoading);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const handleSubmit = (budgetFormData, event) => {
     const updatingBudget = {
+      ...budgetFormData,
       uuid: budget.uuid,
-      name: event.target.name.value,
-      type: event.target.type.value,
-      amount: event.target.amount.value,
-      category: event.target.category.value,
       day: parseInt(event.target.day.value, 10),
     };
     dispatch(weeklyBudgetActions.update(budget.uuid, updatingBudget, basicRequestData));

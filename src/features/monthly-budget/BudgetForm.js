@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import get from 'lodash.get';
 import NumberFormat from 'react-number-format';
 import Form from 'react-bootstrap/Form';
@@ -19,7 +19,13 @@ export default function BudgetForm({
   onFormInit,
   getSubmitCustomLabel,
 }) {
-  const [amountCurrency, setAmountCurrency] = useState(get(budget, 'amount'));
+  const [amount, setAmount] = useState('');
+
+  const importingAmount = get(budget, 'amount', '');
+  useEffect(() => {
+    setAmount({ floatValue: parseFloat(importingAmount) });
+  }, [importingAmount]);
+
   const formRef = React.useRef();
   const isUpdateMode = !!(budget && budget.uuid);
 
@@ -50,17 +56,22 @@ export default function BudgetForm({
   }, [onFormInit]);
 
   const handleSubmit = (event) => {
-    if (!amountCurrency.value) {
-      return;
-    }
-
+    event.preventDefault();
     event.persist();
 
-    onSubmit({ 
-      event,
-      amount: amountCurrency.value
-    });
-  }
+    const budgetFormData = {
+      name: event.target.name.value,
+      type: event.target.type.value,
+      amount: amount.value,
+      category: event.target.category.value || '',
+    };
+
+    const resetParent = () => {
+      event.target.reset();
+      setAmount('');
+    };
+    onSubmit(budgetFormData, event, resetParent);
+  };
 
   return (
     <Form ref={formRef} onSubmit={handleSubmit}>
@@ -70,7 +81,7 @@ export default function BudgetForm({
         </Form.Label>
         <Col sm={10}>
           <Form.Control
-            placeholder="Para intitular uma entrada de orçamento."
+            placeholder="Ex.: salário, feira, energia."
             name="name"
             maxLength={50}
             defaultValue={get(budget, 'name')}
@@ -90,15 +101,18 @@ export default function BudgetForm({
             </InputGroup.Prepend>
             <NumberFormat
               name="amount"
-              value={amountCurrency && amountCurrency.floatValue}
-              defaultValue={get(budget, 'amount')}
-              onValueChange={(values) => setAmountCurrency(values)}
+              placeholder="Digite o valor."
+              autoComplete="off"
+              inputMode="decimal"
+              value={amount && amount.floatValue}
+              onValueChange={(value) => setAmount(value)}
               displayType={'input'}
               fixedDecimalScale
               decimalSeparator={','}
               thousandSeparator={'.'}
               decimalScale={2}
               className="form-control"
+              required
             />
           </InputGroup>
         </Col>

@@ -21,10 +21,7 @@ import useProjectPeriods, { periodToString } from '../periods/useProjectPeriods'
 import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { weeklyBudgetActions } from '../weekly-budget/weeklyBudgetDuck';
 import BudgetsChart from './BudgetsChart';
-import {
-  groupExpensesAmountsByCategories,
-  groupIncomesAmountsByCategories,
-} from '../../utils/categories-utils';
+import { groupAmountsByCategories } from '../../utils/categories-utils';
 import RelevantsCategoriesCard from './RelevantsCategoriesCard';
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 
@@ -204,7 +201,7 @@ export default function Home() {
             <RelevantsCategoriesCard
               cardIcon={<INCOME_TYPE.Icon />}
               cardTitle="Receitas"
-              groupedAmountsByCategory={groupIncomesAmountsByCategories(
+              groupedAmountsByCategory={groupAmountsByCategories(
                 onlyMonthlyIncomes,
                 onlyWeeklyIncomes
               )}
@@ -214,7 +211,7 @@ export default function Home() {
             <RelevantsCategoriesCard
               cardIcon={<EXPENSE_TYPE.Icon />}
               cardTitle="Dispesas"
-              groupedAmountsByCategory={groupExpensesAmountsByCategories(
+              groupedAmountsByCategory={groupAmountsByCategories(
                 onlyMonthlyExpenses,
                 onlyWeeklyExpenses
               )}

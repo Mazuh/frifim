@@ -55,7 +55,7 @@ export default function CategoriesView() {
           <h1>Categorias</h1>
         </Col>
         <Col xs="12" sm="auto">
-          <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-secondary">
+          <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-info">
             O que é isso?
           </Button>
           <Modal show={isHelpVisible} onHide={() => setHelpVisible(false)}>
@@ -65,14 +65,15 @@ export default function CategoriesView() {
             <Modal.Body>
               <p>
                 São <strong>etiquetas</strong> opcionais para agrupar orçamentos e transações.
-                Algumas sugestões que podem fazer sentido:
+                Sugestões:
               </p>
               <ul>
-                <li>Moradia (para orçar água e energia)</li>
-                <li>Alimentação (para orçar feira e lanches)</li>
-                <li>Entretenimento (para orçar Netflix e Spotify)</li>
-                <li>Saúde (para orçar remédios e plano de saúde)</li>
-                <li>Pets (para orçar ração e presentes a bichinhos)</li>
+                <li>Moradia (água, energia, pets, móveis, serviços domésticos)</li>
+                <li>Transporte (uso de Uber, carro, ônibus)</li>
+                <li>Educação (escola, faculdade, livros, cursos)</li>
+                <li>Alimentação (feira, lanches, iFood)</li>
+                <li>Saúde (remédios e plano de saúde)</li>
+                <li>Lazer (para orçar Netflix e Spotify)</li>
               </ul>
               <p>
                 Assim, no fim de cada mês você terá informações mais precisas sobre em quais
@@ -152,25 +153,33 @@ function CategoryForm({
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Group as={Row} controlId="formSuggestion">
-        <Form.Label column sm={2}>
-          Sugestões:
-        </Form.Label>
-        <Col sm={10}>
-          {filteredCategories.map((category) => (
-            <Badge
-              role="button"
-              key={category.name}
-              className="cursor-pointer p-2"
-              style={{ backgroundColor: category.color, color: category.textColor, margin: '10px' }}
-              onClick={() => addCategorySuggested(category)}
-              pill
-            >
-              {category.name}
-            </Badge>
-          ))}
-        </Col>
-      </Form.Group>
+      {filteredCategories.length > 0 && (
+        <Form.Group as={Row} controlId="formSuggestion">
+          <Form.Label column sm={2}>
+            Sugestões:
+            <br />
+            <small className="text-muted">Clique para adicionar.</small>
+          </Form.Label>
+          <Col sm={10}>
+            {filteredCategories.map((category) => (
+              <Badge
+                role="button"
+                key={category.name}
+                className="cursor-pointer p-2"
+                style={{
+                  backgroundColor: category.color,
+                  color: category.textColor,
+                  margin: '10px',
+                }}
+                onClick={() => !isLoading && addCategorySuggested(category)}
+                pill
+              >
+                {category.name}
+              </Badge>
+            ))}
+          </Col>
+        </Form.Group>
+      )}
       <Form.Group as={Row} controlId="formCategoryName">
         <Form.Label column sm={2}>
           Nome:

@@ -46,9 +46,10 @@ export default function ButtonUpdateData({ className }) {
   return (
     <Button
       className={`d-flex align-items-center ${className}`}
-      variant="secondary"
+      variant="outline-secondary"
       disabled={disabled}
       onClick={handleUpdateData}
+      size="sm"
     >
       <BsArrowRepeat className="mr-1" title="Atualizar dados" />
       <span>Atualizar</span>

@@ -22,7 +22,7 @@ import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { weeklyBudgetActions } from '../weekly-budget/weeklyBudgetDuck';
 import BudgetsChart from './BudgetsChart';
 import { groupAmountsByCategories } from '../../utils/categories-utils';
-import RelevantsCategoriesCard from '../categories/relevant-categories/RelevantsCategoriesCard';
+import RelevantCategoriesCard from '../categories/relevant-categories/RelevantCategoriesCard';
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 
 export default function Home() {
@@ -198,7 +198,7 @@ export default function Home() {
       {hasFinantialData && (
         <Row>
           <Col className="mt-3" as="section">
-            <RelevantsCategoriesCard
+            <RelevantCategoriesCard
               cardIcon={<INCOME_TYPE.Icon />}
               cardTitle={INCOME_TYPE.pluralLabel}
               groupedAmountsByCategory={groupAmountsByCategories(
@@ -208,7 +208,7 @@ export default function Home() {
             />
           </Col>
           <Col className="mt-3" as="section">
-            <RelevantsCategoriesCard
+            <RelevantCategoriesCard
               cardIcon={<EXPENSE_TYPE.Icon />}
               cardTitle={EXPENSE_TYPE.pluralLabel}
               groupedAmountsByCategory={groupAmountsByCategories(

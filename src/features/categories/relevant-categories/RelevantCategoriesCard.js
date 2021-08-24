@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Collapse from 'react-bootstrap/Collapse';
 import { useSelector } from 'react-redux';
-import RelevantsCategoriesChart from './RelevantsCategoriesChart';
+import RelevantCategoriesChart from './RelevantCategoriesChart';
 
 export default function RelevantsCategoriesCard({ cardTitle, cardIcon, groupedAmountsByCategory }) {
   const [showOthers, setShowOthers] = React.useState(false);
@@ -57,7 +57,7 @@ export default function RelevantsCategoriesCard({ cardTitle, cardIcon, groupedAm
             </ol>
           </Collapse>
         )}
-        <RelevantsCategoriesChart
+        <RelevantCategoriesChart
           datasetName={cardTitle}
           groupedAmountsByCategory={groupedAmountsByCategory}
         />

@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useSelector } from 'react-redux';
 import './relevantCategories.css';
 
-export default function RelevantsCategoriesChart({ datasetName, groupedAmountsByCategory }) {
+export default function RelevantCategoriesChart({ datasetName, groupedAmountsByCategory }) {
   const chartRef = React.useRef(null);
   const idRef = React.useRef(`budgets-chart-${uuidv4()}`);
   const id = idRef.current;

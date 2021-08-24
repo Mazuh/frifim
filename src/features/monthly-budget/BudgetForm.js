@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import get from 'lodash.get';
+import NumberFormat from 'react-number-format';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
 import FlowTypeSelectionFieldset from '../categories/FlowTypeSelectionFieldset';
 import CategorySelectorFieldset from '../categories/CategorySelectorFieldset';
 
@@ -19,6 +19,13 @@ export default function BudgetForm({
   onFormInit,
   getSubmitCustomLabel,
 }) {
+  const [amount, setAmount] = useState('');
+
+  const importingAmount = get(budget, 'amount', '');
+  useEffect(() => {
+    setAmount({ floatValue: parseFloat(importingAmount) });
+  }, [importingAmount]);
+
   const formRef = React.useRef();
   const isUpdateMode = !!(budget && budget.uuid);
 
@@ -48,15 +55,33 @@ export default function BudgetForm({
     }
   }, [onFormInit]);
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    event.persist();
+
+    const budgetFormData = {
+      name: event.target.name.value,
+      type: event.target.type.value,
+      amount: amount.value,
+      category: event.target.category.value || '',
+    };
+
+    const resetParent = () => {
+      event.target.reset();
+      setAmount('');
+    };
+    onSubmit(budgetFormData, event, resetParent);
+  };
+
   return (
-    <Form ref={formRef} onSubmit={onSubmit}>
+    <Form ref={formRef} onSubmit={handleSubmit}>
       <Form.Group as={Row} controlId={`${idPrefix}budgetName`}>
         <Form.Label column sm={2}>
           Nome:
         </Form.Label>
         <Col sm={10}>
           <Form.Control
-            placeholder="Para intitular uma entrada de orçamento."
+            placeholder="Ex.: salário, feira, energia."
             name="name"
             maxLength={50}
             defaultValue={get(budget, 'name')}
@@ -74,13 +99,19 @@ export default function BudgetForm({
             <InputGroup.Prepend>
               <InputGroup.Text>R$</InputGroup.Text>
             </InputGroup.Prepend>
-            <FormControl
-              type="number"
-              placeholder="Valor planejado (até 2 casas decimais para centavos)."
+            <NumberFormat
               name="amount"
-              step=".01"
-              min={0}
-              defaultValue={get(budget, 'amount')}
+              placeholder="Digite o valor."
+              autoComplete="off"
+              inputMode="decimal"
+              value={amount && amount.floatValue}
+              onValueChange={(value) => setAmount(value)}
+              displayType={'input'}
+              fixedDecimalScale
+              decimalSeparator={','}
+              thousandSeparator={'.'}
+              decimalScale={2}
+              className="form-control"
               required
             />
           </InputGroup>

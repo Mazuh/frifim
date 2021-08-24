@@ -8,23 +8,25 @@ export function TermsOfService() {
       </header>
       1. VISÃO GERAL DO PROJETO
       <br />
-      1.1. O presente Termo de Uso foi publicado de boa-fé por Marcell Guilherme Costa da Silva, o
-      Autor do Projeto, inscrito no GitHub pelo usuário Mazuh, pessoa física e membro principal
-      porém não totalmente responsável de Mantenedores que também contribuam no desenvolvimento
-      desse serviço.
+      1.1. O presente Termo de Uso foi publicado de boa-fé por Mazuh Softwares, empresa de razão
+      social "M G Costa Da Silva Desenvolvimento De Software" de CNPJ 42.097.783/0001-13.
       <br />
-      1.2. Este termo tem por objetivo principal regulamentar as condições de prestação dos serviços
+      1.2. O sistema foi inicialmente projetado por Marcell Guilherme Costa da Silva, o Autor do
+      Projeto, inscrito no GitHub pelo usuário Mazuh, pessoa física e membro principal porém não
+      totalmente responsável de Mantenedores que também contribuam no desenvolvimento desse serviço.
+      <br />
+      1.3. Este termo tem por objetivo principal regulamentar as condições de prestação dos serviços
       de gerenciador de finanças, através desse projeto Free Source construído pelos Mantenedores e
       com serviço administrado pelo Autor.
       <br />
-      1.3. Frifim é uma plataforma de gestão financeira pensada para auxiliar a educação e controle
+      1.4. Frifim é uma plataforma de gestão financeira pensada para auxiliar a educação e controle
       das contas do dia-a-dia, por meio da qual o Usuário poderá listar suas despesas e receitas nos
       dispositivos suportados.
       <br />
-      1.4. Usuário é toda e qualquer pessoa física que aceita as condições de prestação dos serviços
+      1.5. Usuário é toda e qualquer pessoa física que aceita as condições de prestação dos serviços
       elencados no presente Termo de Uso, entendendo os direitos e as obrigações inerentes.
       <br />
-      1.5. Para que o Usuário possa ter acesso aos benefícios da plataforma Frifim, deverá ler o
+      1.6. Para que o Usuário possa ter acesso aos benefícios da plataforma Frifim, deverá ler o
       presente termo e aceitar suas condições.
       <br />
       2. DA UTILIZAÇÃO
@@ -198,7 +200,7 @@ export function TermsOfService() {
       <br />
       <footer>
         <p>
-          <small>Versão de 21/jan/2021</small>
+          <small>Versão de 22/ago/2021</small>
         </p>
       </footer>
     </article>
@@ -407,7 +409,7 @@ export function PrivacyPolicy() {
       <br />
       <footer>
         <p>
-          <small>Versão de 21/jan/2021</small>
+          <small>Versão de 22/ago/2021</small>
         </p>
       </footer>
     </article>

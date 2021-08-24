@@ -28,7 +28,8 @@ export default function MonthlyBudgetView() {
     monthlyIncomes.push({
       uuid: 'weekly-incomes-sum',
       name: `${INCOME_TYPE.pluralLabel} semanais`,
-      tooltip: 'Somatório de 4 semanas do planejamento semanal.',
+      tooltip:
+        'Somatório das receitas do planejamento semanal, considerando quantos dias da semana esse mês tem (mais informações na página de Orçamento Semanal).',
       amount: monthlySituation.totalWeeklyIncomes.toFixed(2),
       isReadOnly: true,
     });
@@ -39,7 +40,8 @@ export default function MonthlyBudgetView() {
     monthlyExpenses.push({
       uuid: 'weekly-expenses-sum',
       name: `${EXPENSE_TYPE.pluralLabel} semanais`,
-      tooltip: 'Somatório de 4 semanas do planejamento semanal.',
+      tooltip:
+        'Somatório das despesas do planejamento semanal, considerando quantos dias da semana esse mês tem (mais informações na página de Orçamento Semanal).',
       amount: monthlySituation.totalWeeklyExpenses.toFixed(2),
       isReadOnly: true,
     });
@@ -51,20 +53,15 @@ export default function MonthlyBudgetView() {
     return <LoadingMainContainer />;
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const creatingBudget = {
-      name: event.target.name.value,
-      type: event.target.type.value,
-      amount: event.target.amount.value,
-      category: event.target.category.value,
+  const handleSubmit = (budgetFormData, event, resetParent) => {
+    const budget = {
+      ...budgetFormData,
       year: basicRequestData.year,
       month: basicRequestData.month,
     };
-    dispatch(monthlyBudgetActions.create(creatingBudget, basicRequestData));
+    dispatch(monthlyBudgetActions.create(budget, basicRequestData));
 
-    event.target.reset();
+    resetParent();
   };
 
   const handleUpdate = (budget) => {
@@ -84,7 +81,7 @@ export default function MonthlyBudgetView() {
           <h1>Orçamento mensal</h1>
         </Col>
         <Col xs="12" sm="auto">
-          <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-secondary">
+          <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-info">
             O que é isso?
           </Button>
           <Modal show={isHelpVisible} onHide={() => setHelpVisible(false)}>
@@ -186,15 +183,10 @@ function MonthlyBudgetTableRowExtension({ budget }) {
   const isUpdating = useSelector((state) => state.monthlyBudget.updating.includes(budget.uuid));
   const isLoading = useSelector((state) => state.monthlyBudget.isLoading);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const handleSubmit = (budgetFormData) => {
     const updatingBudget = {
+      ...budgetFormData,
       uuid: budget.uuid,
-      name: event.target.name.value,
-      type: event.target.type.value,
-      amount: event.target.amount.value,
-      category: event.target.category.value,
     };
     dispatch(monthlyBudgetActions.update(budget.uuid, updatingBudget, basicRequestData));
   };

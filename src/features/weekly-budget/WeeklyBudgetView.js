@@ -29,21 +29,16 @@ export default function WeeklyBudgetView() {
     return <LoadingMainContainer />;
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const handleSubmit = (budgetFormData, event, resetParent) => {
     const creatingBudget = {
-      name: event.target.name.value,
-      type: event.target.type.value,
-      amount: event.target.amount.value,
-      category: event.target.category.value,
+      ...budgetFormData,
       day: parseInt(event.target.day.value, 10),
       month: basicRequestData.month,
       year: basicRequestData.year,
     };
     dispatch(weeklyBudgetActions.create(creatingBudget, basicRequestData));
 
-    event.target.reset();
+    resetParent();
   };
 
   const handleUpdate = (budget) => {
@@ -63,7 +58,7 @@ export default function WeeklyBudgetView() {
           <h1>Orçamento semanal</h1>
         </Col>
         <Col xs="12" sm="auto">
-          <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-secondary">
+          <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-info">
             O que é isso?
           </Button>
           <Modal show={isHelpVisible} onHide={() => setHelpVisible(false)}>
@@ -73,16 +68,18 @@ export default function WeeklyBudgetView() {
             <Modal.Body>
               <p>
                 Semelhante ao orçamento mensal, são <strong>estimativas ou planejamentos</strong> de
-                fluxo de dinheiro, mas que se repetem <strong>toda semana</strong>. Ou seja, são
-                orçamentos que acontecem <strong>aproximadamente 4 vezes por mês</strong>.
+                fluxo de dinheiro, mas que se repetem <strong>toda semana</strong>.
               </p>
               <p>
                 Como exemplo de despesa semanal, talvez alguma feira que você faça toda
                 quarta-feira.
               </p>
               <p>
-                <strong>Atenção</strong>: o total de orçamento semanal irá aparecer magicamente no
-                orçamento do mês, já multiplicado por 4.
+                <strong>Atenção</strong>: o <strong>total</strong> de orçamento semanal irá aparecer
+                magicamente no <strong>orçamento do mês</strong>, já <strong>multiplicado</strong>{' '}
+                pela quantidade de vezes em que os dias se repetem no dado mês. Por exemplo, em um
+                mês que tem 5 segundas-feiras, um orçamento marcado na segunda-feira irá ser
+                multiplicado por 5 antes de ir para o orçamento mensal.
               </p>
             </Modal.Body>
           </Modal>
@@ -187,15 +184,10 @@ function WeeklyBudgetTableRowExtension({ budget }) {
   const isUpdating = useSelector((state) => state.weeklyBudget.updating.includes(budget.uuid));
   const isLoading = useSelector((state) => state.weeklyBudget.isLoading);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const handleSubmit = (budgetFormData, event) => {
     const updatingBudget = {
+      ...budgetFormData,
       uuid: budget.uuid,
-      name: event.target.name.value,
-      type: event.target.type.value,
-      amount: event.target.amount.value,
-      category: event.target.category.value,
       day: parseInt(event.target.day.value, 10),
     };
     dispatch(weeklyBudgetActions.update(budget.uuid, updatingBudget, basicRequestData));

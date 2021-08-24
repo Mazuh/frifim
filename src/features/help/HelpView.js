@@ -26,6 +26,16 @@ export default function () {
         <p>
           <strong>Versão</strong>: {PACKAGE.version}
         </p>
+        <hr />
+        <p>
+          Versão mais atual dos Termos de Uso e Polítias de Privacidade:{' '}
+          <a
+            href="https://github.com/Mazuh/frifim/blob/main/src/features/auth/legal-articles.js"
+            target="blank"
+          >
+            https://github.com/Mazuh/frifim/blob/main/src/features/auth/legal-articles.js
+          </a>
+        </p>
       </MainSection>
       <MainSection icon={<BsFillPuzzleFill />} title="Perguntas frequentes">
         <p>

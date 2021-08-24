@@ -2,8 +2,13 @@ import React from 'react';
 import Decimal from 'decimal.js';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
+import NumberFormat from 'react-number-format';
 import { BsPencilSquare, BsTrash } from 'react-icons/bs';
 import CategoryIndicator from '../categories/CategoryIndicator';
+
+const renderMoneyMuted = value => (
+  <><span className="text-muted">R$</span> {value}</>
+);
 
 export default function BudgetTable({
   items,
@@ -37,7 +42,18 @@ export default function BudgetTable({
             <tr title={budget.tooltip ? budget.tooltip : null}>
               <td>{budget.name}</td>
               <td>
-                <span className="text-muted">R$</span> {budget.amount}
+                <NumberFormat
+                  value={Number(budget.amount)}
+                  defaultValue={Number(budget.amount)}
+                  displayType="text"
+                  fixedDecimalScale
+                  decimalSeparator={','}
+                  thousandSeparator={'.'}
+                  decimalScale={2}
+                  renderText={value => (
+                    <><span className="text-muted">R$</span> {value}</>
+                  )}
+                />
               </td>
               {budget.uuid === 'weekly-incomes-sum' || budget.uuid === 'weekly-expenses-sum' ? (
                 <td />
@@ -85,7 +101,16 @@ export default function BudgetTable({
           </td>
           <td>
             <strong>
-              <span className="text-muted">R$</span> {total}
+              <NumberFormat
+                  value={Number(total)}
+                  defaultValue={Number(total)}
+                  displayType="text"
+                  fixedDecimalScale
+                  decimalSeparator={','}
+                  thousandSeparator={'.'}
+                  decimalScale={2}
+                  renderText={renderMoneyMuted}
+                />
             </strong>
           </td>
           <td />

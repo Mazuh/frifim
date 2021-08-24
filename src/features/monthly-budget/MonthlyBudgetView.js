@@ -51,20 +51,15 @@ export default function MonthlyBudgetView() {
     return <LoadingMainContainer />;
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const creatingBudget = {
-      name: event.target.name.value,
-      type: event.target.type.value,
-      amount: event.target.amount.value,
-      category: event.target.category.value,
+  const handleSubmit = (budgetFormData, event, resetParent) => {
+    const budget = {
+      ...budgetFormData,
       year: basicRequestData.year,
       month: basicRequestData.month,
     };
-    dispatch(monthlyBudgetActions.create(creatingBudget, basicRequestData));
+    dispatch(monthlyBudgetActions.create(budget, basicRequestData));
 
-    event.target.reset();
+    resetParent();
   };
 
   const handleUpdate = (budget) => {
@@ -186,15 +181,10 @@ function MonthlyBudgetTableRowExtension({ budget }) {
   const isUpdating = useSelector((state) => state.monthlyBudget.updating.includes(budget.uuid));
   const isLoading = useSelector((state) => state.monthlyBudget.isLoading);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
+  const handleSubmit = (budgetFormData) => {
     const updatingBudget = {
+      ...budgetFormData,
       uuid: budget.uuid,
-      name: event.target.name.value,
-      type: event.target.type.value,
-      amount: event.target.amount.value,
-      category: event.target.category.value,
     };
     dispatch(monthlyBudgetActions.update(budget.uuid, updatingBudget, basicRequestData));
   };

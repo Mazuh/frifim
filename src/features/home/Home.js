@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import NumberFormat from 'react-number-format';
 import { BsArrowLeftRight, BsBarChartFill, BsCalendar, BsPieChartFill } from 'react-icons/bs';
 import { useHistory } from 'react-router';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -21,6 +22,12 @@ import useProjectPeriods, { periodToString } from '../periods/useProjectPeriods'
 import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { weeklyBudgetActions } from '../weekly-budget/weeklyBudgetDuck';
 import BudgetsChart from './BudgetsChart';
+
+const renderNumberFormatText = total => amount => (
+  <span className={total.lessThan(0) ? 'text-danger' : ''}>
+    R$ {amount}
+  </span>
+);
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -122,16 +129,30 @@ export default function Home() {
                   <li data-monthly-total="budgets">
                     <BsCalendar className="mr-1" />
                     <strong>Total dos orçamentos: </strong>
-                    <span className={monthlyBudgetCalcs.total.lessThan(0) ? 'text-danger' : ''}>
-                      R$ {monthlyBudgetCalcs.total.toFixed(2)}
-                    </span>
+                    <NumberFormat
+                      value={Number(monthlyBudgetCalcs.total)}
+                      defaultValue={Number(monthlyBudgetCalcs.total)}
+                      displayType="text"
+                      fixedDecimalScale
+                      decimalSeparator={','}
+                      thousandSeparator={'.'}
+                      decimalScale={2}
+                      renderText={renderNumberFormatText(monthlyBudgetCalcs.total)}
+                    />
                   </li>
                   <li data-monthly-total="transactions">
                     <BsArrowLeftRight className="mr-1" />
                     <strong>Total das transações: </strong>
-                    <span className={transactionsCalcs.total.lessThan(0) ? 'text-danger' : ''}>
-                      R$ {transactionsCalcs.total.toFixed(2)}
-                    </span>
+                    <NumberFormat
+                      value={Number(transactionsCalcs.total)}
+                      defaultValue={Number(transactionsCalcs.total)}
+                      displayType="text"
+                      fixedDecimalScale
+                      decimalSeparator={','}
+                      thousandSeparator={'.'}
+                      decimalScale={2}
+                      renderText={renderNumberFormatText(transactionsCalcs.total)}
+                    />
                   </li>
                 </ul>
                 <div className="mt-3">

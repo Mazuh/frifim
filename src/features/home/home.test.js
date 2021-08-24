@@ -114,7 +114,7 @@ describe('home', () => {
 
     const budget = container.baseElement.querySelector('*[data-monthly-total="budgets"]');
     expect(budget).toBeVisible();
-    expect(budget.textContent).toBe('Total dos orçamentos: R$ 550.15');
+    expect(budget.textContent).toBe('Total dos orçamentos: R$ 550,15');
   });
 
   it('calculates transactions correctly, with incomes and expenses', () => {
@@ -174,7 +174,7 @@ describe('home', () => {
 
     const budget = container.baseElement.querySelector('*[data-monthly-total="transactions"]');
     expect(budget).toBeVisible();
-    expect(budget.textContent).toBe('Total das transações: R$ 550.15');
+    expect(budget.textContent).toBe('Total das transações: R$ 550,15');
   });
 
   it('weekly incomes will be considered on monthly summary multiplied by how many week days such month has', () => {
@@ -203,7 +203,7 @@ describe('home', () => {
 
     const budget = container.baseElement.querySelector('*[data-monthly-total="budgets"]');
     expect(budget).toBeVisible();
-    expect(budget.textContent).toBe('Total dos orçamentos: R$ 500.00');
+    expect(budget.textContent).toBe('Total dos orçamentos: R$ 500,00');
   });
 
   it('weekly expenses will be considered on monthly summary multiplied by how many week days such month has', () => {
@@ -232,7 +232,7 @@ describe('home', () => {
 
     const budget = container.baseElement.querySelector('*[data-monthly-total="budgets"]');
     expect(budget).toBeVisible();
-    expect(budget.textContent).toBe('Total dos orçamentos: R$ -200.00');
+    expect(budget.textContent).toBe('Total dos orçamentos: R$ -200,00');
   });
 
   it('several weekly budgets will impact summary calculations along with existing monthly data', () => {
@@ -302,7 +302,7 @@ describe('home', () => {
 
     const budget = container.baseElement.querySelector('*[data-monthly-total="budgets"]');
     expect(budget).toBeVisible();
-    expect(budget.textContent).toBe('Total dos orçamentos: R$ 300.40');
+    expect(budget.textContent).toBe('Total dos orçamentos: R$ 300,40');
   });
 
   it('weekly incomes will be consider the month of the income on calcs, not the month of the system', () => {
@@ -336,7 +336,7 @@ describe('home', () => {
     );
 
     expect(container.baseElement.querySelector('*[data-monthly-total="budgets"]').textContent).toBe(
-      'Total dos orçamentos: R$ 500.00'
+      'Total dos orçamentos: R$ 500,00'
     );
   });
 });

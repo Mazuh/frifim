@@ -2,12 +2,15 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import MockDate from 'mockdate';
+import ResizeObserver from 'resize-observer-polyfill';
 import { makeConfiguredStore } from '../../app/store';
 import GlobalContextProvider from '../../app/contexts';
 import Home from './Home';
 import { monthlyBudgetPlainActions } from '../monthly-budget/monthlyBudgetDuck';
 import { monthlyTransactionsPlainActions } from '../transactions/transactionsDuck';
 import { weeklyBudgetPlainActions } from '../weekly-budget/weeklyBudgetDuck';
+
+global.ResizeObserver = ResizeObserver;
 
 jest.mock('react-router-dom', () => ({
   Redirect: jest.fn(() => <div />),
@@ -34,11 +37,6 @@ jest.mock('firebase/app', () => ({
       GoogleAuthProvider: jest.fn(),
     },
   },
-}));
-
-jest.mock('./BudgetsChart', () => ({
-  __esModule: true,
-  default: jest.fn(() => <div id="budget-charts" />),
 }));
 
 describe('home', () => {

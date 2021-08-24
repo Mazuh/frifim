@@ -1,0 +1,13 @@
+@media (max-width: 768px) {
+  .relevance-chart-sm .frappe-chart {
+    min-height: 250px;
+  }
+
+  .relevance-chart-md .frappe-chart {
+    min-height: 300px;
+  }
+
+  .relevance-chart-lg .frappe-chart {
+    min-height: 650px;
+  }
+}

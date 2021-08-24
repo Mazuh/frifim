@@ -6,8 +6,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import { BsArrowLeftRight, BsBarChartFill, BsCalendar } from 'react-icons/bs';
 import NumberFormat from 'react-number-format';
-import { BsArrowLeftRight, BsBarChartFill, BsCalendar, BsPieChartFill } from 'react-icons/bs';
 import { useHistory } from 'react-router';
 import Dropdown from 'react-bootstrap/Dropdown';
 import LoadingMainContainer from '../loading/LoadingMainContainer';
@@ -22,12 +22,12 @@ import useProjectPeriods, { periodToString } from '../periods/useProjectPeriods'
 import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { weeklyBudgetActions } from '../weekly-budget/weeklyBudgetDuck';
 import BudgetsChart from './BudgetsChart';
+import { groupAmountsByCategories } from '../../utils/categories-utils';
+import RelevantCategoriesCard from '../categories/relevant-categories/RelevantCategoriesCard';
+import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 
-const renderNumberFormatText = total => amount => (
-  <span className={total.lessThan(0) ? 'text-danger' : ''}>
-    R$ {amount}
-  </span>
-);
+const renderNumberFormatText = (total) => (amount) =>
+  <span className={total.lessThan(0) ? 'text-danger' : ''}>R$ {amount}</span>;
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -56,6 +56,8 @@ export default function Home() {
     Object.keys(state).some((slice) => slice !== 'projects' && state[slice].isLoading)
   );
   const monthlySituation = useSelectorForMonthlyBudgetStatus();
+  const { onlyMonthlyIncomes, onlyWeeklyIncomes, onlyMonthlyExpenses, onlyWeeklyExpenses } =
+    monthlySituation;
   const transactions = useSelector((state) => state.transactions.items);
 
   if (isLoading) {
@@ -116,7 +118,7 @@ export default function Home() {
         </p>
       </header>
       <Row>
-        <Col as="section" md={8}>
+        <Col as="section">
           <Card>
             <Card.Header className="bg-dark text-light">
               <Card.Title as="h2">
@@ -210,24 +212,31 @@ export default function Home() {
             )}
           </Card>
         </Col>
-        <Col as="section" md={4}>
-          <Card>
-            <Card.Header className="bg-dark text-light">
-              <Card.Title as="h2">
-                <BsPieChartFill /> Em breve...
-              </Card.Title>
-            </Card.Header>
-            <Card.Body>
-              <Card.Text>
-                <strong>Aguarde novas atualizações!</strong> Haverá mais gráficos, como estatisticas
-                de categorias mais usadas (tanto linha de orçamento quanto de transações), dias do
-                mês com picos de transações (gráfico de linha) e quanto de valor ainda pode ser
-                transacionado antes alcançar o orçado.
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
       </Row>
+      {hasFinantialData && (
+        <Row>
+          <Col className="mt-3" as="section">
+            <RelevantCategoriesCard
+              cardIcon={<INCOME_TYPE.Icon />}
+              cardTitle={INCOME_TYPE.pluralLabel}
+              groupedAmountsByCategory={groupAmountsByCategories(
+                onlyMonthlyIncomes,
+                onlyWeeklyIncomes
+              )}
+            />
+          </Col>
+          <Col className="mt-3" as="section">
+            <RelevantCategoriesCard
+              cardIcon={<EXPENSE_TYPE.Icon />}
+              cardTitle={EXPENSE_TYPE.pluralLabel}
+              groupedAmountsByCategory={groupAmountsByCategories(
+                onlyMonthlyExpenses,
+                onlyWeeklyExpenses
+              )}
+            />
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 }

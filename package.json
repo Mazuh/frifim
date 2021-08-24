@@ -19,6 +19,7 @@
     "lodash.capitalize": "^4.2.1",
     "lodash.debounce": "^4.0.8",
     "lodash.get": "^4.4.2",
+    "lodash.groupby": "^4.6.0",
     "lodash.omit": "^4.5.0",
     "lodash.orderby": "^4.6.0",
     "lodash.range": "^3.2.0",
@@ -70,6 +71,7 @@
     "eslint-plugin-react": "^7.24.0",
     "jest-environment-jsdom-sixteen": "^2.0.0",
     "mockdate": "^3.0.5",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "resize-observer-polyfill": "^1.5.1"
   }
 }

@@ -38,15 +38,30 @@ export default function useSelectorForMonthlyBudgetStatus() {
     { onlyMonthlyIncomes: [], onlyMonthlyExpenses: [] }
   );
 
+  const { onlyWeeklyIncomes, onlyWeeklyExpenses } = weeklyBudgetState.items.reduce(
+    (acc, weeklyBudget) => {
+      if (weeklyBudget.type === INCOME_TYPE.value) {
+        acc.onlyWeeklyIncomes.push(weeklyBudget);
+      } else if (weeklyBudget.type === EXPENSE_TYPE.value) {
+        acc.onlyWeeklyExpenses.push(weeklyBudget);
+      }
+
+      return acc;
+    },
+    { onlyWeeklyIncomes: [], onlyWeeklyExpenses: [] }
+  );
+
   return {
     weeklyBudgetState,
     ...monthlyBudgetState,
     items: null,
     monthlyBudgetSize: onlyMonthlyIncomes.length + onlyMonthlyExpenses.length,
     onlyMonthlyIncomes,
+    onlyWeeklyIncomes,
     totalEachWeeklyIncomes,
     totalWeeklyIncomes: totalEachWeeklyIncomes,
     onlyMonthlyExpenses,
+    onlyWeeklyExpenses,
     totalEachWeeklyExpenses,
     totalWeeklyExpenses: totalEachWeeklyExpenses,
     isLoading: monthlyBudgetState.isLoading || weeklyBudgetState.isLoading,

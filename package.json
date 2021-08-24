@@ -71,6 +71,7 @@
     "eslint-plugin-react": "^7.24.0",
     "jest-environment-jsdom-sixteen": "^2.0.0",
     "mockdate": "^3.0.5",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "resize-observer-polyfill": "^1.5.1"
   }
 }

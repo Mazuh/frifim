@@ -33,6 +33,9 @@ const authSlice = createSlice({
       state.errorCode = '';
       state.infoMessage = user ? '' : 'Saiu do sistema.';
     },
+    setUserDisplayName: (state, { payload: displayName }) => {
+      state.user.displayName = displayName;
+    },
     setError: (state, { payload }) => {
       state.user = null;
       state.isAuthorized = false;
@@ -168,5 +171,14 @@ export const signupAndLogin = (email, password, displayName) => (dispatch) => {
     )
     .catch(defaultErrorHandler);
 };
+
+export const updateDisplayName =
+  (displayName, onFinally = () => {}) =>
+  (dispatch) =>
+    firebaseApp
+      .auth()
+      .currentUser.updateProfile({ displayName })
+      .then(() => dispatch(authSlice.actions.setUserDisplayName(displayName)))
+      .finally(onFinally);
 
 export default authSlice.reducer;

@@ -32,6 +32,7 @@ import ProjectView from './features/projects/ProjectView';
 import HelpView from './features/help/HelpView';
 import LastUpdateFlag from './features/last-update-flag/LastUpdateFlag';
 import ButtonUpdateData from './features/update-data-button/ButtonUpdateData';
+import AccountView from './features/auth/AccountView';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -116,6 +117,9 @@ export default function App() {
             </ProtectedRoute>
             <ProtectedRoute exact path="/transacoes">
               <TransactionsView />
+            </ProtectedRoute>
+            <ProtectedRoute exact path="/conta">
+              <AccountView />
             </ProtectedRoute>
             <ProtectedRoute exact path="/inicio">
               <Home />

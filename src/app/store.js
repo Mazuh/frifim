@@ -43,6 +43,10 @@ export const makeConfiguredStore = () =>
 
 export const store = makeConfiguredStore();
 
+if (process.env.NODE_ENV !== 'production') {
+  window.store = store;
+}
+
 export const persistor = persistStore(store);
 
 export default store;

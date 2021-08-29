@@ -19,6 +19,12 @@ yarn
 
 Ideally you'll use your own Firebase for that, it's free.
 So start taking a look on [how to setup Firebase for web](https://firebase.google.com/docs/web/setup).
+In case you don't want to read it, just access Firebase page and try to create a new project, it's
+just a bunch of "next, next, next" steps.
+
+As hints while creating the Firebase project, remember to choose choices like "development mode"
+(so the database will be totally free for writing/reading) and "no analytics" (thus no `REACT_APP_FB_MEASUREMENT_ID`
+variable later).
 
 From your project, once you have created your Firestore Database and
 your Firebase Web App, you'll have your own `firebaseConfig` data in hands.
@@ -45,50 +51,40 @@ The page will reload if you make edits. You will also see any lint errors in the
 
 ### Some more Firebase operations
 
-A few more steps to finish your initial Firebase setup. In your console:
+A few more steps to finish your initial Firebase setup. In your Firebase Console:
 
-1. Authentication -> Sign-in method: enable at least the "e-mail/password" mode.
+1. Authentication -> Sign-in method: enable at least the "e-mail/password" mode, but Gmail
+   is also a possibility.
 2. Cloud Firestore -> Rules: if you're planning to store real data,
-secure it with a few rules.
+   secure it with a few rules, otherwise just let reading/writing to be free/trusty.
 3. While running the app, during your first queries, a few browser console errors may show up,
-requiring the creation of indexes on the database. Just follow the link provided by the
-warning (and wait a few minutes).
+   requiring the creation of indexes on the database. Just follow the link provided by the
+   warning (and wait a few minutes).
 
-
-### Fixture data
-
-This part is optional.
-
-When you are logged in on your own Frifim instance, open the browser console
-and call once `persistFixtures()` and wait for a messaging saying that a commit
-was sent. Refresh the page, this is important too. Now you'll see that a few
-data was registered for you as a demonstration.
+And, please, don't create accounts using this Console, but create your account only using
+the real application form running locally.
 
 ## Contributing
 
 Open [an issue](https://github.com/Mazuh/frifim/issues) describing how you're
-planning to contribute, even plain ideas or clueless bug reports are very 
+planning to contribute, even plain ideas or clueless bug reports are very
 good contributions. Then we can check the doable viability (cause Firebase
 is nice and free but limited), before any hard work.
 
-In case you need a more private conversation, [reach me](https://github.com/Mazuh)
-by social media.
+In case you need a more private conversation,
+[reach me](https://www.instagram.com/frifimdicas/) by social media.
 
 ## Deploying
 
-For service administrators. Prepare the static dist folder:
+For service administrators. Make sure you have the correct environment variables for
+prodcution, then prepare the static dist folder and publish it with Firebase CLI:
 
 ```js
+npm install firebase-tools -g
+firebase login
 yarn build
-```
-
-And publish these assets:
-```
 firebase deploy
 ```
-
-If it's your first time, see:
-https://medium.com/swlh/how-to-deploy-a-react-app-with-firebase-hosting-98063c5bf425
 
 ## What does Frifim mean?
 

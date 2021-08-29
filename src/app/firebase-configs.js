@@ -33,4 +33,6 @@ export const signInWithEmailAndPassword = (...args) =>
 
 export const updatePassword = (password) => firebaseApp.auth().currentUser.updatePassword(password);
 
+export const sendEmailVerification = () => firebaseApp.auth().currentUser.sendEmailVerification();
+
 export default firebaseApp;

@@ -33,6 +33,7 @@ import HelpView from './features/help/HelpView';
 import LastUpdateFlag from './features/last-update-flag/LastUpdateFlag';
 import ButtonUpdateData from './features/update-data-button/ButtonUpdateData';
 import AccountView from './features/auth/AccountView';
+import EmailVerification from './features/auth/EmailVerification';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -158,6 +159,7 @@ function Page(props) {
 
   return (
     <div className="mt-4 pt-5">
+      <EmailVerification />
       <Container className="d-flex align-items-center justify-content-end mt-2">
         <LastUpdateFlag className="mr-2" />
         <ButtonUpdateData />

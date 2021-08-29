@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Alert from 'react-bootstrap/Alert';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -8,10 +9,11 @@ import { BsLockFill, BsPersonFill } from 'react-icons/bs';
 import { updatePassword } from '../../app/firebase-configs';
 import { MainContainer, MainHeader, MainSection } from '../main-pages/main-pages';
 import { updateDisplayName } from './authDuck';
+import { useEmailVerification } from './EmailVerification';
 
 export default function AccountView() {
   const dispatch = useDispatch();
-
+  const { emailVerified } = useEmailVerification();
   const user = useSelector((state) => state.auth.user);
   const [isSaving, setSaving] = useState(false);
 
@@ -59,6 +61,7 @@ export default function AccountView() {
 
   return (
     <MainContainer>
+      {emailVerified && <Alert variant="success">E-mail verificado.</Alert>}
       <MainHeader title="Conta" hint="Gerencie detalhes da sua conta no Frifim." />
       <MainSection icon={<BsPersonFill />} title="Perfil">
         <Form onSubmit={handleProfileSubmit}>

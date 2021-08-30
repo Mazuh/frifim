@@ -47,6 +47,7 @@ jest.mock('firebase/app', () => ({
         ),
         currentUser: {
           updateProfile: jest.fn(() => Promise.resolve()),
+          updatePassword: jest.fn(() => Promise.resolve()),
         },
       })),
     })),
@@ -129,13 +130,46 @@ describe('auth', () => {
     );
 
     await act(() => userEvent.type(container.getByLabelText('Nome:'), 'Marcos Leo'));
-    userEvent.click(container.getByRole('button', { name: 'Salvar' }));
-    await waitFor(() => expect(container.getByRole('button', { name: 'Salvando...' })).toBeVisible);
-    await waitFor(() => expect(container.getByRole('button', { name: 'Salvar' })).toBeVisible);
+    userEvent.click(container.getByRole('button', { name: 'Salvar perfil' }));
+    await waitFor(
+      () => expect(container.getByRole('button', { name: 'Salvando perfil...' })).toBeVisible
+    );
+    await waitFor(
+      () => expect(container.getByRole('button', { name: 'Salvar perfil' })).toBeVisible
+    );
 
     expect(
       firebase.initializeApp.mock.results[0].value.auth.mock.results[0].value.currentUser
         .updateProfile
     ).toBeCalledWith({ displayName: 'Marcos Leo' });
+  });
+
+  it('calls firebase when changing password', async () => {
+    window.alert = jest.fn();
+
+    const store = makeConfiguredStore();
+    store.dispatch(authPlainActions.setUser({ uid: '42', displayName: 'Marcell' }));
+    const container = render(
+      <Provider store={store}>
+        <GlobalContextProvider>
+          <AccountView />
+        </GlobalContextProvider>
+      </Provider>
+    );
+
+    await act(() => userEvent.type(container.getByLabelText('Nova senha:'), 'Ximboso2017'));
+    await act(() =>
+      userEvent.type(container.getByLabelText('Confirme a nova senha:'), 'Ximboso2017')
+    );
+    userEvent.click(container.getByRole('button', { name: 'Mudar senha' }));
+    await waitFor(
+      () => expect(container.getByRole('button', { name: 'Salvando senha...' })).toBeVisible
+    );
+    await waitFor(() => expect(container.getByRole('button', { name: 'Mudar senha' })).toBeVisible);
+
+    expect(
+      firebase.initializeApp.mock.results[0].value.auth.mock.results[0].value.currentUser
+        .updatePassword
+    ).toBeCalledWith('Ximboso2017');
   });
 });

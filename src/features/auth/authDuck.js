@@ -60,6 +60,8 @@ const authSlice = createSlice({
 
 export const { setLastSelectedProjectUuid, clearMessages } = authSlice.actions;
 
+export const authPlainActions = authSlice.actions;
+
 export const login = (email, password) => (dispatch) => {
   dispatch(authSlice.actions.setAsLoading());
 

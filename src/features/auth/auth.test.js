@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Redirect } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -9,6 +9,8 @@ import SignupView from '../../features/auth/SignupView';
 import GlobalContextProvider from '../../app/contexts';
 import firebase from 'firebase/app';
 import * as firebaseMock from '../../app/firebase-configs';
+import AccountView from './AccountView';
+import { authPlainActions } from './authDuck';
 
 jest.mock('../auth/useRecaptcha', () =>
   jest.fn(() => ({
@@ -43,6 +45,9 @@ jest.mock('firebase/app', () => ({
             },
           })
         ),
+        currentUser: {
+          updateProfile: jest.fn(() => Promise.resolve()),
+        },
       })),
     })),
     auth: {
@@ -110,5 +115,27 @@ describe('auth', () => {
       firebase.initializeApp.mock.results[0].value.auth.mock.results[0].value
         .createUserWithEmailAndPassword
     ).toBeCalledWith('rick@frifim.com', 'Wubba Lubba Dub Dub');
+  });
+
+  it('calls firebase when changing display name', async () => {
+    const store = makeConfiguredStore();
+    store.dispatch(authPlainActions.setUser({ uid: '42', displayName: 'Marcell' }));
+    const container = render(
+      <Provider store={store}>
+        <GlobalContextProvider>
+          <AccountView />
+        </GlobalContextProvider>
+      </Provider>
+    );
+
+    await act(() => userEvent.type(container.getByLabelText('Nome:'), 'Marcos Leo'));
+    userEvent.click(container.getByRole('button', { name: 'Salvar' }));
+    await waitFor(() => expect(container.getByRole('button', { name: 'Salvando...' })).toBeVisible);
+    await waitFor(() => expect(container.getByRole('button', { name: 'Salvar' })).toBeVisible);
+
+    expect(
+      firebase.initializeApp.mock.results[0].value.auth.mock.results[0].value.currentUser
+        .updateProfile
+    ).toBeCalledWith({ displayName: 'Marcos Leo' });
   });
 });

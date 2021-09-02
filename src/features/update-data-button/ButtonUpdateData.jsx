@@ -51,8 +51,8 @@ export default function ButtonUpdateData({ className }) {
       onClick={handleUpdateData}
       size="sm"
     >
-      <BsArrowRepeat className="mr-1" title="Atualizar dados" />
-      <span>Atualizar</span>
+      <BsArrowRepeat className="mr-1" title="Recarregar dados" />
+      <span>Recarregar</span>
     </Button>
   );
 }

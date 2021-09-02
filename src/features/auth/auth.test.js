@@ -20,6 +20,7 @@ jest.mock('../auth/useRecaptcha', () =>
 
 jest.mock('react-router-dom', () => ({
   Redirect: jest.fn(() => <div />),
+  Link: jest.fn(() => <a />),
   useHistory: jest.fn(() => ({
     push: jest.fn(),
   })),

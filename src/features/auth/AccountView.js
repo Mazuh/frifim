@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Alert from 'react-bootstrap/Alert';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -61,16 +60,16 @@ export default function AccountView() {
 
   return (
     <MainContainer>
-      {emailVerified && <Alert variant="success">E-mail verificado.</Alert>}
       <MainHeader title="Conta" hint="Gerencie detalhes da sua conta no Frifim." />
       <MainSection icon={<BsPersonFill />} title="Perfil">
         <Form onSubmit={handleProfileSubmit}>
-          <Form.Group as={Row} title={`User: ${user.uid}`} controlId="formUserEmail">
+          <Form.Group as={Row} title={`UID: ${user.uid}`} controlId="formUserEmail">
             <Form.Label column sm={2}>
               E-mail:
             </Form.Label>
             <Col sm={10}>
               <Form.Control value={user.email} disabled />
+              {emailVerified && <small className="text-success">Conta confirmada.</small>}
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="formDisplayName">

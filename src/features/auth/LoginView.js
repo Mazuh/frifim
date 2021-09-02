@@ -116,23 +116,11 @@ export default function LoginView() {
               <Button
                 variant="primary"
                 type="submit"
-                className="w-100 mb-3 d-flex align-items-center justify-content-center"
+                className="w-100 d-flex align-items-center justify-content-center"
                 disabled={auth.isLoading || !isRecaptchaVerified}
               >
                 <BsBoxArrowInRight className="mr-2" />
                 <span>{auth.isLoading ? 'Entrando...' : 'Entrar usando e-mail'}</span>
-              </Button>
-            </Col>
-            <Col xs="12">
-              <Button
-                variant="outline-primary"
-                type="button"
-                className="w-100 mb-3 d-flex align-items-center justify-content-center"
-                disabled={auth.isLoading}
-                onClick={handleGoogleClick}
-              >
-                <FcGoogle className="mr-2" />
-                <span>Continuar via Google</span>
               </Button>
             </Col>
             <Col xs="12">
@@ -143,6 +131,18 @@ export default function LoginView() {
                 disabled={auth.isLoading}
               >
                 Cadastro usando e-mail
+              </Button>
+            </Col>
+            <Col xs="12">
+              <Button
+                variant="outline-primary"
+                type="button"
+                className="w-100 mt-3 mb-3 d-flex align-items-center justify-content-center"
+                disabled={auth.isLoading}
+                onClick={handleGoogleClick}
+              >
+                <FcGoogle className="mr-2" />
+                <span>Continuar via Google</span>
               </Button>
             </Col>
             <Col xs="12">

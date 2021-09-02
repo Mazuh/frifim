@@ -155,15 +155,21 @@ const useAllResourceToasts = () => {
 };
 
 function Page(props) {
+  const hasUser = useSelector((state) => !!state.auth.user);
+
   useAllResourceToasts();
 
   return (
     <div className="mt-4 pt-5">
-      <EmailVerification />
-      <Container className="d-flex align-items-center justify-content-end mt-2">
-        <LastUpdateFlag className="mr-2" />
-        <ButtonUpdateData />
-      </Container>
+      {hasUser && (
+        <>
+          <EmailVerification />
+          <Container className="d-flex align-items-center justify-content-end mt-2">
+            <LastUpdateFlag className="mr-2" />
+            <ButtonUpdateData />
+          </Container>
+        </>
+      )}
       <div {...props} />
     </div>
   );

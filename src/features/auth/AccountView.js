@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsLockFill, BsPersonFill } from 'react-icons/bs';
+import { Link } from 'react-router-dom';
 import { updatePassword } from '../../app/firebase-configs';
 import { MainContainer, MainHeader, MainSection } from '../main-pages/main-pages';
 import { sendVerificationLink, updateDisplayName } from './authDuck';
@@ -85,9 +86,9 @@ export default function AccountView() {
                   ) : (
                     <>
                       Para receber outro e-mail{' '}
-                      <a href="#" role="button" onClick={handleSendClick}>
+                      <Link to="#" role="button" onClick={handleSendClick}>
                         clique aqui
-                      </a>
+                      </Link>
                       .
                     </>
                   )}

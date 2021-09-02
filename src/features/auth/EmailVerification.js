@@ -1,6 +1,7 @@
 import React from 'react';
 import Alert from 'react-bootstrap/Alert';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { sendVerificationLink } from './authDuck';
 
 export default function EmailVerification() {
@@ -17,9 +18,9 @@ export default function EmailVerification() {
     <Alert variant="warning">
       <strong>Opa!</strong> Parece que você ainda não verificou seu e-mail. Para receber um novo
       link de verificação,{' '}
-      <Alert.Link href="#" role="button" onClick={handleSendClick}>
+      <Link to="#" role="button" onClick={handleSendClick}>
         clique aqui
-      </Alert.Link>
+      </Link>
       .
     </Alert>
   );

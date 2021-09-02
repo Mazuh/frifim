@@ -3,6 +3,7 @@ import iziToast from 'izitoast';
 import firebaseApp, {
   googleAuthProvider,
   signInWithEmailAndPassword,
+  sendEmailVerification,
 } from '../../app/firebase-configs';
 
 const authSlice = createSlice({
@@ -11,6 +12,7 @@ const authSlice = createSlice({
     user: null,
     isLoading: false,
     isAuthorized: false,
+    isVerificationLinkSent: false,
     errorCode: '',
     infoMessage: '',
     lastSelectedProjectUuid: '',
@@ -20,6 +22,7 @@ const authSlice = createSlice({
       state.user = null;
       state.isLoading = true;
       state.isAuthorized = false;
+      state.isVerificationLinkSent = false;
       state.errorCode = '';
       state.infoMessage = '';
     },
@@ -32,6 +35,7 @@ const authSlice = createSlice({
       state.isAuthorized = !!user;
       state.errorCode = '';
       state.infoMessage = user ? '' : 'Saiu do sistema.';
+      state.isVerificationLinkSent = false;
     },
     setUserDisplayName: (state, { payload: displayName }) => {
       state.user.displayName = displayName;
@@ -47,6 +51,7 @@ const authSlice = createSlice({
       state.isAuthorized = false;
       state.isLoading = false;
       state.infoMessage = 'Você saiu ou a sessão expirou.';
+      state.isVerificationLinkSent = false;
     },
     clearMessages: (state) => {
       state.errorCode = '';
@@ -54,6 +59,9 @@ const authSlice = createSlice({
     },
     setLastSelectedProjectUuid: (state, action) => {
       state.lastSelectedProjectUuid = action.payload;
+    },
+    setVerificationLinkSent: (state, action) => {
+      state.isVerificationLinkSent = action.payload;
     },
   },
 });
@@ -182,5 +190,19 @@ export const updateDisplayName =
       .currentUser.updateProfile({ displayName })
       .then(() => dispatch(authSlice.actions.setUserDisplayName(displayName)))
       .finally(onFinally);
+
+export const sendVerificationLink = () => (dispatch) =>
+  sendEmailVerification()
+    .then(() => dispatch(authSlice.actions.setVerificationLinkSent(true)))
+    .catch((error) => {
+      console.error('Error on sending verification link', error);
+      iziToast.show({
+        title: 'Erro desconhecido',
+        message: 'Não enviou link de verificação.',
+        color: 'red',
+        position: 'topCenter',
+        timeout: 3000,
+      });
+    });
 
 export default authSlice.reducer;

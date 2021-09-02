@@ -1,65 +1,33 @@
-import React, { useState } from 'react';
-import iziToast from 'izitoast';
+import React from 'react';
 import Alert from 'react-bootstrap/Alert';
-import { sendEmailVerification } from '../../app/firebase-configs';
-import useBasicRequestData from '../../app/useBasicRequestData';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { sendVerificationLink } from './authDuck';
 
 export default function EmailVerification() {
-  const { hasSocialMediaAuthType, sendVerificationLink, linkSent, emailVerified, isAuthorized } =
-    useEmailVerification();
+  const dispatch = useDispatch();
+  const handleSendClick = () => dispatch(sendVerificationLink());
+  const isVerificationLinkSent = useSelector((state) => state.auth.isVerificationLinkSent);
 
-  if (!isAuthorized || hasSocialMediaAuthType || emailVerified) {
+  const isAccountVerified = useIsAccountVerified();
+  if (isAccountVerified || isVerificationLinkSent) {
     return null;
   }
 
-  return linkSent ? (
-    <Alert variant="info">
-      Enviamos um link de verificação ao seu e-mail. (Cheque a caixa de spam também!)
-    </Alert>
-  ) : (
+  return (
     <Alert variant="warning">
-      Hey, parece que você ainda não verificou seu e-mail:{' '}
-      <Alert.Link href="#" onClick={sendVerificationLink}>
+      Hey, parece que você ainda não verificou seu e-mail: para receber um novo link de verificação.{' '}
+      <Alert.Link href="#" role="button" onClick={handleSendClick}>
         clique aqui
-      </Alert.Link>{' '}
-      para receber um novo link de verificação.
+      </Alert.Link>
+      .
     </Alert>
   );
 }
 
-export const useEmailVerification = () => {
-  const { user } = useBasicRequestData();
-  const isAuthorized = useSelector((state) => state.auth.isAuthorized);
-  const [linkSent, setLinkSent] = useState(false);
-
-  const hasSocialMediaAuthType =
-    user &&
-    user.providerData &&
-    user.providerData.some(({ providerId }) => providerId !== 'password');
-
-  const { emailVerified = false } = user || {};
-
-  const sendVerificationLink = () => {
-    sendEmailVerification()
-      .then(() => setLinkSent(true))
-      .catch((error) => {
-        console.log('Error', error);
-        iziToast.show({
-          title: 'Erro desconhecido',
-          message: 'Erro ao enviar link de verificação.',
-          color: 'red',
-          position: 'topCenter',
-          timeout: 2000,
-        });
-      });
-  };
-
-  return {
-    hasSocialMediaAuthType,
-    sendVerificationLink,
-    linkSent,
-    emailVerified,
-    isAuthorized,
-  };
+export const useIsAccountVerified = () => {
+  const user = useSelector((state) => state.auth.user);
+  const { emailVerified = false, providerData = [] } = user;
+  const hasSocialMediaAuthType = providerData.some(({ providerId }) => providerId !== 'password');
+  const isAccountVerified = emailVerified || hasSocialMediaAuthType;
+  return isAccountVerified;
 };

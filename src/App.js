@@ -33,6 +33,7 @@ import HelpView from './features/help/HelpView';
 import LastUpdateFlag from './features/last-update-flag/LastUpdateFlag';
 import ButtonUpdateData from './features/update-data-button/ButtonUpdateData';
 import AccountView from './features/auth/AccountView';
+import EmailVerification from './features/auth/EmailVerification';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -154,14 +155,21 @@ const useAllResourceToasts = () => {
 };
 
 function Page(props) {
+  const hasUser = useSelector((state) => !!state.auth.user);
+
   useAllResourceToasts();
 
   return (
     <div className="mt-4 pt-5">
-      <Container className="d-flex align-items-center justify-content-end mt-2">
-        <LastUpdateFlag className="mr-2" />
-        <ButtonUpdateData />
-      </Container>
+      {hasUser && (
+        <>
+          <EmailVerification />
+          <Container className="d-flex align-items-center justify-content-end mt-2">
+            <LastUpdateFlag className="mr-2" />
+            <ButtonUpdateData />
+          </Container>
+        </>
+      )}
       <div {...props} />
     </div>
   );

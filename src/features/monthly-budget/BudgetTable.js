@@ -50,9 +50,7 @@ export default function BudgetTable({
                   decimalSeparator={','}
                   thousandSeparator={'.'}
                   decimalScale={2}
-                  renderText={value => (
-                    <><span className="text-muted">R$</span> {value}</>
-                  )}
+                  renderText={renderMoneyMuted}
                 />
               </td>
               {budget.uuid === 'weekly-incomes-sum' || budget.uuid === 'weekly-expenses-sum' ? (

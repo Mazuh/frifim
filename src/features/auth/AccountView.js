@@ -7,13 +7,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BsLockFill, BsPersonFill } from 'react-icons/bs';
 import { updatePassword } from '../../app/firebase-configs';
 import { MainContainer, MainHeader, MainSection } from '../main-pages/main-pages';
-import { updateDisplayName } from './authDuck';
+import { sendVerificationLink, updateDisplayName } from './authDuck';
+import { useIsAccountVerified } from './EmailVerification';
 
 export default function AccountView() {
   const dispatch = useDispatch();
-
+  const isAccountVerified = useIsAccountVerified();
+  const isVerificationLinkSent = useSelector((state) => state.auth.isVerificationLinkSent);
   const user = useSelector((state) => state.auth.user);
   const [isSaving, setSaving] = useState(false);
+  const handleSendClick = () => dispatch(sendVerificationLink());
 
   const [displayName, setDisplayName] = useState(user.displayName);
   const handleDisplayNameChange = (event) => setDisplayName(event.target.value);
@@ -62,12 +65,36 @@ export default function AccountView() {
       <MainHeader title="Conta" hint="Gerencie detalhes da sua conta no Frifim." />
       <MainSection icon={<BsPersonFill />} title="Perfil">
         <Form onSubmit={handleProfileSubmit}>
-          <Form.Group as={Row} title={`User: ${user.uid}`} controlId="formUserEmail">
+          <Form.Group as={Row} title={`UID: ${user.uid}`} controlId="formUserEmail">
             <Form.Label column sm={2}>
               E-mail:
             </Form.Label>
             <Col sm={10}>
               <Form.Control value={user.email} disabled />
+              {isAccountVerified ? (
+                <small className="text-success">Conta verificada.</small>
+              ) : (
+                <small className="text-danger">
+                  Conta ainda <strong>não verificada</strong>.
+                  <br />
+                  {isVerificationLinkSent ? (
+                    <>
+                      Um e-mail de confirmação foi enviado recentemente (lembre de checar sua caixa
+                      de spam). Use-o ou tente entrar via Gmail ou rede social.
+                    </>
+                  ) : (
+                    <>
+                      Para receber outro e-mail{' '}
+                      <a href="#" role="button" onClick={handleSendClick}>
+                        clique aqui
+                      </a>
+                      .
+                    </>
+                  )}
+                  <br />
+                  Caso ache que isso está errado, tente fazer <strong>login novamente</strong>.
+                </small>
+              )}
             </Col>
           </Form.Group>
           <Form.Group as={Row} controlId="formDisplayName">

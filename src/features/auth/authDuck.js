@@ -3,6 +3,7 @@ import iziToast from 'izitoast';
 import firebaseApp, {
   googleAuthProvider,
   signInWithEmailAndPassword,
+  sendEmailVerification,
 } from '../../app/firebase-configs';
 
 const authSlice = createSlice({
@@ -11,6 +12,7 @@ const authSlice = createSlice({
     user: null,
     isLoading: false,
     isAuthorized: false,
+    isVerificationLinkSent: false,
     errorCode: '',
     infoMessage: '',
     lastSelectedProjectUuid: '',
@@ -20,6 +22,7 @@ const authSlice = createSlice({
       state.user = null;
       state.isLoading = true;
       state.isAuthorized = false;
+      state.isVerificationLinkSent = false;
       state.errorCode = '';
       state.infoMessage = '';
     },
@@ -32,6 +35,7 @@ const authSlice = createSlice({
       state.isAuthorized = !!user;
       state.errorCode = '';
       state.infoMessage = user ? '' : 'Saiu do sistema.';
+      state.isVerificationLinkSent = false;
     },
     setUserDisplayName: (state, { payload: displayName }) => {
       state.user.displayName = displayName;
@@ -47,6 +51,7 @@ const authSlice = createSlice({
       state.isAuthorized = false;
       state.isLoading = false;
       state.infoMessage = 'Você saiu ou a sessão expirou.';
+      state.isVerificationLinkSent = false;
     },
     clearMessages: (state) => {
       state.errorCode = '';
@@ -54,6 +59,9 @@ const authSlice = createSlice({
     },
     setLastSelectedProjectUuid: (state, action) => {
       state.lastSelectedProjectUuid = action.payload;
+    },
+    setVerificationLinkSent: (state, action) => {
+      state.isVerificationLinkSent = action.payload;
     },
   },
 });
@@ -164,13 +172,14 @@ export const signupAndLogin = (email, password, displayName) => (dispatch) => {
     )
     .then(() =>
       iziToast.show({
-        title: 'Confirme seu e-mail',
-        message: `Enviando link de confirmação para ${email} (cheque a caixa de spam também).`,
+        title: 'Verificação',
+        message: `Enviado e-mail de verificação para ${email} (cheque a caixa de spam também).`,
         color: 'blue',
         position: 'topCenter',
         timeout: 7000,
       })
     )
+    .then(() => dispatch(authSlice.actions.setVerificationLinkSent(true)))
     .catch(defaultErrorHandler);
 };
 
@@ -182,5 +191,28 @@ export const updateDisplayName =
       .currentUser.updateProfile({ displayName })
       .then(() => dispatch(authSlice.actions.setUserDisplayName(displayName)))
       .finally(onFinally);
+
+export const sendVerificationLink = () => (dispatch) =>
+  sendEmailVerification()
+    .then(() => dispatch(authSlice.actions.setVerificationLinkSent(true)))
+    .then(() =>
+      iziToast.show({
+        title: 'Verificação',
+        message: 'E-mail de verificação enviado (lembre de checar sua caixa de spam).',
+        color: 'blue',
+        position: 'topCenter',
+        timeout: 2000,
+      })
+    )
+    .catch((error) => {
+      console.error('Error on sending verification link', error);
+      iziToast.show({
+        title: 'Verificação',
+        message: 'Não enviou link de verificação, tente novamente mais tarde.',
+        color: 'red',
+        position: 'topCenter',
+        timeout: 6000,
+      });
+    });
 
 export default authSlice.reducer;

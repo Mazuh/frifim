@@ -92,8 +92,7 @@ export default function AccountView() {
                     </>
                   )}
                   <br />
-                  Caso tenha certeza de que já confirmou, tente fazer{' '}
-                  <strong>login novamente</strong>.
+                  Caso ache que isso está errado, tente fazer <strong>login novamente</strong>.
                 </small>
               )}
             </Col>

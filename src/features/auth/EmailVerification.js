@@ -15,7 +15,8 @@ export default function EmailVerification() {
 
   return (
     <Alert variant="warning">
-      Hey, parece que você ainda não verificou seu e-mail: para receber um novo link de verificação.{' '}
+      <strong>Opa!</strong> Parece que você ainda não verificou seu e-mail. Para receber um novo
+      link de verificação,{' '}
       <Alert.Link href="#" role="button" onClick={handleSendClick}>
         clique aqui
       </Alert.Link>

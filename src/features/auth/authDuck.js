@@ -172,13 +172,14 @@ export const signupAndLogin = (email, password, displayName) => (dispatch) => {
     )
     .then(() =>
       iziToast.show({
-        title: 'Confirme seu e-mail',
-        message: `Enviando link de confirmação para ${email} (cheque a caixa de spam também).`,
+        title: 'Verificação',
+        message: `Enviado e-mail de verificação para ${email} (cheque a caixa de spam também).`,
         color: 'blue',
         position: 'topCenter',
         timeout: 7000,
       })
     )
+    .then(() => dispatch(authSlice.actions.setVerificationLinkSent(true)))
     .catch(defaultErrorHandler);
 };
 
@@ -194,14 +195,23 @@ export const updateDisplayName =
 export const sendVerificationLink = () => (dispatch) =>
   sendEmailVerification()
     .then(() => dispatch(authSlice.actions.setVerificationLinkSent(true)))
+    .then(() =>
+      iziToast.show({
+        title: 'Verificação',
+        message: 'E-mail de verificação enviado (lembre de checar sua caixa de spam).',
+        color: 'blue',
+        position: 'topCenter',
+        timeout: 2000,
+      })
+    )
     .catch((error) => {
       console.error('Error on sending verification link', error);
       iziToast.show({
-        title: 'Erro desconhecido',
-        message: 'Não enviou link de verificação.',
+        title: 'Verificação',
+        message: 'Não enviou link de verificação, tente novamente mais tarde.',
         color: 'red',
         position: 'topCenter',
-        timeout: 3000,
+        timeout: 6000,
       });
     });
 

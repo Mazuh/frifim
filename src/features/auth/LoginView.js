@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
 import { BsBoxArrowInRight } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
+import { GrFacebook } from 'react-icons/gr';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'react-bootstrap/Modal';
@@ -135,14 +136,25 @@ export default function LoginView() {
             </Col>
             <Col xs="12">
               <Button
-                variant="outline-primary"
-                type="button"
-                className="w-100 mt-3 mb-3 d-flex align-items-center justify-content-center"
+                variant="link"
+                className="w-100"
+                onClick={handleSignupClick}
                 disabled={auth.isLoading}
                 onClick={handleGoogleClick}
               >
                 <FcGoogle className="mr-2" />
                 <span>Continuar via Google</span>
+              </Button>
+            </Col>
+            <Col xs="12">
+              <Button
+                variant="outline-primary"
+                type="button"
+                className="w-100 mb-3 d-flex align-items-center justify-content-center"
+                disabled={auth.isLoading}
+              >
+                <GrFacebook className="mr-2" />
+                <span>Continuar via Facebook</span>
               </Button>
             </Col>
             <Col xs="12">

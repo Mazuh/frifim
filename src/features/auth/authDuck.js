@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import iziToast from 'izitoast';
 import firebaseApp, {
+  facebookAuthProvider,
   googleAuthProvider,
   signInWithEmailAndPassword,
   sendEmailVerification,
@@ -131,6 +132,24 @@ export const signInByGoogle =
     firebaseApp
       .auth()
       .signInWithPopup(googleAuthProvider)
+      .then(handlePotentialNewOAuthUser)
+      .then(postOAuthSingupHandler(dispatch))
+      .catch(defaultErrorHandler(dispatch));
+  };
+
+export const signInByFacebook =
+  (options = {}) =>
+  (dispatch) => {
+    dispatch(authSlice.actions.setAsLoading());
+
+    if (options.signInWithRedirect) {
+      firebaseApp.auth().signInWithRedirect(facebookAuthProvider);
+      return;
+    }
+
+    firebaseApp
+      .auth()
+      .signInWithPopup(facebookAuthProvider)
       .then(handlePotentialNewOAuthUser)
       .then(postOAuthSingupHandler(dispatch))
       .catch(defaultErrorHandler(dispatch));

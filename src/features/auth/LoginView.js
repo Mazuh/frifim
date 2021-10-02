@@ -13,7 +13,7 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Logo from '../../assets/frifim_logo.svg';
-import { clearMessages, login, signInByGoogle } from './authDuck';
+import { clearMessages, login, signInByFacebook, signInByGoogle } from './authDuck';
 import { PrivacyPolicy, TermsOfService } from './legal-articles';
 import useRecaptcha from './useRecaptcha';
 
@@ -53,6 +53,10 @@ export default function LoginView() {
 
   const handleGoogleClick = () => {
     dispatch(signInByGoogle({ signInWithRedirect: false }));
+  };
+
+  const handleFacebookClick = () => {
+    dispatch(signInByFacebook({ signInWithRedirect: false }));
   };
 
   const handleSignupClick = () => {
@@ -152,6 +156,7 @@ export default function LoginView() {
                 type="button"
                 className="w-100 mb-3 d-flex align-items-center justify-content-center"
                 disabled={auth.isLoading}
+                onClick={handleFacebookClick}
               >
                 <GrFacebook className="mr-2" />
                 <span>Continuar via Facebook</span>

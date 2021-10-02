@@ -28,6 +28,8 @@ export const firedb = firebaseApp.firestore();
 
 export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
+export const facebookAuthProvider = new firebase.auth.FacebookAuthProvider();
+
 export const signInWithEmailAndPassword = (...args) =>
   firebaseApp.auth().signInWithEmailAndPassword(...args);
 

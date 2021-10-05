@@ -5,6 +5,7 @@ import firebaseApp, {
   googleAuthProvider,
   signInWithEmailAndPassword,
   sendEmailVerification,
+  signInWithPopup,
 } from '../../app/firebase-configs';
 
 const authSlice = createSlice({
@@ -147,9 +148,7 @@ export const signInByFacebook =
       return;
     }
 
-    firebaseApp
-      .auth()
-      .signInWithPopup(facebookAuthProvider)
+    signInWithPopup(facebookAuthProvider)
       .then(handlePotentialNewOAuthUser)
       .then(postOAuthSingupHandler(dispatch))
       .catch(defaultErrorHandler(dispatch));

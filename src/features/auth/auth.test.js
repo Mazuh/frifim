@@ -130,11 +130,11 @@ describe('auth', () => {
     };
     const button = container.getByRole('button', { name: 'Continuar via Facebook' });
 
-    expect(fakeFacebookSignIn).not.toBeCalledWith(fakeProviderReturn);
+    expect(fakeFacebookSignIn).not.toHaveBeenCalledWith(fakeProviderReturn);
 
     userEvent.click(button);
 
-    expect(fakeFacebookSignIn).toBeCalledWith(fakeProviderReturn);
+    expect(fakeFacebookSignIn).toHaveBeenCalledWith(fakeProviderReturn);
   });
 
   it('calls firebase on sign up using e-mail', async () => {

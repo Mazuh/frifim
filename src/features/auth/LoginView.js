@@ -142,7 +142,6 @@ export default function LoginView() {
               <Button
                 variant="link"
                 className="w-100"
-                onClick={handleSignupClick}
                 disabled={auth.isLoading}
                 onClick={handleGoogleClick}
               >
@@ -152,8 +151,7 @@ export default function LoginView() {
             </Col>
             <Col xs="12">
               <Button
-                variant="outline-primary"
-                type="button"
+                variant="link"
                 className="w-100 mb-3 d-flex align-items-center justify-content-center"
                 disabled={auth.isLoading}
                 onClick={handleFacebookClick}

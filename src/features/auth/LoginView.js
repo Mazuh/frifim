@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
 import { BsBoxArrowInRight } from 'react-icons/bs';
 import { FcGoogle } from 'react-icons/fc';
+import { GrFacebook } from 'react-icons/gr';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'react-bootstrap/Modal';
@@ -12,7 +13,7 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Logo from '../../assets/frifim_logo.svg';
-import { clearMessages, login, signInByGoogle } from './authDuck';
+import { clearMessages, login, signInByFacebook, signInByGoogle } from './authDuck';
 import { PrivacyPolicy, TermsOfService } from './legal-articles';
 import useRecaptcha from './useRecaptcha';
 
@@ -52,6 +53,10 @@ export default function LoginView() {
 
   const handleGoogleClick = () => {
     dispatch(signInByGoogle({ signInWithRedirect: false }));
+  };
+
+  const handleFacebookClick = () => {
+    dispatch(signInByFacebook({ signInWithRedirect: false }));
   };
 
   const handleSignupClick = () => {
@@ -135,14 +140,24 @@ export default function LoginView() {
             </Col>
             <Col xs="12">
               <Button
-                variant="outline-primary"
-                type="button"
-                className="w-100 mt-3 mb-3 d-flex align-items-center justify-content-center"
+                variant="link"
+                className="w-100"
                 disabled={auth.isLoading}
                 onClick={handleGoogleClick}
               >
                 <FcGoogle className="mr-2" />
                 <span>Continuar via Google</span>
+              </Button>
+            </Col>
+            <Col xs="12">
+              <Button
+                variant="link"
+                className="w-100 mb-3 d-flex align-items-center justify-content-center"
+                disabled={auth.isLoading}
+                onClick={handleFacebookClick}
+              >
+                <GrFacebook className="mr-2" />
+                <span>Continuar via Facebook</span>
               </Button>
             </Col>
             <Col xs="12">

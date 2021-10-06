@@ -35,6 +35,7 @@ jest.mock('firebase/app', () => ({
     })),
     auth: {
       GoogleAuthProvider: jest.fn(),
+      FacebookAuthProvider: jest.fn(),
     },
   },
 }));

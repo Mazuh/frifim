@@ -53,7 +53,7 @@ The page will reload if you make edits. You will also see any lint errors in the
 
 A few more steps to finish your initial Firebase setup. In your Firebase Console:
 
-1. Authentication -> Sign-in method: enable at least the "e-mail/password" mode, but Gmail
+1. Authentication -> Sign-in method: enable at least the "e-mail/password" mode, but Gmail and Facebook
    is also a possibility.
 2. Cloud Firestore -> Rules: if you're planning to store real data,
    secure it with a few rules, otherwise just let reading/writing to be free/trusty.

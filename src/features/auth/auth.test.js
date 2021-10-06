@@ -36,6 +36,7 @@ jest.mock('firebase/app', () => ({
         })),
       })),
       auth: jest.fn(() => ({
+        signInWithPopup: jest.fn(() => Promise.resolve({ user: { toJSON: () => {} } })),
         signInWithEmailAndPassword: jest.fn(() => Promise.resolve({ user: { toJSON: () => {} } })),
         createUserWithEmailAndPassword: jest.fn((email) =>
           Promise.resolve({
@@ -53,7 +54,24 @@ jest.mock('firebase/app', () => ({
       })),
     })),
     auth: {
-      GoogleAuthProvider: jest.fn(),
+      GoogleAuthProvider: jest.fn(() => ({
+        Qc: ['client_id', 'response_type', 'scope', 'redirect_uri', 'state'],
+        providerId: 'google.com',
+        isOAuthProvider: true,
+        Jb: {},
+        qb: 'hl',
+        pb: null,
+        a: ['profile'],
+      })),
+      FacebookAuthProvider: jest.fn(() => ({
+        Qc: ['client_id', 'response_type', 'scope', 'redirect_uri', 'state'],
+        providerId: 'facebook.com',
+        isOAuthProvider: true,
+        Jb: {},
+        qb: 'locale',
+        pb: null,
+        a: [],
+      })),
     },
   },
 }));
@@ -88,6 +106,35 @@ describe('auth', () => {
     userEvent.click(button);
 
     expect(fakeSignIn).toHaveBeenCalledWith(fakeEmail, fakePassword);
+  });
+
+  it('calls firebase on sign in using Facebook', () => {
+    const store = makeConfiguredStore();
+    const container = render(
+      <Provider store={store}>
+        <GlobalContextProvider>
+          <LoginView />
+        </GlobalContextProvider>
+      </Provider>
+    );
+
+    const fakeFacebookSignIn = jest.spyOn(firebaseMock, 'signInWithPopup');
+    const fakeProviderReturn = {
+      Qc: ['client_id', 'response_type', 'scope', 'redirect_uri', 'state'],
+      providerId: 'facebook.com',
+      isOAuthProvider: true,
+      Jb: {},
+      qb: 'locale',
+      pb: null,
+      a: [],
+    };
+    const button = container.getByRole('button', { name: 'Continuar via Facebook' });
+
+    expect(fakeFacebookSignIn).not.toHaveBeenCalledWith(fakeProviderReturn);
+
+    userEvent.click(button);
+
+    expect(fakeFacebookSignIn).toHaveBeenCalledWith(fakeProviderReturn);
   });
 
   it('calls firebase on sign up using e-mail', async () => {

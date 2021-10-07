@@ -129,6 +129,11 @@ export default function LoginView() {
               </Button>
             </Col>
             <Col xs="12">
+              <Button variant="link" className="w-100">
+                Esqueci minha senha
+              </Button>
+            </Col>
+            <Col xs="12">
               <Button
                 variant="link"
                 className="w-100"

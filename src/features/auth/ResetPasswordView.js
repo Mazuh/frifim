@@ -6,9 +6,21 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { resetPassword } from './authDuck';
 
 export default function ResetPasswordView() {
+  const dispatch = useDispatch();
   const history = useHistory();
+  const [email, setEmail] = React.useState('');
+
+  const sendResetEmail = (event) => {
+    event.preventDefault();
+
+    dispatch(resetPassword(email));
+  };
+
+  const handleEmailChange = (event) => setEmail(event.target.value);
 
   const handleLoginClick = () => {
     history.push('/login');
@@ -21,13 +33,14 @@ export default function ResetPasswordView() {
           <Card.Title as="h1">Frifim</Card.Title>
           <Card.Subtitle className="mb-2">Redefinindo sua senha...</Card.Subtitle>
         </Card.Header>
-        <Card.Body as={Form}>
+        <Card.Body as={Form} onSubmit={sendResetEmail}>
           <Form.Group controlId="signupEmail">
             <Form.Label>Por favor, nos informe o e-mail cadastrado:</Form.Label>
             <Form.Control
               name="email"
               type="email"
               placeholder="Digite seu melhor e-mail..."
+              onChange={handleEmailChange}
               minLength="5"
               maxLength="50"
               required

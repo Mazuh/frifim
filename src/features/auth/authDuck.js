@@ -30,7 +30,7 @@ const authSlice = createSlice({
       state.infoMessage = '';
     },
     setAsNotLoading: (state) => {
-      state.loading = false;
+      state.isLoading = false;
     },
     setUser: (state, { payload: user }) => {
       state.user = user;
@@ -175,7 +175,10 @@ export const resetPassword = (email) => (dispatch) => {
         timeout: 2500,
       });
     })
-    .finally(() => dispatch(authSlice.actions.setAsNotLoading()));
+    .finally(() => {
+      console.log('cabou');
+      dispatch(authSlice.actions.setAsNotLoading());
+    });
 };
 
 export const logout = () => (dispatch) => {

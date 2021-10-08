@@ -175,10 +175,7 @@ export const resetPassword = (email) => (dispatch) => {
         timeout: 2500,
       });
     })
-    .finally(() => {
-      console.log('cabou');
-      dispatch(authSlice.actions.setAsNotLoading());
-    });
+    .finally(() => dispatch(authSlice.actions.setAsNotLoading()));
 };
 
 export const logout = () => (dispatch) => {

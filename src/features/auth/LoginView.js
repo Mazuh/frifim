@@ -133,7 +133,12 @@ export default function LoginView() {
               </Button>
             </Col>
             <Col xs="12">
-              <Button variant="link" className="w-100" onClick={redirectToResetPasswordPage}>
+              <Button
+                variant="link"
+                className="w-100"
+                onClick={redirectToResetPasswordPage}
+                disabled={auth.isLoading}
+              >
                 Esqueci minha senha
               </Button>
             </Col>

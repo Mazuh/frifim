@@ -59,6 +59,10 @@ export default function LoginView() {
     dispatch(signInByFacebook({ signInWithRedirect: false }));
   };
 
+  const redirectToResetPasswordPage = () => {
+    history.push('/redefinicao-senha');
+  };
+
   const handleSignupClick = () => {
     history.push('/signup');
   };
@@ -126,6 +130,16 @@ export default function LoginView() {
               >
                 <BsBoxArrowInRight className="mr-2" />
                 <span>{auth.isLoading ? 'Entrando...' : 'Entrar usando e-mail'}</span>
+              </Button>
+            </Col>
+            <Col xs="12">
+              <Button
+                variant="link"
+                className="w-100"
+                onClick={redirectToResetPasswordPage}
+                disabled={auth.isLoading}
+              >
+                Esqueci minha senha
               </Button>
             </Col>
             <Col xs="12">

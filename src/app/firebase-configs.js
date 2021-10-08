@@ -39,4 +39,6 @@ export const sendEmailVerification = () => firebaseApp.auth().currentUser.sendEm
 
 export const signInWithPopup = (...args) => firebaseApp.auth().signInWithPopup(...args);
 
+export const sendPasswordResetEmail = (email) => firebaseApp.auth().sendPasswordResetEmail(email);
+
 export default firebaseApp;

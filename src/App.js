@@ -34,6 +34,7 @@ import LastUpdateFlag from './features/last-update-flag/LastUpdateFlag';
 import ButtonUpdateData from './features/update-data-button/ButtonUpdateData';
 import AccountView from './features/auth/AccountView';
 import EmailVerification from './features/auth/EmailVerification';
+import ResetPasswordView from './features/auth/ResetPasswordView';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -130,6 +131,9 @@ export default function App() {
             </Route>
             <Route exact path="/signup">
               <SignupView />
+            </Route>
+            <Route exact path="/redefinicao-senha">
+              <ResetPasswordView />
             </Route>
             <Route exact path="/">
               <LoginView />

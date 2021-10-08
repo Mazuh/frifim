@@ -6,6 +6,7 @@ import firebaseApp, {
   signInWithEmailAndPassword,
   sendEmailVerification,
   signInWithPopup,
+  sendPasswordResetEmail,
 } from '../../app/firebase-configs';
 
 const authSlice = createSlice({
@@ -29,7 +30,7 @@ const authSlice = createSlice({
       state.infoMessage = '';
     },
     setAsNotLoading: (state) => {
-      state.loading = false;
+      state.isLoading = false;
     },
     setUser: (state, { payload: user }) => {
       state.user = user;
@@ -153,6 +154,29 @@ export const signInByFacebook =
       .then(postOAuthSingupHandler(dispatch))
       .catch(defaultErrorHandler(dispatch));
   };
+
+export const resetPassword = (email) => (dispatch) => {
+  dispatch(authSlice.actions.setAsLoading());
+
+  sendPasswordResetEmail(email)
+    .then(() => {
+      iziToast.show({
+        message: 'E-mail enviado',
+        color: 'green',
+        position: 'bottomCenter',
+        timeout: 2500,
+      });
+    })
+    .catch(() => {
+      iziToast.show({
+        message: 'E-mail enviado',
+        color: 'green',
+        position: 'bottomCenter',
+        timeout: 2500,
+      });
+    })
+    .finally(() => dispatch(authSlice.actions.setAsNotLoading()));
+};
 
 export const logout = () => (dispatch) => {
   firebaseApp.auth().signOut();

@@ -6,13 +6,14 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { resetPassword } from './authDuck';
 
 export default function ResetPasswordView() {
   const dispatch = useDispatch();
   const history = useHistory();
   const [email, setEmail] = React.useState('');
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
   const sendResetEmail = (event) => {
     event.preventDefault();
@@ -52,12 +53,18 @@ export default function ResetPasswordView() {
                 variant="success"
                 type="submit"
                 className="w-100 mt-3 d-flex align-items-center justify-content-center"
+                disabled={isLoading}
               >
                 Enviar
               </Button>
             </Col>
             <Col xs="12">
-              <Button variant="link" className="w-100" onClick={handleLoginClick}>
+              <Button
+                variant="link"
+                className="w-100"
+                onClick={handleLoginClick}
+                disabled={isLoading}
+              >
                 Voltar
               </Button>
             </Col>

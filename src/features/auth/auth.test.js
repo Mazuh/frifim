@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { makeConfiguredStore } from '../../app/store';
 import LoginView from '../../features/auth/LoginView';
 import SignupView from '../../features/auth/SignupView';
+import ResetPasswordView from './ResetPasswordView';
 import GlobalContextProvider from '../../app/contexts';
 import firebase from 'firebase/app';
 import * as firebaseMock from '../../app/firebase-configs';
@@ -36,6 +37,7 @@ jest.mock('firebase/app', () => ({
         })),
       })),
       auth: jest.fn(() => ({
+        sendPasswordResetEmail: jest.fn((email) => Promise.resolve()),
         signInWithPopup: jest.fn(() => Promise.resolve({ user: { toJSON: () => {} } })),
         signInWithEmailAndPassword: jest.fn(() => Promise.resolve({ user: { toJSON: () => {} } })),
         createUserWithEmailAndPassword: jest.fn((email) =>
@@ -190,6 +192,32 @@ describe('auth', () => {
       firebase.initializeApp.mock.results[0].value.auth.mock.results[0].value.currentUser
         .updateProfile
     ).toBeCalledWith({ displayName: 'Marcos Leo' });
+  });
+
+  it('calls firebase when reseting password', async () => {
+    const store = makeConfiguredStore();
+    const fakeUser = { uid: '42', displayName: 'Rodrigo', email: 'teste@teste.com' };
+    store.dispatch(authPlainActions.setUser(fakeUser));
+    const container = render(
+      <Provider store={store}>
+        <GlobalContextProvider>
+          <ResetPasswordView />
+        </GlobalContextProvider>
+      </Provider>
+    );
+
+    const faceResetPassword = jest.spyOn(firebaseMock, 'sendPasswordResetEmail');
+
+    userEvent.type(
+      container.getByLabelText('Por favor, nos informe o e-mail cadastrado:'),
+      'teste@teste.com'
+    );
+
+    expect(faceResetPassword).not.toHaveBeenCalledWith(fakeUser.email);
+
+    userEvent.click(container.getByRole('button', { name: 'Enviar' }));
+
+    expect(faceResetPassword).toHaveBeenCalledWith(fakeUser.email);
   });
 
   it('calls firebase when changing password', async () => {

@@ -35,6 +35,31 @@ const projectsResource = makeReduxAssets({
   },
 });
 
+export async function batchedDelete(uuid) {
+  const batch = firedb.batch();
+
+  await Promise.all(
+    ['monthly_budgets', 'weekly_budgets', 'categories', 'transactions'].map((collection) =>
+      firedb
+        .collection(collection)
+        .where('project', '==', uuid)
+        .get()
+        .then(parseQuerySnapshot)
+        .then((founds) =>
+          founds.forEach((doc) => {
+            const docRef = firedb.collection(collection).doc(doc.uuid);
+            batch.delete(docRef);
+          })
+        )
+    )
+  );
+
+  const projectRef = firedb.collection('projects').doc(uuid);
+  batch.delete(projectRef);
+
+  await batch.commit();
+}
+
 export const { actionThunks: projectsActions } = projectsResource;
 
 export default projectsResource.reducer;

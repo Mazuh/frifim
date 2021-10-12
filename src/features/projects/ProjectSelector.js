@@ -21,8 +21,15 @@ export default function ProjectSelector({ className }) {
     </span>
   );
   const [isCreationVisible, setCreationVisible] = React.useState(false);
+  const [isDeleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [projectForDelete, setProjectForDelete] = React.useState({});
   const openCreation = () => setCreationVisible(true);
   const closeCreation = () => setCreationVisible(false);
+  const openDeleteModal = (project) => () => {
+    setProjectForDelete(project);
+    setDeleteModalVisible(true);
+  };
+  const closeDeleteModal = () => setDeleteModalVisible(false);
 
   if (projectsState.items.length < 2) {
     return (
@@ -98,26 +105,39 @@ export default function ProjectSelector({ className }) {
           </Dropdown.Item>
         )}
         {projectsState.items.map((listingProject) => (
-          <Dropdown.Item
-            className="d-flex justify-content-between align-items-center"
+          <div
+            className="d-flex justify-content-between align-items-center px-1"
             key={listingProject.uuid}
-            eventKey={`project-selector_${listingProject.uuid}`}
           >
-            {listingProject.name}{' '}
+            <Dropdown.Item eventKey={`project-selector_${listingProject.uuid}`}>
+              {listingProject.name}
+            </Dropdown.Item>
             {listingProject.uuid === project.uuid ? (
-              <BsCheck />
+              <Button className="py-1 border-0" variant="light" disabled>
+                <BsCheck />
+              </Button>
             ) : (
-              <Button variant="light">
+              <Button
+                title="Deletar projeto"
+                className="py-1 border-0"
+                variant="light"
+                onClick={openDeleteModal(listingProject)}
+              >
                 <BsTrashFill />
               </Button>
             )}
-          </Dropdown.Item>
+          </div>
         ))}
       </DropdownButton>
       <CreationModal
         isVisible={isCreationVisible}
         isBlocked={projectsState.isLoading}
         close={closeCreation}
+      />
+      <DeleteModal
+        isVisible={isDeleteModalVisible}
+        project={projectForDelete}
+        close={closeDeleteModal}
       />
     </>
   );
@@ -169,6 +189,25 @@ function CreationModal({ isVisible, isBlocked, close }) {
           </Button>
         </Modal.Footer>
       </form>
+    </Modal>
+  );
+}
+
+function DeleteModal({ isVisible, project, close }) {
+  return (
+    <Modal show={isVisible} onHide={close}>
+      <Modal.Header closeButton>
+        <Modal.Title>Deletar projeto</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {`Tem certeza que deletar o projeto ${project.name}? Todos os registros relacionados à esse projeto serão também serão deletados.`}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={close}>
+          Cancelar
+        </Button>
+        <Button variant="primary">Deletar</Button>
+      </Modal.Footer>
     </Modal>
   );
 }

@@ -21,15 +21,15 @@ export default function ProjectSelector({ className }) {
     </span>
   );
   const [isCreationVisible, setCreationVisible] = React.useState(false);
-  const [isDeleteModalVisible, setDeleteModalVisible] = React.useState(false);
+  const [isDeletionModalVisible, setDeletionModalVisible] = React.useState(false);
   const [projectForDelete, setProjectForDelete] = React.useState({});
   const openCreation = () => setCreationVisible(true);
   const closeCreation = () => setCreationVisible(false);
-  const openDeleteModal = (project) => () => {
+  const openDeletionModal = (project) => () => {
     setProjectForDelete(project);
-    setDeleteModalVisible(true);
+    setDeletionModalVisible(true);
   };
-  const closeDeleteModal = () => setDeleteModalVisible(false);
+  const closeDeletionModal = () => setDeletionModalVisible(false);
 
   if (projectsState.items.length < 2) {
     return (
@@ -121,7 +121,7 @@ export default function ProjectSelector({ className }) {
                 title="Deletar projeto"
                 className="py-1 border-0"
                 variant="light"
-                onClick={openDeleteModal(listingProject)}
+                onClick={openDeletionModal(listingProject)}
               >
                 <BsTrashFill />
               </Button>
@@ -134,10 +134,10 @@ export default function ProjectSelector({ className }) {
         isBlocked={projectsState.isLoading}
         close={closeCreation}
       />
-      <DeleteModal
-        isVisible={isDeleteModalVisible}
+      <DeletionModal
+        isVisible={isDeletionModalVisible}
         project={projectForDelete}
-        close={closeDeleteModal}
+        close={closeDeletionModal}
       />
     </>
   );
@@ -193,7 +193,7 @@ function CreationModal({ isVisible, isBlocked, close }) {
   );
 }
 
-function DeleteModal({ isVisible, project, close }) {
+function DeletionModal({ isVisible, project, close }) {
   return (
     <Modal show={isVisible} onHide={close}>
       <Modal.Header closeButton>

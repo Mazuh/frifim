@@ -200,7 +200,8 @@ function DeletionModal({ isVisible, project, close }) {
         <Modal.Title>Deletar projeto</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {`Tem certeza que deletar o projeto ${project.name}? Todos os registros relacionados à esse projeto serão também serão deletados.`}
+        Tem certeza que deletar o projeto <strong>{project.name}</strong>? Todos os registros
+        relacionados à esse projeto também serão deletados.
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={close}>

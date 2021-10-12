@@ -194,6 +194,9 @@ function CreationModal({ isVisible, isBlocked, close }) {
 }
 
 function DeletionModal({ isVisible, project, close }) {
+  const dispatch = useDispatch();
+
+  const handleDeleteProject = (uuid) => () => dispatch(projectsActions.delete(uuid));
   return (
     <Modal show={isVisible} onHide={close}>
       <Modal.Header closeButton>
@@ -207,7 +210,9 @@ function DeletionModal({ isVisible, project, close }) {
         <Button variant="secondary" onClick={close}>
           Cancelar
         </Button>
-        <Button variant="primary">Deletar</Button>
+        <Button variant="primary" onClick={handleDeleteProject(project.uuid)}>
+          Deletar
+        </Button>
       </Modal.Footer>
     </Modal>
   );

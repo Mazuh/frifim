@@ -26,16 +26,11 @@ const projectsResource = makeReduxAssets({
         .collection('projects')
         .add(toFirestoreDocData(project))
         .then((responseRef) => ({ ...project, uuid: responseRef.id })),
-    delete: (uuid) =>
-      firedb
-        .collection('projects')
-        .doc(uuid)
-        .delete()
-        .then(() => ({ uuid })),
+    delete: (uuid) => batchedDelete(uuid).then(() => ({ uuid })),
   },
 });
 
-export async function batchedDelete(uuid) {
+async function batchedDelete(uuid) {
   const batch = firedb.batch();
 
   await Promise.all(

@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import { BsFolder, BsFolderPlus } from 'react-icons/bs';
+import { BsFolder, BsFolderPlus, BsCheck, BsTrashFill } from 'react-icons/bs';
 import { ProjectContext } from '../../app/contexts';
 import { useDispatch, useSelector } from 'react-redux';
 import { projectsActions } from './projectsDuck';
@@ -99,10 +99,18 @@ export default function ProjectSelector({ className }) {
         )}
         {projectsState.items.map((listingProject) => (
           <Dropdown.Item
+            className="d-flex justify-content-between align-items-center"
             key={listingProject.uuid}
             eventKey={`project-selector_${listingProject.uuid}`}
           >
-            {listingProject.name}
+            {listingProject.name}{' '}
+            {listingProject.uuid === project.uuid ? (
+              <BsCheck />
+            ) : (
+              <Button variant="light">
+                <BsTrashFill />
+              </Button>
+            )}
           </Dropdown.Item>
         ))}
       </DropdownButton>

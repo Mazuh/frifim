@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import { BsFolder, BsFolderPlus, BsCheck, BsTrashFill } from 'react-icons/bs';
+import { BsFolder, BsFolderPlus } from 'react-icons/bs';
 import { ProjectContext } from '../../app/contexts';
 import { useDispatch, useSelector } from 'react-redux';
 import { projectsActions } from './projectsDuck';
@@ -21,15 +21,8 @@ export default function ProjectSelector({ className }) {
     </span>
   );
   const [isCreationVisible, setCreationVisible] = React.useState(false);
-  const [isDeletionModalVisible, setDeletionModalVisible] = React.useState(false);
-  const [projectForDelete, setProjectForDelete] = React.useState({});
   const openCreation = () => setCreationVisible(true);
   const closeCreation = () => setCreationVisible(false);
-  const openDeletionModal = (project) => () => {
-    setProjectForDelete(project);
-    setDeletionModalVisible(true);
-  };
-  const closeDeletionModal = () => setDeletionModalVisible(false);
 
   if (projectsState.items.length < 2) {
     return (
@@ -105,39 +98,18 @@ export default function ProjectSelector({ className }) {
           </Dropdown.Item>
         )}
         {projectsState.items.map((listingProject) => (
-          <div
-            className="d-flex justify-content-between align-items-center px-1"
+          <Dropdown.Item
             key={listingProject.uuid}
+            eventKey={`project-selector_${listingProject.uuid}`}
           >
-            <Dropdown.Item eventKey={`project-selector_${listingProject.uuid}`}>
-              {listingProject.name}
-            </Dropdown.Item>
-            {listingProject.uuid === project.uuid ? (
-              <Button className="py-1 border-0" variant="light" disabled>
-                <BsCheck />
-              </Button>
-            ) : (
-              <Button
-                title="Deletar projeto"
-                className="py-1 border-0"
-                variant="light"
-                onClick={openDeletionModal(listingProject)}
-              >
-                <BsTrashFill />
-              </Button>
-            )}
-          </div>
+            {listingProject.name}
+          </Dropdown.Item>
         ))}
       </DropdownButton>
       <CreationModal
         isVisible={isCreationVisible}
         isBlocked={projectsState.isLoading}
         close={closeCreation}
-      />
-      <DeletionModal
-        isVisible={isDeletionModalVisible}
-        project={projectForDelete}
-        close={closeDeletionModal}
       />
     </>
   );
@@ -189,31 +161,6 @@ function CreationModal({ isVisible, isBlocked, close }) {
           </Button>
         </Modal.Footer>
       </form>
-    </Modal>
-  );
-}
-
-function DeletionModal({ isVisible, project, close }) {
-  const dispatch = useDispatch();
-
-  const handleDeleteProject = (uuid) => () => dispatch(projectsActions.delete(uuid));
-  return (
-    <Modal show={isVisible} onHide={close}>
-      <Modal.Header closeButton>
-        <Modal.Title>Deletar projeto</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        Tem certeza que deletar o projeto <strong>{project.name}</strong>? Todos os registros
-        relacionados à esse projeto também serão deletados.
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={close}>
-          Cancelar
-        </Button>
-        <Button variant="primary" onClick={handleDeleteProject(project.uuid)}>
-          Deletar
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 }

@@ -9,6 +9,7 @@ import { BsFolderFill, BsGear, BsTrash } from 'react-icons/bs';
 import { ProjectContext } from '../../app/contexts';
 import { MainContainer, MainHeader, MainSection } from '../main-pages/main-pages';
 import { projectsActions } from './projectsDuck';
+import { useHistory } from 'react-router-dom';
 
 export default function ProjectView() {
   const dispatch = useDispatch();
@@ -19,6 +20,9 @@ export default function ProjectView() {
   } = React.useContext(ProjectContext);
   const project = useSelector((state) =>
     state.projects.items.find((it) => it.uuid === selectedProjectUuid)
+  );
+  const othersProjects = useSelector((state) =>
+    state.projects.items.filter((it) => it.uuid !== selectedProjectUuid)
   );
   const { name: loadedProjectName } = project;
   const originalLoadedProjectRef = React.useRef(project);
@@ -99,7 +103,11 @@ export default function ProjectView() {
                 >
                   {isEditing ? 'Salvando...' : 'Salvar'}
                 </Button>
-                <Button variant="danger" onClick={openDeletionModal}>
+                <Button
+                  variant="danger"
+                  onClick={openDeletionModal}
+                  disabled={othersProjects.length === 0}
+                >
                   <BsTrash /> Deletar
                 </Button>
               </Col>
@@ -113,7 +121,12 @@ export default function ProjectView() {
           <p>Fica ao lado do seletor de meses. Use sempre que quiser.</p>
         </MainSection>
       </MainContainer>
-      <DeletionModal isVisible={isDeletionModalOpen} project={project} close={closeDeletionModal} />
+      <DeletionModal
+        isVisible={isDeletionModalOpen}
+        project={project}
+        fallbackProject={othersProjects[0]}
+        close={closeDeletionModal}
+      />
     </>
   );
 }
@@ -131,10 +144,16 @@ const projectHint = (
   </>
 );
 
-function DeletionModal({ isVisible, project, close }) {
+function DeletionModal({ isVisible, project, fallbackProject, close }) {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const projectContext = React.useContext(ProjectContext);
 
-  const handleDeleteProject = (uuid) => () => dispatch(projectsActions.delete(uuid));
+  const handleDeleteProject = (uuid, fallbackProject) => () => {
+    dispatch(projectsActions.delete(uuid));
+    projectContext.setProject(fallbackProject);
+    history.push('/inicio');
+  };
   return (
     <Modal show={isVisible} onHide={close}>
       <Modal.Header closeButton>
@@ -148,7 +167,7 @@ function DeletionModal({ isVisible, project, close }) {
         <Button variant="secondary" onClick={close}>
           Cancelar
         </Button>
-        <Button variant="primary" onClick={handleDeleteProject(project.uuid)}>
+        <Button variant="primary" onClick={handleDeleteProject(project.uuid, fallbackProject)}>
           Deletar
         </Button>
       </Modal.Footer>

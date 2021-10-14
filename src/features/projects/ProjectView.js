@@ -9,7 +9,6 @@ import { BsFolderFill, BsGear, BsTrash } from 'react-icons/bs';
 import { ProjectContext } from '../../app/contexts';
 import { MainContainer, MainHeader, MainSection } from '../main-pages/main-pages';
 import { projectsActions } from './projectsDuck';
-import { useHistory } from 'react-router-dom';
 
 export default function ProjectView() {
   const dispatch = useDispatch();
@@ -146,14 +145,14 @@ const projectHint = (
 
 function DeletionModal({ isVisible, project, fallbackProject, close }) {
   const dispatch = useDispatch();
-  const history = useHistory();
   const projectContext = React.useContext(ProjectContext);
 
   const handleDeleteProject = (uuid, fallbackProject) => () => {
     dispatch(projectsActions.delete(uuid));
     projectContext.setProject(fallbackProject);
-    history.push('/inicio');
+    close();
   };
+
   return (
     <Modal show={isVisible} onHide={close}>
       <Modal.Header closeButton>

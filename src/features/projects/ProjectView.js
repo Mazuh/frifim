@@ -30,6 +30,7 @@ export default function ProjectView() {
   const handleNameChange = (event) => setName(event.target.value);
   const noDiff = project.name.trim() === name.trim();
   const isEditing = useSelector((state) => state.projects.updating.includes(project.uuid));
+  const isLoading = useSelector((state) => state.projects.isLoading);
 
   const openDeletionModal = () => setDeletionModalOpen(true);
   const closeDeletionModal = () => setDeletionModalOpen(false);
@@ -125,6 +126,7 @@ export default function ProjectView() {
         project={project}
         fallbackProject={othersProjects[0]}
         close={closeDeletionModal}
+        disabled={isLoading}
       />
     </>
   );

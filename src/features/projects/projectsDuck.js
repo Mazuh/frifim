@@ -55,6 +55,7 @@ async function batchedDelete(uuid) {
   await batch.commit();
 }
 
-export const { actionThunks: projectsActions } = projectsResource;
+export const { actionThunks: projectsActions, plainActions: projectsPlainActions } =
+  projectsResource;
 
 export default projectsResource.reducer;

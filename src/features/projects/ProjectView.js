@@ -145,7 +145,7 @@ const projectHint = (
   </>
 );
 
-function DeletionModal({ isVisible, project, fallbackProject, close }) {
+export function DeletionModal({ isVisible, project, fallbackProject, close }) {
   const dispatch = useDispatch();
   const projectContext = React.useContext(ProjectContext);
 

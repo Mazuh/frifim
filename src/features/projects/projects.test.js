@@ -147,7 +147,5 @@ describe('projects', () => {
     expect(
       firebase.initializeApp.mock.results[0].value.firestore.mock.results[0].value.batch
     ).toHaveBeenCalled();
-    // firebase.initializeApp.mock.results[0].value.auth.mock.results[0].value.currentUser
-    //   .updatePassword;
   });
 });

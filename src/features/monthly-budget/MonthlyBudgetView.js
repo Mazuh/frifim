@@ -14,6 +14,7 @@ import BudgetTable from './BudgetTable';
 import BudgetForm from './BudgetForm';
 import useSelectorForMonthlyBudgetStatus from './useSelectorForMonthlyBudgetStatus';
 import useBasicRequestData from '../../app/useBasicRequestData';
+import get from 'lodash.get';
 
 export default function MonthlyBudgetView() {
   const dispatch = useDispatch();
@@ -79,6 +80,7 @@ export default function MonthlyBudgetView() {
       <Row as="header" className="align-items-center mb-2">
         <Col xs="12" sm="10">
           <h1>Orçamento mensal</h1>
+          <MonthlyBudgetExportLink monthlyBudgetData={[monthlyIncomes, monthlyExpenses]} />
         </Col>
         <Col xs="12" sm="auto">
           <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-info">
@@ -198,5 +200,48 @@ function MonthlyBudgetTableRowExtension({ budget }) {
       isLoading={isLoading}
       isUpdating={isUpdating}
     />
+  );
+}
+
+function MonthlyBudgetExportLink({ monthlyBudgetData }) {
+  const [incomes, expenses] = monthlyBudgetData;
+  const categories = useSelector((state) => state.categories.items);
+  const generateMonthlyBudgetReport = (incomes, expenses, categories) => {
+    const header = ['Nome', 'Tipo', 'Quantia', 'Categoria'];
+    const incomesRows = incomes
+      .map((i) => {
+        const category = categories.find((c) => c.uuid === i.category);
+        const categoryName = get(category, 'name', '');
+        return [i.name, 'Receita', i.amount, categoryName];
+      })
+      .map((i) => i.join(','));
+    const expensesRows = expenses
+      .map((e) => {
+        const category = categories.find((c) => c.uuid === e.category);
+        const categoryName = get(category, 'name', '');
+        return [e.name, 'Dispesas', e.amount, categoryName];
+      })
+      .map((e) => e.join(','));
+
+    const csvContent =
+      'data:text/csv;charset=utf-8,' +
+      header +
+      '\n' +
+      incomesRows.join('\n') +
+      '\n' +
+      expensesRows.join('\n');
+
+    return encodeURI(csvContent);
+  };
+
+  return (
+    <a
+      href={generateMonthlyBudgetReport(incomes, expenses, categories)}
+      target="_blank"
+      rel="noopener noreferrer"
+      download="teste.csv"
+    >
+      Baixar
+    </a>
   );
 }

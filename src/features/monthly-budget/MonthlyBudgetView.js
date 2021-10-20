@@ -81,7 +81,6 @@ export default function MonthlyBudgetView() {
       <Row as="header" className="align-items-center mb-2">
         <Col xs="12" sm="10">
           <h1>Orçamento mensal</h1>
-          <MonthlyBudgetExportLink monthlyBudgetData={[monthlyIncomes, monthlyExpenses]} />
         </Col>
         <Col xs="12" sm="auto">
           <Button onClick={() => setHelpVisible(true)} size="sm" variant="outline-info">
@@ -140,6 +139,9 @@ export default function MonthlyBudgetView() {
         <p>O planejamento mensal deste mês não foi encontrado ou não foi criado ainda.</p>
       ) : (
         <>
+          <div className="d-flex justify-content-end mb-2">
+            <MonthlyBudgetExportLink monthlyBudgetData={[monthlyIncomes, monthlyExpenses]} />
+          </div>
           <section>
             <header className="card-header bg-dark text-light">
               <h2>
@@ -223,13 +225,15 @@ function MonthlyBudgetExportLink({ monthlyBudgetData }) {
   });
 
   return (
-    <a
+    <Button
+      as="a"
+      variant="link"
       href={generateMonthlyBudgetReport(header, categorizedIncomes, categorizedExpenses)}
       target="_blank"
       rel="noopener noreferrer"
       download={`orcamento_mensal.csv`}
     >
-      Baixar
-    </a>
+      Exportar dados
+    </Button>
   );
 }

@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import { useSelector, useDispatch } from 'react-redux';
 import { BsPlusSquare } from 'react-icons/bs';
+import get from 'lodash.get';
 import LoadingMainContainer from '../loading/LoadingMainContainer';
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 import { monthlyBudgetActions } from './monthlyBudgetDuck';
@@ -14,7 +15,7 @@ import BudgetTable from './BudgetTable';
 import BudgetForm from './BudgetForm';
 import useSelectorForMonthlyBudgetStatus from './useSelectorForMonthlyBudgetStatus';
 import useBasicRequestData from '../../app/useBasicRequestData';
-import get from 'lodash.get';
+import { generateMonthlyBudgetReport } from '../../utils/monthly-budget-utils';
 
 export default function MonthlyBudgetView() {
   const dispatch = useDispatch();
@@ -204,39 +205,26 @@ function MonthlyBudgetTableRowExtension({ budget }) {
 }
 
 function MonthlyBudgetExportLink({ monthlyBudgetData }) {
-  const [incomes, expenses] = monthlyBudgetData;
   const categories = useSelector((state) => state.categories.items);
-  const generateMonthlyBudgetReport = (incomes, expenses, categories) => {
-    const header = ['Nome', 'Tipo', 'Quantia', 'Categoria'];
-    const incomesRows = incomes
-      .map((i) => {
-        const category = categories.find((c) => c.uuid === i.category);
-        const categoryName = get(category, 'name', '');
-        return [i.name, 'Receita', i.amount, categoryName];
-      })
-      .map((i) => i.join(','));
-    const expensesRows = expenses
-      .map((e) => {
-        const category = categories.find((c) => c.uuid === e.category);
-        const categoryName = get(category, 'name', '');
-        return [e.name, 'Dispesas', e.amount, categoryName];
-      })
-      .map((e) => e.join(','));
+  const [incomes, expenses] = monthlyBudgetData;
 
-    const csvContent =
-      'data:text/csv;charset=utf-8,' +
-      header +
-      '\n' +
-      incomesRows.join('\n') +
-      '\n' +
-      expensesRows.join('\n');
+  const header = ['Nome', 'Tipo', 'Quantia', 'Categoria'];
+  const categorizedIncomes = incomes.map((inc) => {
+    const category = categories.find((c) => c.uuid === inc.category);
+    const categoryName = get(category, 'name', '');
 
-    return encodeURI(csvContent);
-  };
+    return { ...inc, categoryName };
+  });
+  const categorizedExpenses = expenses.map((exp) => {
+    const category = categories.find((c) => c.uuid === exp.category);
+    const categoryName = get(category, 'name', '');
+
+    return { ...exp, categoryName };
+  });
 
   return (
     <a
-      href={generateMonthlyBudgetReport(incomes, expenses, categories)}
+      href={generateMonthlyBudgetReport(header, categorizedIncomes, categorizedExpenses)}
       target="_blank"
       rel="noopener noreferrer"
       download="teste.csv"

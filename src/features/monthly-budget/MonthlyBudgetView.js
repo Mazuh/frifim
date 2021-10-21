@@ -15,7 +15,7 @@ import BudgetTable from './BudgetTable';
 import BudgetForm from './BudgetForm';
 import useSelectorForMonthlyBudgetStatus from './useSelectorForMonthlyBudgetStatus';
 import useBasicRequestData from '../../app/useBasicRequestData';
-import { generateMonthlyBudgetReport } from '../../utils/monthly-budget-utils';
+import { generateMonthlyBudgetCSV } from '../../utils/monthly-budget-utils';
 
 export default function MonthlyBudgetView() {
   const dispatch = useDispatch();
@@ -228,7 +228,7 @@ function MonthlyBudgetExportLink({ monthlyBudgetData }) {
     <Button
       as="a"
       variant="link"
-      href={generateMonthlyBudgetReport(header, categorizedIncomes, categorizedExpenses)}
+      href={generateMonthlyBudgetCSV(header, categorizedIncomes, categorizedExpenses)}
       target="_blank"
       rel="noopener noreferrer"
       download={`orcamento_mensal.csv`}

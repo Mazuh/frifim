@@ -1,7 +1,4 @@
-export function generateMonthlyBudgetCSV(header, incomes, expenses) {
-  const incomesData = incomes.map((i) => [i.name, 'Receita', i.amount, i.categoryName]);
-  const expensesData = expenses.map((e) => [e.name, 'Despesa', e.amount, e.categoryName]);
-
+export function generateMonthlyBudgetCSV(header, incomesData, expensesData) {
   const headerRow = header.join(',');
   const incomesRows = incomesData.length
     ? `\n${incomesData.map((i) => i.map((it) => `"${it}"`).join(',')).join('\n')}`

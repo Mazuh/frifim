@@ -211,24 +211,28 @@ function MonthlyBudgetExportLink({ monthlyBudgetData }) {
   const [incomes, expenses] = monthlyBudgetData;
 
   const header = ['Nome', 'Tipo', 'Quantia', 'Categoria'];
-  const categorizedIncomes = incomes.map((inc) => {
-    const category = categories.find((c) => c.uuid === inc.category);
-    const categoryName = get(category, 'name', '');
+  const incomesData = incomes
+    .map((inc) => {
+      const category = categories.find((c) => c.uuid === inc.category);
+      const categoryName = get(category, 'name', '');
 
-    return { ...inc, categoryName };
-  });
-  const categorizedExpenses = expenses.map((exp) => {
-    const category = categories.find((c) => c.uuid === exp.category);
-    const categoryName = get(category, 'name', '');
+      return { ...inc, categoryName };
+    })
+    .map((i) => [i.name, 'Receita', i.amount, i.categoryName]);
+  const expensesData = expenses
+    .map((exp) => {
+      const category = categories.find((c) => c.uuid === exp.category);
+      const categoryName = get(category, 'name', '');
 
-    return { ...exp, categoryName };
-  });
+      return { ...exp, categoryName };
+    })
+    .map((e) => [e.name, 'Despesa', e.amount, e.categoryName]);
 
   return (
     <Button
       as="a"
       variant="link"
-      href={generateMonthlyBudgetCSV(header, categorizedIncomes, categorizedExpenses)}
+      href={generateMonthlyBudgetCSV(header, incomesData, expensesData)}
       target="_blank"
       rel="noopener noreferrer"
       download={`orcamento_mensal.csv`}

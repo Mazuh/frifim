@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import { useSelector, useDispatch } from 'react-redux';
 import { BsPlusSquare } from 'react-icons/bs';
+import get from 'lodash.get';
 import LoadingMainContainer from '../loading/LoadingMainContainer';
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 import { monthlyBudgetActions } from './monthlyBudgetDuck';
@@ -14,6 +15,7 @@ import BudgetTable from './BudgetTable';
 import BudgetForm from './BudgetForm';
 import useSelectorForMonthlyBudgetStatus from './useSelectorForMonthlyBudgetStatus';
 import useBasicRequestData from '../../app/useBasicRequestData';
+import { generateMonthlyBudgetCSV } from '../../utils/monthly-budget-utils';
 
 export default function MonthlyBudgetView() {
   const dispatch = useDispatch();
@@ -137,6 +139,9 @@ export default function MonthlyBudgetView() {
         <p>O planejamento mensal deste mês não foi encontrado ou não foi criado ainda.</p>
       ) : (
         <>
+          <div className="d-flex justify-content-end mb-2">
+            <MonthlyBudgetExportLink monthlyBudgetData={[monthlyIncomes, monthlyExpenses]} />
+          </div>
           <section>
             <header className="card-header bg-dark text-light">
               <h2>
@@ -198,5 +203,41 @@ function MonthlyBudgetTableRowExtension({ budget }) {
       isLoading={isLoading}
       isUpdating={isUpdating}
     />
+  );
+}
+
+function MonthlyBudgetExportLink({ monthlyBudgetData }) {
+  const categories = useSelector((state) => state.categories.items);
+  const [incomes, expenses] = monthlyBudgetData;
+
+  const header = ['Nome', 'Tipo', 'Quantia', 'Categoria'];
+  const incomesData = incomes
+    .map((inc) => {
+      const category = categories.find((c) => c.uuid === inc.category);
+      const categoryName = get(category, 'name', '');
+
+      return { ...inc, categoryName };
+    })
+    .map((i) => [i.name, 'Receita', i.amount, i.categoryName]);
+  const expensesData = expenses
+    .map((exp) => {
+      const category = categories.find((c) => c.uuid === exp.category);
+      const categoryName = get(category, 'name', '');
+
+      return { ...exp, categoryName };
+    })
+    .map((e) => [e.name, 'Despesa', e.amount, e.categoryName]);
+
+  return (
+    <Button
+      as="a"
+      variant="link"
+      href={generateMonthlyBudgetCSV(header, incomesData, expensesData)}
+      target="_blank"
+      rel="noopener noreferrer"
+      download={`orcamento_mensal.csv`}
+    >
+      Exportar dados
+    </Button>
   );
 }

@@ -24,7 +24,15 @@ jest.mock('firebase/app', () => ({
   default: {
     initializeApp: jest.fn(() => ({
       firestore: jest.fn(() => ({
-        collection: jest.fn(() => ({})),
+        collection: jest.fn(() => ({
+          where: jest.fn(() => ({
+            where: jest.fn(() => ({
+              limit: jest.fn(() => ({
+                get: jest.fn(() => Promise.resolve({})),
+              })),
+            })),
+          })),
+        })),
         app: {
           auth: jest.fn(() => ({
             currentUser: { displayName: 'Marcell' },

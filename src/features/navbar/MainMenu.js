@@ -145,7 +145,11 @@ const menuLinks = [
       { url: '/categorias', label: 'Categorias', icon: <BsTag /> },
       { url: '/projeto', label: 'Projeto', icon: <BsFolder /> },
       { url: '/conta', label: 'Conta', icon: <BsPerson /> },
-      { url: '#', label: 'Reserva de emergência', icon: <MdOutlineSavings /> },
+      {
+        url: '/reserva-de-emergencia',
+        label: 'Reserva de emergência',
+        icon: <MdOutlineSavings />,
+      },
       { url: '/ajuda', label: 'Central de ajuda', icon: <BsQuestionCircle /> },
     ],
   },

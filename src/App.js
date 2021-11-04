@@ -35,6 +35,7 @@ import ButtonUpdateData from './features/update-data-button/ButtonUpdateData';
 import AccountView from './features/auth/AccountView';
 import EmailVerification from './features/auth/EmailVerification';
 import ResetPasswordView from './features/auth/ResetPasswordView';
+import EmergencySavingView from './features/emergency-saving/EmergencySavingView';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -125,6 +126,9 @@ export default function App() {
             </ProtectedRoute>
             <ProtectedRoute exact path="/inicio">
               <Home />
+            </ProtectedRoute>
+            <ProtectedRoute exact path="/reserva-de-emergencia">
+              <EmergencySavingView />
             </ProtectedRoute>
             <Route exact path="/login">
               <LoginView />

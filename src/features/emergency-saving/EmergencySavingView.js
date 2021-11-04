@@ -23,6 +23,7 @@ export default function EmergencySavingView() {
   const project = useSelector((state) =>
     state.projects.items.find((it) => it.uuid === selectedProjectUuid)
   );
+  const isEditing = useSelector((state) => state.projects.updating.includes(project.uuid));
 
   const projectSavingValue = get(project, 'saving', '');
   React.useEffect(() => {
@@ -76,8 +77,13 @@ export default function EmergencySavingView() {
           </Form.Group>
           <Form.Group as={Row}>
             <Col sm={{ span: 10, offset: 2 }}>
-              <Button type="submit" variant="outline-success" title="Salvar reserva de emergência.">
-                Salvar
+              <Button
+                type="submit"
+                variant="outline-success"
+                title="Salvar reserva de emergência."
+                disabled={isEditing}
+              >
+                {isEditing ? 'Salvando...' : 'Salvar'}
               </Button>
             </Col>
           </Form.Group>

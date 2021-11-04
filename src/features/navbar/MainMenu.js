@@ -16,6 +16,7 @@ import {
   BsPlusCircleFill,
   BsQuestionCircle,
 } from 'react-icons/bs';
+import { MdOutlineSavings } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../auth/authDuck';
 import ProjectSelector from '../projects/ProjectSelector';
@@ -144,6 +145,7 @@ const menuLinks = [
       { url: '/categorias', label: 'Categorias', icon: <BsTag /> },
       { url: '/projeto', label: 'Projeto', icon: <BsFolder /> },
       { url: '/conta', label: 'Conta', icon: <BsPerson /> },
+      { url: '#', label: 'Reserva de emergência', icon: <MdOutlineSavings /> },
       { url: '/ajuda', label: 'Central de ajuda', icon: <BsQuestionCircle /> },
     ],
   },

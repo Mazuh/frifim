@@ -1,4 +1,5 @@
 import Decimal from 'decimal.js';
+import get from 'lodash.get';
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
@@ -14,7 +15,7 @@ import NumberFormat from 'react-number-format';
 
 export default function EmergencySavingView() {
   const dispatch = useDispatch();
-  const [saving, setSaving] = React.useState({ floatValue: 0 });
+  const [saving, setSaving] = React.useState('');
 
   const {
     project: { uuid: selectedProjectUuid },
@@ -22,6 +23,11 @@ export default function EmergencySavingView() {
   const project = useSelector((state) =>
     state.projects.items.find((it) => it.uuid === selectedProjectUuid)
   );
+
+  const projectSavingValue = get(project, 'saving', '');
+  React.useEffect(() => {
+    setSaving({ floatValue: parseFloat(projectSavingValue) });
+  }, [projectSavingValue]);
 
   const handleSavingChange = (value) => setSaving(value);
 

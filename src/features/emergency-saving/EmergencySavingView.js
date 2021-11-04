@@ -15,7 +15,7 @@ import NumberFormat from 'react-number-format';
 
 export default function EmergencySavingView() {
   const dispatch = useDispatch();
-  const [saving, setSaving] = React.useState('');
+  const [emergencySaving, setEmergencySaving] = React.useState('');
 
   const {
     project: { uuid: selectedProjectUuid },
@@ -25,22 +25,22 @@ export default function EmergencySavingView() {
   );
   const isEditing = useSelector((state) => state.projects.updating.includes(project.uuid));
 
-  const projectSavingValue = get(project, 'saving', '');
+  const projectEmergencySavingValue = get(project, 'emergencySaving', '');
   React.useEffect(() => {
-    setSaving({ floatValue: parseFloat(projectSavingValue) });
-  }, [projectSavingValue]);
+    setEmergencySaving({ floatValue: parseFloat(projectEmergencySavingValue) });
+  }, [projectEmergencySavingValue]);
 
-  const handleSavingChange = (value) => setSaving(value);
+  const handleSavingChange = (value) => setEmergencySaving(value);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!saving) {
+    if (!emergencySaving) {
       return;
     }
 
-    const savingValue = new Decimal(saving.floatValue).toFixed(2).valueOf();
-    dispatch(projectsActions.update(project.uuid, { saving: savingValue }));
+    const emergencySavingValue = new Decimal(emergencySaving.floatValue).toFixed(2).valueOf();
+    dispatch(projectsActions.update(project.uuid, { emergencySaving: emergencySavingValue }));
   };
 
   return (
@@ -58,11 +58,11 @@ export default function EmergencySavingView() {
                   <InputGroup.Text>R$</InputGroup.Text>
                 </InputGroup.Prepend>
                 <NumberFormat
-                  name="saving"
+                  name="emergencySaving"
                   placeholder="Digite o valor."
                   autoComplete="off"
                   inputMode="decimal"
-                  value={saving.floatValue}
+                  value={emergencySaving.floatValue}
                   onValueChange={handleSavingChange}
                   displayType={'input'}
                   fixedDecimalScale

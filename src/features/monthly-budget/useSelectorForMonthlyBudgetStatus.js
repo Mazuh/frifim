@@ -1,11 +1,22 @@
 import Decimal from 'decimal.js';
+import get from 'lodash.get';
+import { useContext } from 'react';
 import { useSelector } from 'react-redux';
+import { ProjectContext } from '../../app/contexts';
 import { getWeekdaysOccurences } from '../weekly-budget/weekly-budget-calcs';
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 
 export default function useSelectorForMonthlyBudgetStatus() {
   const monthlyBudgetState = useSelector((state) => state.monthlyBudget);
   const weeklyBudgetState = useSelector((state) => state.weeklyBudget);
+
+  const {
+    project: { uuid: selectedProjectUuid },
+  } = useContext(ProjectContext);
+  const project = useSelector((state) =>
+    state.projects.items.find((it) => it.uuid === selectedProjectUuid)
+  );
+  const emergencySavingValue = get(project, 'emergencySaving', '');
 
   const { totalEachWeeklyIncomes, totalEachWeeklyExpenses } = weeklyBudgetState.items.reduce(
     (acc, weeklyBudget) => {
@@ -37,6 +48,16 @@ export default function useSelectorForMonthlyBudgetStatus() {
     },
     { onlyMonthlyIncomes: [], onlyMonthlyExpenses: [] }
   );
+
+  if (emergencySavingValue) {
+    onlyMonthlyExpenses.push({
+      uuid: 'emergency-value',
+      name: `Reserva de emergência`,
+      tooltip: 'Valor destinado à reserva de emergência.',
+      amount: emergencySavingValue,
+      isReadOnly: true,
+    });
+  }
 
   const { onlyWeeklyIncomes, onlyWeeklyExpenses } = weeklyBudgetState.items.reduce(
     (acc, weeklyBudget) => {

@@ -35,11 +35,9 @@ export default function EmergencySavingView() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!emergencySaving) {
-      return;
-    }
-
-    const emergencySavingValue = new Decimal(emergencySaving.floatValue).toFixed(2).valueOf();
+    const emergencySavingValue = new Decimal(get(emergencySaving, 'floatValue', 0))
+      .toFixed(2)
+      .valueOf();
     dispatch(projectsActions.update(project.uuid, { emergencySaving: emergencySavingValue }));
   };
 
@@ -70,7 +68,6 @@ export default function EmergencySavingView() {
                   thousandSeparator={'.'}
                   decimalScale={2}
                   className="form-control"
-                  required
                 />
               </InputGroup>
             </Col>

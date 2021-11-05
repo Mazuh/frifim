@@ -11,7 +11,7 @@ export default function useSelectorForMonthlyBudgetStatus() {
   const weeklyBudgetState = useSelector((state) => state.weeklyBudget);
 
   const projectContext = useContext(ProjectContext);
-  const selectedProjectUuid = get(projectContext, 'uuid', '');
+  const selectedProjectUuid = get(projectContext, 'project.uuid', '');
   const project = useSelector((state) =>
     state.projects.items.find((it) => it.uuid === selectedProjectUuid)
   );
@@ -48,7 +48,7 @@ export default function useSelectorForMonthlyBudgetStatus() {
     { onlyMonthlyIncomes: [], onlyMonthlyExpenses: [] }
   );
 
-  if (emergencySavingValue) {
+  if (emergencySavingValue && !Decimal(emergencySavingValue).isZero()) {
     onlyMonthlyExpenses.push({
       uuid: 'emergency-value',
       name: `Reserva de emergência`,

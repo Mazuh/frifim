@@ -4,11 +4,12 @@ import { Provider } from 'react-redux';
 import MockDate from 'mockdate';
 import ResizeObserver from 'resize-observer-polyfill';
 import { makeConfiguredStore } from '../../app/store';
-import GlobalContextProvider from '../../app/contexts';
+import GlobalContextProvider, { MonthContext, ProjectContext } from '../../app/contexts';
 import Home from './Home';
 import { monthlyBudgetPlainActions } from '../monthly-budget/monthlyBudgetDuck';
 import { monthlyTransactionsPlainActions } from '../transactions/transactionsDuck';
 import { weeklyBudgetPlainActions } from '../weekly-budget/weeklyBudgetDuck';
+import { projectsPlainActions } from '../projects/projectsDuck';
 
 global.ResizeObserver = ResizeObserver;
 
@@ -345,5 +346,68 @@ describe('home', () => {
     expect(container.baseElement.querySelector('*[data-monthly-total="budgets"]').textContent).toBe(
       'Total dos orçamentos: R$ 500,00'
     );
+  });
+
+  it('calculates monthly budget correctly, with incomes, expenses and emergency saving', async () => {
+    const store = makeConfiguredStore();
+    store.dispatch(
+      projectsPlainActions.setRead(null, [
+        {
+          createdAt: '2021-10-08T00:48:51.958Z',
+          name: 'Principal',
+          userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
+          uuid: 'ndBPE5akhKHBcbtHdzce',
+          emergencySaving: '100',
+        },
+      ])
+    );
+    store.dispatch(
+      monthlyBudgetPlainActions.setRead(null, [
+        {
+          name: 'Salário',
+          type: 'income',
+          amount: '1100.15',
+          category: '',
+          year: 2021,
+          month: 7,
+          project: 'ndBPE5akhKHBcbtHdzce',
+          uuid: 'CqnTV257JrveuEA73UST',
+        },
+        {
+          name: 'Feira de comida',
+          type: 'expense',
+          amount: '400',
+          category: '',
+          year: 2021,
+          month: 7,
+          project: 'ndBPE5akhKHBcbtHdzce',
+          uuid: '6pJkoUjqIXAvpsSkg9py',
+        },
+      ])
+    );
+
+    const container = render(
+      <Provider store={store}>
+        <MonthContext.Provider value={{ month: new Date().getMonth(), setMonth: jest.fn() }}>
+          <ProjectContext.Provider
+            value={{
+              project: {
+                createdAt: '2021-10-08T00:48:51.958Z',
+                name: 'Principal',
+                userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
+                uuid: 'ndBPE5akhKHBcbtHdzce',
+              },
+              setProject: jest.fn(),
+            }}
+          >
+            <Home />
+          </ProjectContext.Provider>
+        </MonthContext.Provider>
+      </Provider>
+    );
+
+    const budget = container.baseElement.querySelector('*[data-monthly-total="budgets"]');
+    expect(budget).toBeVisible();
+    expect(budget.textContent).toBe('Total dos orçamentos: R$ 600,15');
   });
 });

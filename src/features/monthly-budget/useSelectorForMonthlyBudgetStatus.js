@@ -10,9 +10,8 @@ export default function useSelectorForMonthlyBudgetStatus() {
   const monthlyBudgetState = useSelector((state) => state.monthlyBudget);
   const weeklyBudgetState = useSelector((state) => state.weeklyBudget);
 
-  const {
-    project: { uuid: selectedProjectUuid },
-  } = useContext(ProjectContext);
+  const projectContext = useContext(ProjectContext);
+  const selectedProjectUuid = get(projectContext, 'uuid', '');
   const project = useSelector((state) =>
     state.projects.items.find((it) => it.uuid === selectedProjectUuid)
   );

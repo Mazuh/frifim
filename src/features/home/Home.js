@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import { BsArrowLeftRight, BsBarChartFill, BsCalendar } from 'react-icons/bs';
+import { MdOutlinePendingActions } from 'react-icons/md';
 import NumberFormat from 'react-number-format';
 import { useHistory } from 'react-router';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -59,6 +60,10 @@ export default function Home() {
   const { onlyMonthlyIncomes, onlyWeeklyIncomes, onlyMonthlyExpenses, onlyWeeklyExpenses } =
     monthlySituation;
   const transactions = useSelector((state) => state.transactions.items);
+
+  const pendingBudgets = onlyMonthlyExpenses
+    .concat(onlyMonthlyIncomes)
+    .filter((budget) => get(budget, 'rememberOnDashboard', true));
 
   if (isLoading) {
     return <LoadingMainContainer />;
@@ -214,28 +219,48 @@ export default function Home() {
         </Col>
       </Row>
       {hasFinantialData && (
-        <Row>
-          <Col className="mt-3" as="section">
-            <RelevantCategoriesCard
-              cardIcon={<INCOME_TYPE.Icon />}
-              cardTitle={INCOME_TYPE.pluralLabel}
-              groupedAmountsByCategory={groupAmountsByCategories(
-                onlyMonthlyIncomes,
-                onlyWeeklyIncomes
-              )}
-            />
-          </Col>
-          <Col className="mt-3" as="section">
-            <RelevantCategoriesCard
-              cardIcon={<EXPENSE_TYPE.Icon />}
-              cardTitle={EXPENSE_TYPE.pluralLabel}
-              groupedAmountsByCategory={groupAmountsByCategories(
-                onlyMonthlyExpenses,
-                onlyWeeklyExpenses
-              )}
-            />
-          </Col>
-        </Row>
+        <>
+          <Row>
+            <Col className="mt-3" as="section">
+              <Card>
+                <Card.Header className="bg-dark text-light">
+                  <Card.Title as="h2">
+                    <MdOutlinePendingActions /> Orçamentos pendentes
+                  </Card.Title>
+                </Card.Header>
+                <Card.Body>
+                  <ul>
+                    {pendingBudgets.map((budget) => (
+                      <li key={budget.uuid}>{budget.name}</li>
+                    ))}
+                  </ul>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+          <Row>
+            <Col className="mt-3" as="section">
+              <RelevantCategoriesCard
+                cardIcon={<INCOME_TYPE.Icon />}
+                cardTitle={INCOME_TYPE.pluralLabel}
+                groupedAmountsByCategory={groupAmountsByCategories(
+                  onlyMonthlyIncomes,
+                  onlyWeeklyIncomes
+                )}
+              />
+            </Col>
+            <Col className="mt-3" as="section">
+              <RelevantCategoriesCard
+                cardIcon={<EXPENSE_TYPE.Icon />}
+                cardTitle={EXPENSE_TYPE.pluralLabel}
+                groupedAmountsByCategory={groupAmountsByCategories(
+                  onlyMonthlyExpenses,
+                  onlyWeeklyExpenses
+                )}
+              />
+            </Col>
+          </Row>
+        </>
       )}
     </Container>
   );

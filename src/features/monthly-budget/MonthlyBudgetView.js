@@ -59,7 +59,7 @@ export default function MonthlyBudgetView() {
   const handleSubmit = (budgetFormData, event, resetParent) => {
     const budget = {
       ...budgetFormData,
-      dontRememberOnDashboard: event.target['pending-budget'].checked,
+      rememberOnDashboard: !event.target['pending-budget'].checked,
       year: basicRequestData.year,
       month: basicRequestData.month,
     };
@@ -206,7 +206,7 @@ function MonthlyBudgetTableRowExtension({ budget }) {
   const handleSubmit = (budgetFormData, event) => {
     const updatingBudget = {
       ...budgetFormData,
-      dontRememberOnDashboard: event.target['pending-budget'].checked,
+      rememberOnDashboard: !event.target['pending-budget'].checked,
       uuid: budget.uuid,
     };
     dispatch(monthlyBudgetActions.update(budget.uuid, updatingBudget, basicRequestData));
@@ -228,7 +228,7 @@ function MonthlyBudgetTableRowExtension({ budget }) {
             name="pending-budget"
             label="Não lembrar na tela inicial"
             id="pending-budget-update"
-            defaultChecked={get(budget, 'dontRememberOnDashboard', false)}
+            defaultChecked={!get(budget, 'rememberOnDashboard', true)}
           />
         </Col>
       </Form.Group>

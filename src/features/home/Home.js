@@ -231,7 +231,13 @@ export default function Home() {
                 <Card.Body>
                   <ul>
                     {pendingBudgets.map((budget) => (
-                      <li key={budget.uuid}>{budget.name}</li>
+                      <li className="d-flex justify-content-between my-2" key={budget.uuid}>
+                        <span>{budget.name}</span>
+                        <div>
+                          <Button variant="link text-success mr-2">Feito</Button>
+                          <Button variant="link text-danger">Não lembrar</Button>
+                        </div>
+                      </li>
                     ))}
                   </ul>
                 </Card.Body>

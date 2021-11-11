@@ -72,6 +72,7 @@ export default function Home() {
   const monthlyBudgetCalcs = getMonthlyCalcs(monthlySituation);
   const transactionsCalcs = getTransactionsCalcs(transactions);
   const hasFinantialData = !monthlyBudgetCalcs.total.isZero() || !transactionsCalcs.total.isZero();
+  const hasPendingBudgets = pendingBudgets.length > 0;
 
   const handleReuseBudgetSelect = (serializedPeriod) => {
     const selectedPeriod = JSON.parse(serializedPeriod);
@@ -218,13 +219,15 @@ export default function Home() {
           </Card>
         </Col>
       </Row>
+      {hasFinantialData && hasPendingBudgets && (
+        <Row>
+          <Col className="mt-3" as="section">
+            <PendingBudgetsCard budgets={pendingBudgets} />
+          </Col>
+        </Row>
+      )}
       {hasFinantialData && (
         <>
-          <Row>
-            <Col className="mt-3" as="section">
-              <PendingBudgetsCard budgets={pendingBudgets} />
-            </Col>
-          </Row>
           <Row>
             <Col className="mt-3" as="section">
               <RelevantCategoriesCard

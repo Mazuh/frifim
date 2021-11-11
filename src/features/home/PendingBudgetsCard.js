@@ -64,7 +64,7 @@ export default function PendingBudgetsCard({ budgets }) {
       <Card.Body>
         <ListGroup variant="flush">
           {budgets.slice(0, 3).map((budget) => (
-            <ListGroup.Item>
+            <ListGroup.Item key={budget.uuid}>
               <Row className="d-flex align-items-center" key={budget.uuid}>
                 <Col sm={9}>
                   <span>{budget.name}</span>
@@ -89,7 +89,7 @@ export default function PendingBudgetsCard({ budgets }) {
           <Collapse in={showOthers}>
             <ListGroup className="border-top" variant="flush" id="collapse-list">
               {budgets.slice(3).map((budget) => (
-                <ListGroup.Item>
+                <ListGroup.Item key={budget.uuid}>
                   <Row className="d-flex align-items-center" key={budget.uuid}>
                     <Col sm={9}>
                       <span>{budget.name}</span>

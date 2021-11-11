@@ -5,18 +5,37 @@ import { useDispatch } from 'react-redux';
 import { MdOutlinePendingActions } from 'react-icons/md';
 import useBasicRequestData from '../../app/useBasicRequestData';
 import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
+import { transactionsActions } from '../transactions/transactionsDuck';
 
 export default function PendingBudgetsCard({ budgets }) {
   const dispatch = useDispatch();
   const basicRequestData = useBasicRequestData();
 
-  const hideBudget = (budgetData) => () => {
+  const forgetBudget = (budgetData) => {
     const updatingBudget = {
       ...budgetData,
       rememberOnDashboard: false,
       uuid: budgetData.uuid,
     };
     dispatch(monthlyBudgetActions.update(budgetData.uuid, updatingBudget, basicRequestData));
+  };
+
+  const createTransaction = (budgetData) => {
+    const transactionData = {
+      amount: budgetData.amount,
+      category: budgetData.category,
+      datetime: new Date().toISOString(),
+      name: budgetData.name,
+      project: budgetData.project,
+      type: budgetData.type,
+    };
+    dispatch(transactionsActions.create(transactionData, basicRequestData));
+  };
+
+  const onHideBudget = (budgetData) => () => forgetBudget(budgetData);
+  const onConsolidateBudget = (budgetData) => () => {
+    forgetBudget(budgetData);
+    createTransaction(budgetData);
   };
 
   return (
@@ -32,8 +51,10 @@ export default function PendingBudgetsCard({ budgets }) {
             <li className="d-flex justify-content-between my-2" key={budget.uuid}>
               <span>{budget.name}</span>
               <div>
-                <Button variant="link text-success mr-2">Feito</Button>
-                <Button variant="link text-danger" onClick={hideBudget(budget)}>
+                <Button variant="link text-success mr-2" onClick={onConsolidateBudget(budget)}>
+                  Feito
+                </Button>
+                <Button variant="link text-danger" onClick={onHideBudget(budget)}>
                   Não lembrar
                 </Button>
               </div>

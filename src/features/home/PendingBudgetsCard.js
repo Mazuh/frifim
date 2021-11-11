@@ -1,6 +1,9 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import ListGroup from 'react-bootstrap/ListGroup';
 import { useDispatch } from 'react-redux';
 import { MdOutlinePendingActions } from 'react-icons/md';
 import useBasicRequestData from '../../app/useBasicRequestData';
@@ -46,21 +49,29 @@ export default function PendingBudgetsCard({ budgets }) {
         </Card.Title>
       </Card.Header>
       <Card.Body>
-        <ul>
+        <ListGroup variant="flush">
           {budgets.map((budget) => (
-            <li className="d-flex justify-content-between my-2" key={budget.uuid}>
-              <span>{budget.name}</span>
-              <div>
-                <Button variant="link text-success mr-2" onClick={onConsolidateBudget(budget)}>
-                  Feito
-                </Button>
-                <Button variant="link text-danger" onClick={onHideBudget(budget)}>
-                  Não lembrar
-                </Button>
-              </div>
-            </li>
+            <ListGroup.Item>
+              <Row className="d-flex align-items-center" key={budget.uuid}>
+                <Col sm={9}>
+                  <span>{budget.name}</span>
+                </Col>
+                <Col sm={3}>
+                  <Button
+                    className="text-success"
+                    variant="link"
+                    onClick={onConsolidateBudget(budget)}
+                  >
+                    Feito
+                  </Button>
+                  <Button className="text-danger" variant="link" onClick={onHideBudget(budget)}>
+                    Não lembrar
+                  </Button>
+                </Col>
+              </Row>
+            </ListGroup.Item>
           ))}
-        </ul>
+        </ListGroup>
       </Card.Body>
     </Card>
   );

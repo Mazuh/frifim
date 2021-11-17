@@ -1,4 +1,5 @@
 import React from 'react';
+import differenceBy from 'lodash.differenceby';
 import get from 'lodash.get';
 import { useDispatch, useSelector } from 'react-redux';
 import Container from 'react-bootstrap/Container';
@@ -61,9 +62,11 @@ export default function Home() {
     monthlySituation;
   const transactions = useSelector((state) => state.transactions.items);
 
-  const pendingBudgets = onlyMonthlyExpenses
-    .concat(onlyMonthlyIncomes)
-    .filter((budget) => get(budget, 'rememberOnDashboard', true));
+  const pendingBudgets = differenceBy(
+    onlyMonthlyExpenses.concat(onlyMonthlyIncomes),
+    transactions,
+    'name'
+  ).filter((budget) => get(budget, 'rememberOnDashboard', true));
 
   if (isLoading) {
     return <LoadingMainContainer />;

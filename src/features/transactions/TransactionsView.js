@@ -25,8 +25,6 @@ import CategoryIndicator from '../categories/CategoryIndicator';
 import { ViewportContext } from '../../app/contexts';
 import useBasicRequestData from '../../app/useBasicRequestData';
 import TransationDatetime from './TransactionDatetime';
-import useSelectorForMonthlyBudgetStatus from '../monthly-budget/useSelectorForMonthlyBudgetStatus';
-import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 
 export default function TransactionsView() {
   const dispatch = useDispatch();
@@ -35,25 +33,11 @@ export default function TransactionsView() {
 
   const [isHelpVisible, setHelpVisible] = React.useState(false);
 
-  const { onlyMonthlyExpenses, onlyMonthlyIncomes } = useSelectorForMonthlyBudgetStatus();
-  const monthlyBudget = onlyMonthlyExpenses.concat(onlyMonthlyIncomes);
-
   if (transactionsState.isReadingAll) {
     return <LoadingMainContainer />;
   }
 
   const handleSubmitData = (data) => {
-    const pendingBudget = monthlyBudget.find(
-      (budget) => budget.name === data.name && budget.rememberOnDashboard
-    );
-    if (pendingBudget) {
-      const updatingBudget = {
-        ...pendingBudget,
-        rememberOnDashboard: false,
-        uuid: pendingBudget.uuid,
-      };
-      dispatch(monthlyBudgetActions.update(pendingBudget.uuid, updatingBudget, basicRequestData));
-    }
     dispatch(transactionsActions.create(data, basicRequestData));
   };
 

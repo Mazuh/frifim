@@ -16,7 +16,7 @@ export default function PendingBudgetsCard({ budgets }) {
   const dispatch = useDispatch();
   const basicRequestData = useBasicRequestData();
 
-  const forgetBudget = (budgetData) => {
+  const onHideBudget = (budgetData) => () => {
     const updatingBudget = {
       ...budgetData,
       rememberOnDashboard: false,
@@ -25,7 +25,7 @@ export default function PendingBudgetsCard({ budgets }) {
     dispatch(monthlyBudgetActions.update(budgetData.uuid, updatingBudget, basicRequestData));
   };
 
-  const createTransaction = (budgetData) => {
+  const onConsolidateBudget = (budgetData) => () => {
     const transactionData = {
       amount: budgetData.amount,
       category: budgetData.category,
@@ -35,12 +35,6 @@ export default function PendingBudgetsCard({ budgets }) {
       type: budgetData.type,
     };
     dispatch(transactionsActions.create(transactionData, basicRequestData));
-  };
-
-  const onHideBudget = (budgetData) => () => forgetBudget(budgetData);
-  const onConsolidateBudget = (budgetData) => () => {
-    forgetBudget(budgetData);
-    createTransaction(budgetData);
   };
 
   return (

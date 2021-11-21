@@ -1,4 +1,5 @@
 import React from 'react';
+import differenceBy from 'lodash.differenceby';
 import get from 'lodash.get';
 import { useDispatch, useSelector } from 'react-redux';
 import Container from 'react-bootstrap/Container';
@@ -25,6 +26,7 @@ import BudgetsChart from './BudgetsChart';
 import { groupAmountsByCategories } from '../../utils/categories-utils';
 import RelevantCategoriesCard from '../categories/relevant-categories/RelevantCategoriesCard';
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
+import PendingBudgetsCard from './PendingBudgetsCard';
 
 const renderNumberFormatText = (total) => (amount) =>
   <span className={total.lessThan(0) ? 'text-danger' : ''}>R$ {amount}</span>;
@@ -60,6 +62,12 @@ export default function Home() {
     monthlySituation;
   const transactions = useSelector((state) => state.transactions.items);
 
+  const pendingBudgets = differenceBy(
+    onlyMonthlyExpenses.concat(onlyMonthlyIncomes),
+    transactions,
+    'name'
+  ).filter((budget) => get(budget, 'rememberOnDashboard', true));
+
   if (isLoading) {
     return <LoadingMainContainer />;
   }
@@ -67,6 +75,7 @@ export default function Home() {
   const monthlyBudgetCalcs = getMonthlyCalcs(monthlySituation);
   const transactionsCalcs = getTransactionsCalcs(transactions);
   const hasFinantialData = !monthlyBudgetCalcs.total.isZero() || !transactionsCalcs.total.isZero();
+  const hasPendingBudgets = pendingBudgets.length > 0;
 
   const handleReuseBudgetSelect = (serializedPeriod) => {
     const selectedPeriod = JSON.parse(serializedPeriod);
@@ -213,29 +222,38 @@ export default function Home() {
           </Card>
         </Col>
       </Row>
-      {hasFinantialData && (
+      {hasFinantialData && hasPendingBudgets && (
         <Row>
           <Col className="mt-3" as="section">
-            <RelevantCategoriesCard
-              cardIcon={<INCOME_TYPE.Icon />}
-              cardTitle={INCOME_TYPE.pluralLabel}
-              groupedAmountsByCategory={groupAmountsByCategories(
-                onlyMonthlyIncomes,
-                onlyWeeklyIncomes
-              )}
-            />
-          </Col>
-          <Col className="mt-3" as="section">
-            <RelevantCategoriesCard
-              cardIcon={<EXPENSE_TYPE.Icon />}
-              cardTitle={EXPENSE_TYPE.pluralLabel}
-              groupedAmountsByCategory={groupAmountsByCategories(
-                onlyMonthlyExpenses,
-                onlyWeeklyExpenses
-              )}
-            />
+            <PendingBudgetsCard budgets={pendingBudgets} />
           </Col>
         </Row>
+      )}
+      {hasFinantialData && (
+        <>
+          <Row>
+            <Col className="mt-3" as="section">
+              <RelevantCategoriesCard
+                cardIcon={<INCOME_TYPE.Icon />}
+                cardTitle={INCOME_TYPE.pluralLabel}
+                groupedAmountsByCategory={groupAmountsByCategories(
+                  onlyMonthlyIncomes,
+                  onlyWeeklyIncomes
+                )}
+              />
+            </Col>
+            <Col className="mt-3" as="section">
+              <RelevantCategoriesCard
+                cardIcon={<EXPENSE_TYPE.Icon />}
+                cardTitle={EXPENSE_TYPE.pluralLabel}
+                groupedAmountsByCategory={groupAmountsByCategories(
+                  onlyMonthlyExpenses,
+                  onlyWeeklyExpenses
+                )}
+              />
+            </Col>
+          </Row>
+        </>
       )}
     </Container>
   );

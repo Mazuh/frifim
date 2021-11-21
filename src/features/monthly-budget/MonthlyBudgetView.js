@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 import { useSelector, useDispatch } from 'react-redux';
 import { BsPlusSquare } from 'react-icons/bs';
 import get from 'lodash.get';
@@ -58,6 +59,7 @@ export default function MonthlyBudgetView() {
   const handleSubmit = (budgetFormData, event, resetParent) => {
     const budget = {
       ...budgetFormData,
+      rememberOnDashboard: !event.target['pending-budget'].checked,
       year: basicRequestData.year,
       month: basicRequestData.month,
     };
@@ -124,7 +126,20 @@ export default function MonthlyBudgetView() {
               onSubmit={handleSubmit}
               isLoading={monthlySituation.isLoading}
               isCreating={monthlySituation.isCreating}
-            />
+            >
+              <Form.Group as={Row} className="d-flex align-items-center">
+                <Form.Label as="legend" column sm={2}>
+                  Orçamento pendente:
+                </Form.Label>
+                <Col sm={10}>
+                  <Form.Check
+                    name="pending-budget"
+                    label="Não lembrar na tela inicial"
+                    id="pending-budget-create"
+                  />
+                </Col>
+              </Form.Group>
+            </MonthlyBudgetForm>
           ) : (
             <span>
               <strong>Você já criou muitas linhas de orçamento mensal.</strong>
@@ -188,9 +203,10 @@ function MonthlyBudgetTableRowExtension({ budget }) {
   const isUpdating = useSelector((state) => state.monthlyBudget.updating.includes(budget.uuid));
   const isLoading = useSelector((state) => state.monthlyBudget.isLoading);
 
-  const handleSubmit = (budgetFormData) => {
+  const handleSubmit = (budgetFormData, event) => {
     const updatingBudget = {
       ...budgetFormData,
+      rememberOnDashboard: !event.target['pending-budget'].checked,
       uuid: budget.uuid,
     };
     dispatch(monthlyBudgetActions.update(budget.uuid, updatingBudget, basicRequestData));
@@ -202,7 +218,21 @@ function MonthlyBudgetTableRowExtension({ budget }) {
       onSubmit={handleSubmit}
       isLoading={isLoading}
       isUpdating={isUpdating}
-    />
+    >
+      <Form.Group as={Row} className="d-flex align-items-center">
+        <Form.Label as="legend" column sm={2}>
+          Orçamento pendente:
+        </Form.Label>
+        <Col sm={10}>
+          <Form.Check
+            name="pending-budget"
+            label="Não lembrar na tela inicial"
+            id="pending-budget-update"
+            defaultChecked={!get(budget, 'rememberOnDashboard', true)}
+          />
+        </Col>
+      </Form.Group>
+    </MonthlyBudgetForm>
   );
 }
 

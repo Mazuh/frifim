@@ -21,11 +21,15 @@ const projectsResource = makeReduxAssets({
         .doc(uuid)
         .update(toFirestoreDocData(project))
         .then(() => ({ ...project, uuid })),
-    create: (project) =>
+    create: (project, onCreate) =>
       firedb
         .collection('projects')
         .add(toFirestoreDocData(project))
-        .then((responseRef) => ({ ...project, uuid: responseRef.id })),
+        .then((responseRef) => {
+          const createdProject = { ...project, uuid: responseRef.id };
+          onCreate(createdProject);
+          return createdProject
+        }),
     delete: (uuid) => batchedDelete(uuid).then(() => ({ uuid })),
   },
 });

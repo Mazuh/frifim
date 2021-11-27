@@ -117,6 +117,18 @@ export default function ProjectSelector({ className }) {
 
 function CreationModal({ isVisible, isBlocked, close }) {
   const dispatch = useDispatch();
+  const { setProject } = React.useContext(ProjectContext);
+
+  const createAndSelectProject = project => dispatch => {
+    let createdProject = null;
+
+    projectsActions
+      .create(project, created => createdProject = created)(dispatch)
+      .then(() => !!createdProject
+        & dispatch(setLastSelectedProjectUuid(createdProject.uuid))
+        & setProject(createdProject)
+      );
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -125,8 +137,8 @@ function CreationModal({ isVisible, isBlocked, close }) {
     if (!name) {
       return;
     }
-
-    dispatch(projectsActions.create({ name, createdAt: new Date().toISOString() }));
+    
+    dispatch(createAndSelectProject({ name, createdAt: new Date().toISOString() }));
     close();
   };
 

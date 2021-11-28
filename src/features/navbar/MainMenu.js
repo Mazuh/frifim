@@ -16,11 +16,11 @@ import {
   BsPlusCircleFill,
   BsQuestionCircle,
 } from 'react-icons/bs';
-import { MdOutlineSavings } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../auth/authDuck';
 import ProjectSelector from '../projects/ProjectSelector';
 import PeriodSelector from '../periods/PeriodSelector';
+import EmergencySavingIcon from '../emergency-saving/EmegencySavingIcon';
 
 export default function MainMenu() {
   const dispatch = useDispatch();
@@ -148,7 +148,7 @@ const menuLinks = [
       {
         url: '/reserva-de-emergencia',
         label: 'Reserva de emergência',
-        icon: <MdOutlineSavings />,
+        icon: <EmergencySavingIcon />,
       },
       { url: '/ajuda', label: 'Central de ajuda', icon: <BsQuestionCircle /> },
     ],

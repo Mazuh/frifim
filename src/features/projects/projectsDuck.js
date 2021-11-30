@@ -28,7 +28,7 @@ const projectsResource = makeReduxAssets({
         .then((responseRef) => {
           const createdProject = { ...project, uuid: responseRef.id };
           onCreate(createdProject);
-          return createdProject
+          return createdProject;
         }),
     delete: (uuid) => batchedDelete(uuid).then(() => ({ uuid })),
   },

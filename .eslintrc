@@ -29,6 +29,8 @@
     "react/react-in-jsx-scope": 0,
     "no-unused-vars": "warn",
     "import/export": 0,
-    "camelcase": [2, { "properties": "always" }]
+    "camelcase": [2, { "properties": "always" }],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

@@ -3,11 +3,9 @@ import { MdOutlineSavings, MdNotificationImportant } from 'react-icons/md';
 import useEmergencySaving from './useEmergencySaving';
 
 const EmergencySavingIcon = () => {
-	const shouldEmergencySaving = useEmergencySaving();
-	
-	return shouldEmergencySaving
-		? <MdNotificationImportant color="orange" />
-		: <MdOutlineSavings />;
+  const shouldEmergencySaving = useEmergencySaving();
+
+  return shouldEmergencySaving ? <MdNotificationImportant color="orange" /> : <MdOutlineSavings />;
 };
 
 export default EmergencySavingIcon;

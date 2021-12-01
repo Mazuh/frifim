@@ -87,6 +87,7 @@ export default function useSelectorForMonthlyBudgetStatus() {
     isLoading: monthlyBudgetState.isLoading || weeklyBudgetState.isLoading,
     isCreating: monthlyBudgetState.isCreating || weeklyBudgetState.isCreating,
     isReadingAll: monthlyBudgetState.isReadingAll || weeklyBudgetState.isReadingAll,
+    emergencySaving: Decimal(emergencySavingValue || 0),
   };
 }
 

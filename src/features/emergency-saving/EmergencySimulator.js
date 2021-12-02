@@ -51,7 +51,7 @@ const EmergencySimulator = () => {
     <MainSection icon={<BsCalculator />} title="Simulação">
       <Form>
         {fields.map(({ id, title, preprend, decimalScale, legend, placeholder }) => (
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-3" key={id}>
             <Form.Label>{title}</Form.Label>
             <InputGroup>
               <InputGroup.Prepend>
@@ -81,6 +81,8 @@ const EmergencySimulator = () => {
             Valor total do fundo de emergência estimado para atingir o objetivo{' '}
             {
               <NumberFormat
+                data-testid="objectiveId"
+                id="objectiveId"
                 defaultValue={objective}
                 value={objective}
                 fixedDecimalScale

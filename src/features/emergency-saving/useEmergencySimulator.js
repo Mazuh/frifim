@@ -10,6 +10,8 @@ const useEmergencySimulator = (fields) => {
   const [formData, setFormData] = React.useState({});
   const change = (id) => (value) => setFormData((prevData) => ({ ...prevData, [id]: value }));
 
+  const getValue = (id) => (formData[id] ? formData[id].floatValue || 0 : 0);
+
   const monthlySituation = useSelectorForMonthlyBudgetStatus();
   const { onlyMonthlyIncomes, onlyMonthlyExpenses } = monthlySituation;
 
@@ -25,6 +27,7 @@ const useEmergencySimulator = (fields) => {
     change('monthQuantity')({ floatValue: 3 });
     change('expenses')({ floatValue: totalMonthlyExpenses });
     change('recommendedEmergency')({ floatValue: totalMonthlyIncome * 0.1 });
+    // eslint-disable-next-line
   }, []);
 
   const defaultValue = { floatValue: 0 };
@@ -42,6 +45,7 @@ const useEmergencySimulator = (fields) => {
 
   return {
     change,
+    getValue,
     objectiveTime,
     objective,
     formData,

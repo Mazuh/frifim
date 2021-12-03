@@ -58,6 +58,7 @@ const EmergencySimulator = () => {
                 <InputGroup.Text>{preprend}</InputGroup.Text>
               </InputGroup.Prepend>
               <NumberFormat
+                data-testid={id}
                 name={id}
                 autoComplete="off"
                 placeholder={placeholder}
@@ -94,10 +95,12 @@ const EmergencySimulator = () => {
             }
           </h6>
           {objectiveTime > 0 && (
-            <h6>
-              Tempo para atingir o objetivo {objectiveTime}
-              {objectiveTime > 1 ? ' meses' : ' mês'}
-            </h6>
+            <div data-testid="objectiveTimeId">
+              <h6>
+                Tempo para atingir o objetivo {objectiveTime}
+                {objectiveTime > 1 ? ' meses' : ' mês'}
+              </h6>
+            </div>
           )}
         </Form.Group>
       </Form>

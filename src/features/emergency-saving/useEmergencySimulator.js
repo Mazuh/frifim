@@ -1,15 +1,6 @@
 import React, { useEffect } from 'react';
 import useSelectorForMonthlyBudgetStatus from '../monthly-budget/useSelectorForMonthlyBudgetStatus';
-
-const calculateBudgets = (year, month) => (budgets) =>
-  budgets
-    .filter((budget) => budget.year === year && budget.month === month)
-    .reduce((allBudgets, budget) => parseFloat(allBudgets + budget.amount), 0);
-
-const calculateObjective = (expenses, monthQuantity) => expenses * monthQuantity;
-
-const calculateObjectiveTime = (objective, savedMoney, recommendedEmergency) =>
-  Math.ceil((objective - savedMoney) / recommendedEmergency) || 0;
+import { calculate } from './functions';
 
 const useEmergencySimulator = (fields) => {
   const [formData, setFormData] = React.useState({});
@@ -26,6 +17,7 @@ const useEmergencySimulator = (fields) => {
     const year = new Date().getFullYear();
     const month = new Date().getMonth();
 
+    const calculateBudgets = calculate('budgets');
     const totalMonthlyIncome = calculateBudgets(year, month)(onlyMonthlyIncomes);
     const totalMonthlyExpenses = calculateBudgets(year, month)(onlyMonthlyExpenses);
 
@@ -43,8 +35,10 @@ const useEmergencySimulator = (fields) => {
     recommendedEmergency = defaultValue,
   } = formData || {};
 
+  const calculateObjective = calculate('objective');
   const objective = calculateObjective(expenses.floatValue, monthQuantity.floatValue);
 
+  const calculateObjectiveTime = calculate('objectiveTime');
   const objectiveTime = calculateObjectiveTime(
     objective,
     previusSavedMoney.floatValue,

@@ -6,6 +6,11 @@ const calculateBudgets = (year, month) => (budgets) =>
     .filter((budget) => budget.year === year && budget.month === month)
     .reduce((allBudgets, budget) => parseFloat(allBudgets + budget.amount), 0);
 
+const calculateObjective = (expenses, monthQuantity) => expenses * monthQuantity;
+
+const calculateObjectiveTime = (objective, savedMoney, recommendedEmergency) =>
+  Math.ceil((objective - savedMoney) / recommendedEmergency) || 0;
+
 const useEmergencySimulator = (fields) => {
   const [formData, setFormData] = React.useState({});
   const change = (id) => (value) => setFormData((prevData) => ({ ...prevData, [id]: value }));
@@ -38,10 +43,13 @@ const useEmergencySimulator = (fields) => {
     recommendedEmergency = defaultValue,
   } = formData || {};
 
-  const objective = expenses.floatValue * monthQuantity.floatValue;
+  const objective = calculateObjective(expenses.floatValue, monthQuantity.floatValue);
 
-  const objectiveTime =
-    Math.ceil((objective - previusSavedMoney.floatValue) / recommendedEmergency.floatValue) || 0;
+  const objectiveTime = calculateObjectiveTime(
+    objective,
+    previusSavedMoney.floatValue,
+    recommendedEmergency.floatValue
+  );
 
   return {
     change,

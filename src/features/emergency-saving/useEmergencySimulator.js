@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import useSelectorForMonthlyBudgetStatus from '../monthly-budget/useSelectorForMonthlyBudgetStatus';
 
-const calculateTotal = (year, month) => (budgets) =>
+const calculateBudgets = (year, month) => (budgets) =>
   budgets
-    .filter((income) => income.year === year && income.month === month)
-    .reduce((allIncome, income) => parseFloat(allIncome + income.amount), 0);
+    .filter((budget) => budget.year === year && budget.month === month)
+    .reduce((allBudgets, budget) => parseFloat(allBudgets + budget.amount), 0);
 
 const useEmergencySimulator = (fields) => {
   const [formData, setFormData] = React.useState({});
@@ -21,8 +21,8 @@ const useEmergencySimulator = (fields) => {
     const year = new Date().getFullYear();
     const month = new Date().getMonth();
 
-    const totalMonthlyIncome = calculateTotal(year, month)(onlyMonthlyIncomes);
-    const totalMonthlyExpenses = calculateTotal(year, month)(onlyMonthlyExpenses);
+    const totalMonthlyIncome = calculateBudgets(year, month)(onlyMonthlyIncomes);
+    const totalMonthlyExpenses = calculateBudgets(year, month)(onlyMonthlyExpenses);
 
     change('monthQuantity')({ floatValue: 3 });
     change('expenses')({ floatValue: totalMonthlyExpenses });

@@ -15,7 +15,7 @@ const useEmergencySimulator = (fields) => {
   const monthlySituation = useSelectorForMonthlyBudgetStatus();
   const { onlyMonthlyIncomes, onlyMonthlyExpenses } = monthlySituation;
 
-  useEffect(() => {
+  const createInitialState = () => {
     setFormData(fields.reduce((allFields, field) => ({ ...allFields, [field.id]: 0 }), {}));
 
     const year = new Date().getFullYear();
@@ -27,8 +27,9 @@ const useEmergencySimulator = (fields) => {
     change('monthQuantity')({ floatValue: 3 });
     change('expenses')({ floatValue: totalMonthlyExpenses });
     change('recommendedEmergency')({ floatValue: totalMonthlyIncome * 0.1 });
-    // eslint-disable-next-line
-  }, []);
+  };
+
+  useEffect(createInitialState);
 
   const defaultValue = { floatValue: 0 };
   const {

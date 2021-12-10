@@ -29,7 +29,7 @@ const useEmergencySimulator = (fields) => {
     change('recommendedEmergency')({ floatValue: totalMonthlyIncome * 0.1 });
   };
 
-  useEffect(createInitialState);
+  useEffect(createInitialState, []);
 
   const defaultValue = { floatValue: 0 };
   const {

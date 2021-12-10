@@ -9,7 +9,7 @@ import useEmergencySimulator from './useEmergencySimulator';
 const fields = [
   {
     id: 'monthQuantity',
-    title: 'Quantidade de meses necessarios para o fundo de emergência:',
+    label: 'Quantidade de meses necessarios para o fundo de emergência:',
     prepend: 'meses',
     prependStyle: { display: 'flex', flexDirection: 'row-reverse' },
     decimalScale: 0,
@@ -24,21 +24,21 @@ const fields = [
   },
   {
     id: 'expenses',
-    title: 'Despesas:',
+    label: 'Despesas:',
     prepend: 'R$',
     decimalScale: 2,
     placeholder: 'Ex: 10, 00',
   },
   {
     id: 'recommendedEmergency',
-    title: 'Valor mensal recomendado para guardar no fundo de emergência para atingir o objetivo:',
+    label: 'Valor mensal recomendado para guardar no fundo de emergência para atingir o objetivo:',
     prepend: 'R$',
     placeholder: 'o valor recomendado é de 10% de suas despesas mensais',
     decimalScale: 2,
   },
   {
     id: 'previusSavedMoney',
-    title: 'Dinheiro guardado:',
+    label: 'Dinheiro guardado:',
     prepend: 'R$',
     placeholder: 'Já possui algum dinheiro guardado?',
     decimalScale: 2,
@@ -51,9 +51,9 @@ const EmergencySimulator = () => {
   return (
     <MainSection icon={<BsCalculator />} title="Simulação">
       <Form>
-        {fields.map(({ id, title, prepend, prependStyle, decimalScale, legend, placeholder }) => (
+        {fields.map(({ id, label, prepend, prependStyle, decimalScale, legend, placeholder }) => (
           <Form.Group className="mb-3" key={id}>
-            <Form.Label>{title}</Form.Label>
+            <Form.Label>{label}</Form.Label>
             <InputGroup style={prependStyle}>
               <InputGroup.Prepend>
                 <InputGroup.Text>{prepend}</InputGroup.Text>

@@ -10,13 +10,14 @@ const fields = [
   {
     id: 'monthQuantity',
     title: 'Quantidade de meses necessarios para o fundo de emergência:',
-    preprend: 'n°',
+    prepend: 'meses',
+    prependStyle: { display: 'flex', flexDirection: 'row-reverse' },
     decimalScale: 0,
     legend: (
       <Form.Group>
         <Form.Text className="text-muted">
-          Quantidade de meses sugerida padrão é de 3 meses para funcionario publico, 6 para carteira
-          assinada (CLT) e 12 meses para os demais (estágio, informal, PJ etc.)
+          Dica: 3 meses para funcionalismo público, 6 meses para carteira assinada (CLT) e 12 meses
+          para os demais (estágio, informal, PJ etc.).
         </Form.Text>
       </Form.Group>
     ),
@@ -24,21 +25,21 @@ const fields = [
   {
     id: 'expenses',
     title: 'Despesas:',
-    preprend: 'R$',
+    prepend: 'R$',
     decimalScale: 2,
     placeholder: 'Ex: 10, 00',
   },
   {
     id: 'recommendedEmergency',
     title: 'Valor mensal recomendado para guardar no fundo de emergência para atingir o objetivo:',
-    preprend: 'R$',
+    prepend: 'R$',
     placeholder: 'o valor recomendado é de 10% de suas despesas mensais',
     decimalScale: 2,
   },
   {
     id: 'previusSavedMoney',
     title: 'Dinheiro guardado:',
-    preprend: 'R$',
+    prepend: 'R$',
     placeholder: 'Já possui algum dinheiro guardado?',
     decimalScale: 2,
   },
@@ -50,12 +51,12 @@ const EmergencySimulator = () => {
   return (
     <MainSection icon={<BsCalculator />} title="Simulação">
       <Form>
-        {fields.map(({ id, title, preprend, decimalScale, legend, placeholder }) => (
+        {fields.map(({ id, title, prepend, prependStyle, decimalScale, legend, placeholder }) => (
           <Form.Group className="mb-3" key={id}>
             <Form.Label>{title}</Form.Label>
-            <InputGroup>
+            <InputGroup style={prependStyle}>
               <InputGroup.Prepend>
-                <InputGroup.Text>{preprend}</InputGroup.Text>
+                <InputGroup.Text>{prepend}</InputGroup.Text>
               </InputGroup.Prepend>
               <NumberFormat
                 data-testid={id}
@@ -73,7 +74,7 @@ const EmergencySimulator = () => {
                 className="form-control"
               />
             </InputGroup>
-            {legend && legend}
+            {legend}
           </Form.Group>
         ))}
 

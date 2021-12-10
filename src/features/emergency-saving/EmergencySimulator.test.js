@@ -42,7 +42,14 @@ describe('emergency saving simulator', () => {
       </Provider>
     );
 
-    expect(container.getByTestId('objectiveId').textContent).toBe('6.000,00');
+    expect(container.getByLabelText('Meses protegidos:').value).toBe('3');
+    expect(container.getByLabelText('Despesas fixas por mês:').value).toBe('2.000,00');
+    expect(
+      container.getByLabelText(
+        'Valor mensal recomendado para guardar no fundo de emergência para atingir o objetivo:'
+      ).value
+    ).toBe('1.000,00');
+    expect(container.getByLabelText('Quanto guardar por mês:').value).toBe('0,00');
   });
 
   it('should simulate calcs with state changes', () => {
@@ -75,27 +82,28 @@ describe('emergency saving simulator', () => {
         },
       ])
     );
+
     const container = render(
       <Provider store={store}>
         <EmergencySimulator />
       </Provider>
     );
 
-    const monthQuantityInput = container.getByTestId('monthQuantity');
+    const monthQuantityInput = container.getByLabelText('Meses protegidos:');
     fireEvent.change(monthQuantityInput, { target: { value: '6' } });
 
-    const expensesInput = container.getByTestId('expenses');
+    const expensesInput = container.getByLabelText('Despesas fixas por mês:');
     fireEvent.change(expensesInput, { target: { value: '2.000,00' } });
 
-    const recommendedEmergencyInput = container.getByTestId('recommendedEmergency');
+    const recommendedEmergencyInput = container.getByLabelText(
+      'Valor mensal recomendado para guardar no fundo de emergência para atingir o objetivo:'
+    );
     fireEvent.change(recommendedEmergencyInput, { target: { value: '1.000,00' } });
 
-    const previusSavedMoneyInput = container.getByTestId('previusSavedMoney');
+    const previusSavedMoneyInput = container.getByLabelText('Quanto guardar por mês:');
     fireEvent.change(previusSavedMoneyInput, { target: { value: '5.000,00' } });
 
-    expect(container.getByTestId('objectiveId').textContent).toBe('12.000,00');
-    expect(container.getByTestId('objectiveTimeId').textContent).toBe(
-      'Tempo para atingir o objetivo 7 meses'
-    );
+    expect(container.getByText(/Ao fim/i).children[0].textContent).toBe('12 meses');
+    expect(container.getByText(/Ao fim/i).children[1].textContent).toBe('R$ 12.000,00 reservados');
   });
 });

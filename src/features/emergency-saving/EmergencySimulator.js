@@ -29,12 +29,13 @@ const EmergencySimulator = () => {
         {emergencyFields.map(
           ({ id, label, prepend, prependStyle, decimalScale, legend, placeholder }) => (
             <Form.Group className="mb-3" key={id}>
-              <Form.Label>{label}</Form.Label>
+              <Form.Label htmlFor={id}>{label}</Form.Label>
               <InputGroup style={prependStyle}>
                 <InputGroup.Prepend>
                   <InputGroup.Text>{prepend}</InputGroup.Text>
                 </InputGroup.Prepend>
                 <NumberFormat
+                  id={id}
                   autoComplete="off"
                   placeholder={placeholder}
                   inputMode="decimal"

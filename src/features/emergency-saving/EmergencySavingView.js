@@ -12,6 +12,7 @@ import { ProjectContext } from '../../app/contexts';
 import { MainContainer, MainHeader, MainSection } from '../main-pages/main-pages';
 import { projectsActions } from '../projects/projectsDuck';
 import NumberFormat from 'react-number-format';
+import EmergencySimulator from './EmergencySimulator';
 
 export default function EmergencySavingView() {
   const dispatch = useDispatch();
@@ -86,6 +87,8 @@ export default function EmergencySavingView() {
           </Form.Group>
         </Form>
       </MainSection>
+
+      <EmergencySimulator />
     </MainContainer>
   );
 }

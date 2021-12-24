@@ -68,11 +68,11 @@ export default function LoginView() {
   };
 
   return (
-    <Container as="main" className="d-flex align-items-center login-view">
-      <Card className="m-auto login-card">
-        <Card.Header as="header" className="text-white bg-dark">
+    <Container as="main" className="d-flex flex-row align-items-center login-view">
+      <Card className="title-card">
+        <Card.Body as={Form} onSubmit={handleLoginSubmit}>
           <Row className="align-items-center">
-            <Col>
+            <Col xs={6}>
               <Card.Title as="h1">Frifim</Card.Title>
               <Card.Subtitle>Gestão financeira simplificada. Gratuitamente.</Card.Subtitle>
               <Card.Subtitle className="mt-2">(Em beta!)</Card.Subtitle>
@@ -81,7 +81,9 @@ export default function LoginView() {
               <img src={Logo} alt="Frifim logo" width="100" />
             </Col>
           </Row>
-        </Card.Header>
+        </Card.Body>
+      </Card>
+      <Card className="m-auto login-card" style={{ minWidth: '44%', width: '44%' }}>
         <Card.Body as={Form} onSubmit={handleLoginSubmit}>
           {!!auth.errorCode && (
             <Alert variant="danger">

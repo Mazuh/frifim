@@ -81,7 +81,7 @@ export default function LoginView() {
           </Row>
         </Card.Body>
       </Card>
-      <Card className="m-auto login-card ml-5" style={{ width: '32%' }}>
+      <Card className="m-auto login-card ml-5" style={{ width: '31%' }}>
         <Card.Body as={Form} onSubmit={handleLoginSubmit}>
           {!!auth.errorCode && (
             <Alert variant="danger">
@@ -120,7 +120,7 @@ export default function LoginView() {
               className="d-flex align-items-center justify-content-center w-100 mb-2"
             />
           </Row>
-          <Row class Name="d-flex w-100">
+          <Row>
             <Col xs="12" className="justify-content-between d-flex w-100">
               <Button variant="link" onClick={handleSignupClick} disabled={auth.isLoading}>
                 Cadastro
@@ -136,13 +136,14 @@ export default function LoginView() {
             </Col>
           </Row>
           <Row>
-            <Col xs="12" className="d-flex justify-content-start">
+            <Col xs="12">
               <Button
+                className="align-self-start"
                 variant="link"
                 onClick={redirectToResetPasswordPage}
                 disabled={auth.isLoading}
               >
-                Esqueceu sua senha?
+                <small>Esqueceu sua senha?</small>
               </Button>
             </Col>
           </Row>

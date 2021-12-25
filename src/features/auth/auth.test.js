@@ -98,7 +98,7 @@ describe('auth', () => {
     const fakePassword = 'teste123';
     const inputEmail = container.getByLabelText('E-mail:');
     const inputPassword = container.getByLabelText('Senha:');
-    const button = container.getByRole('button', { name: 'Entrar usando e-mail' });
+    const button = container.getByRole('button', { name: 'Login' });
 
     expect(fakeSignIn).not.toHaveBeenCalledWith(fakeEmail, fakePassword);
 
@@ -130,7 +130,7 @@ describe('auth', () => {
       pb: null,
       a: [],
     };
-    const button = container.getByRole('button', { name: 'Continuar via Facebook' });
+    const button = container.getByRole('button', { name: 'Facebook' });
 
     expect(fakeFacebookSignIn).not.toHaveBeenCalledWith(fakeProviderReturn);
 

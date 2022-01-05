@@ -25,10 +25,16 @@ const EmergencySimulator = () => {
 
   return (
     <MainSection icon={<BsCalculator />} title="Simulação">
+      <p>
+        Não sabe o que fazer?
+        <br />
+        Preencha a simulação e encontre um valor recomendado para sua reserva, baseado na sua
+        realidade!
+      </p>
       <Form>
         {emergencyFields.map(
           ({ id, label, prepend, prependStyle, decimalScale, legend, placeholder }) => (
-            <Form.Group className="mb-3" key={id}>
+            <Form.Group className="mb-3 col-12 col-md-5" key={id}>
               <Form.Label htmlFor={id}>{label}</Form.Label>
               <InputGroup style={prependStyle}>
                 <InputGroup.Prepend>
@@ -58,17 +64,16 @@ const EmergencySimulator = () => {
 
         <Form.Group>
           <h3>Resultado</h3>
-
           <p>
             Ao fim de <strong>{objectiveTime} meses</strong>, você terá pelo menos{' '}
             <strong>{<MoneyText value={objective} />} reservados</strong> para emergência.
           </p>
-
           <p>
-            Isso depende de todos os parâmetros da simulação, ou seja, irá te proteger por{' '}
-            {objectiveTime} meses de despesas, mas você já tem{' '}
-            {<MoneyText value={getValue('previouslySavedAmount')} />} de início e irá guardar{' '}
-            {<MoneyText value={getValue('recommendedEmergency')} />}todo mês.
+            Caso isso te agrade, <strong>salve</strong> o valor da sua reserva como{' '}
+            <strong>
+              <MoneyText value={getValue('recommendedEmergency')} />
+            </strong>{' '}
+            no campo lá no início desta página.
           </p>
         </Form.Group>
       </Form>

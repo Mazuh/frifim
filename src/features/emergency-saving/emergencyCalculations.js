@@ -1,9 +1,16 @@
+import Decimal from 'decimal.js';
+
 export const calculateBudgets = (year, month) => (budgets) =>
   budgets
     .filter((budget) => budget.year === year && budget.month === month)
-    .reduce((allBudgets, budget) => parseFloat(allBudgets + budget.amount), 0);
+    .reduce((allBudgets, budget) => Decimal(allBudgets).plus(budget.amount), 0)
+    .toString();
 
 export const calculateObjective = (expenses, monthQuantity) => expenses * monthQuantity;
 
 export const calculateObjectiveTime = (objective, savedMoney, recommendedEmergency) =>
-  Math.ceil((objective - savedMoney) / recommendedEmergency) || 0;
+  Decimal(objective || 0)
+    .minus(savedMoney || 0)
+    .dividedBy(recommendedEmergency || 0)
+    .ceil()
+    .toString();

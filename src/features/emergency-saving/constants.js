@@ -1,7 +1,7 @@
 export const emergencyFields = [
   {
     id: 'monthQuantity',
-    label: 'Meses protegidos:',
+    label: 'Meses para proteger:',
     prepend: 'meses',
     prependStyle: { display: 'flex', flexDirection: 'row-reverse' },
     decimalScale: 0,
@@ -13,21 +13,21 @@ export const emergencyFields = [
     label: 'Despesas fixas por mês:',
     prepend: 'R$',
     decimalScale: 2,
-    legend: 'Dica: quanto você precisa para sobreviver por mês.',
+    legend: 'Quanto você precisa para sobreviver no mês? Por padrão, seu total de despesas mesais.',
   },
   {
     id: 'recommendedEmergency',
-    label: 'Valor mensal recomendado para guardar no fundo de emergência para atingir o objetivo:',
+    label: 'Quanto guardará todo mês:',
     prepend: 'R$',
     placeholder: 'o valor recomendado é de 10% de suas despesas mensais',
     decimalScale: 2,
-    legend: 'Dica: 10% da sua receita mensal.',
+    legend: 'Talvez 10% da sua receita mensal?',
   },
   {
     id: 'previouslySavedAmount',
-    label: 'Quanto guardar por mês:',
+    label: 'Quantia já guardada:',
     prepend: 'R$',
     decimalScale: 2,
-    legend: 'Dica: Caso já tenha começado a guardar algo para esta reserva.',
+    legend: 'Caso já tenha começado a guardar algo para esta reserva.',
   },
 ];

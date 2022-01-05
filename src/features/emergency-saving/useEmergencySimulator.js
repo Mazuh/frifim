@@ -6,7 +6,7 @@ import {
   calculateObjectiveTime,
 } from './emergencyCalculations';
 
-const useEmergencySimulator = (fields) => {
+export default function useEmergencySimulator(fields) {
   const [formData, setFormData] = React.useState({});
   const change = (id) => (value) => setFormData((prevData) => ({ ...prevData, [id]: value }));
 
@@ -35,7 +35,7 @@ const useEmergencySimulator = (fields) => {
   const {
     expenses = defaultValue,
     monthQuantity = defaultValue,
-    previusSavedMoney = defaultValue,
+    previouslySavedAmount = defaultValue,
     recommendedEmergency = defaultValue,
   } = formData || {};
 
@@ -43,7 +43,7 @@ const useEmergencySimulator = (fields) => {
 
   const objectiveTime = calculateObjectiveTime(
     objective,
-    previusSavedMoney.floatValue,
+    previouslySavedAmount.floatValue,
     recommendedEmergency.floatValue
   );
 
@@ -54,6 +54,4 @@ const useEmergencySimulator = (fields) => {
     objective,
     formData,
   };
-};
-
-export default useEmergencySimulator;
+}

@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { BsGear } from 'react-icons/bs';
+import { BsPuzzle } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { ProjectContext } from '../../app/contexts';
 import { MainContainer, MainHeader, MainSection } from '../main-pages/main-pages';
@@ -45,20 +45,20 @@ export default function EmergencySavingView() {
   return (
     <MainContainer>
       <MainHeader title="Reserva de emergência" />
-      <MainSection icon={<BsGear />} title="Configuração">
+      <MainSection icon={<BsPuzzle />} title="Definir valor">
         <Form onSubmit={handleSubmit}>
           <Form.Group as={Row} title="Valor da quantia a ser reservada.">
             <Form.Label column sm={2}>
               Valor da reserva:
             </Form.Label>
-            <Col sm={10}>
+            <Col sm={12} md={5}>
               <InputGroup>
                 <InputGroup.Prepend>
                   <InputGroup.Text>R$</InputGroup.Text>
                 </InputGroup.Prepend>
                 <NumberFormat
                   name="emergencySaving"
-                  placeholder="Digite o valor."
+                  placeholder="0,00"
                   autoComplete="off"
                   inputMode="decimal"
                   value={emergencySaving.floatValue}

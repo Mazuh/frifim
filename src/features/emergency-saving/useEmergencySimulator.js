@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-import useSelectorForMonthlyBudgetStatus from '../monthly-budget/useSelectorForMonthlyBudgetStatus';
-import {
-  calculateBudgets,
-  calculateObjective,
-  calculateObjectiveTime,
-} from './emergencyCalculations';
+import useSelectorForMonthlyBudgetStatus, {
+  getMonthlyCalcs,
+} from '../monthly-budget/useSelectorForMonthlyBudgetStatus';
+import { calculateObjective, calculateObjectiveTime } from './emergencyCalculations';
 
 export default function useEmergencySimulator(fields) {
   const [formData, setFormData] = React.useState({});
@@ -13,20 +11,14 @@ export default function useEmergencySimulator(fields) {
   const getValue = (id) => (formData[id] ? formData[id].floatValue || 0 : 0);
 
   const monthlySituation = useSelectorForMonthlyBudgetStatus();
-  const { onlyMonthlyIncomes, onlyMonthlyExpenses } = monthlySituation;
+  const { totalIncomes, totalExpenses } = getMonthlyCalcs(monthlySituation);
 
   const createInitialState = () => {
     setFormData(fields.reduce((allFields, field) => ({ ...allFields, [field.id]: 0 }), {}));
 
-    const year = new Date().getFullYear();
-    const month = new Date().getMonth();
-
-    const totalMonthlyIncome = calculateBudgets(year, month)(onlyMonthlyIncomes);
-    const totalMonthlyExpenses = calculateBudgets(year, month)(onlyMonthlyExpenses);
-
     change('monthQuantity')({ floatValue: 3 });
-    change('expenses')({ floatValue: totalMonthlyExpenses });
-    change('recommendedEmergency')({ floatValue: totalMonthlyIncome * 0.1 });
+    change('expenses')({ floatValue: totalExpenses.toNumber() });
+    change('recommendedEmergency')({ floatValue: totalIncomes.times(0.1).toNumber() });
   };
 
   useEffect(createInitialState, []);

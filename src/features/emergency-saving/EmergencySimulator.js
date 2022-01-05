@@ -31,6 +31,7 @@ const EmergencySimulator = () => {
         Preencha a simulação e encontre um valor recomendado para sua reserva, baseado na sua
         realidade!
       </p>
+      <h3>Parâmetros</h3>
       <Form>
         {emergencyFields.map(
           ({ id, label, prepend, prependStyle, decimalScale, legend, placeholder }) => (
@@ -62,20 +63,20 @@ const EmergencySimulator = () => {
           )
         )}
 
-        <Form.Group>
+        <div>
           <h3>Resultado</h3>
           <p>
             Ao fim de <strong>{objectiveTime} meses</strong>, você terá pelo menos{' '}
             <strong>{<MoneyText value={objective} />} reservados</strong> para emergência.
           </p>
           <p>
-            Caso isso te agrade, <strong>salve</strong> o valor da sua reserva como{' '}
+            Gostou? Então <strong>salve</strong> o valor da sua reserva como{' '}
             <strong>
               <MoneyText value={getValue('recommendedEmergency')} />
             </strong>{' '}
             no campo lá no início desta página.
           </p>
-        </Form.Group>
+        </div>
       </Form>
     </MainSection>
   );

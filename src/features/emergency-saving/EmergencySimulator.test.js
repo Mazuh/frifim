@@ -55,11 +55,11 @@ describe('emergency saving simulator', () => {
   //       {
   //         rememberOnDashboard: true,
   //         month: new Date().getMonth(),
-  //         amount: '10000.00',
+  //         amount: '2400.00',
   //         category: '',
   //         project: 'KO4nF9EDng0XEYI1KeOT',
   //         year: new Date().getFullYear(),
-  //         name: 'salario',
+  //         name: 'Salário',
   //         type: 'income',
   //         userUid: 'NcxuU13pLHMsTPqoHSKYSL03PRb2',
   //         uuid: 'VQlo3e4frBJbUwpF4Fys',
@@ -69,12 +69,24 @@ describe('emergency saving simulator', () => {
   //         rememberOnDashboard: true,
   //         category: '',
   //         month: new Date().getMonth(),
-  //         amount: '2000.00',
-  //         name: 'nubank',
+  //         amount: '200.00',
+  //         name: 'Energia',
   //         year: new Date().getFullYear(),
   //         userUid: 'NcxuU13pLHMsTPqoHSKYSL03PRb2',
   //         type: 'expense',
   //         uuid: 'WrEFWVWN0MtIxmbDavaH',
+  //       },
+  //       {
+  //         project: 'KO4nF9EDng0XEYI1KeOT',
+  //         rememberOnDashboard: true,
+  //         category: '',
+  //         month: new Date().getMonth(),
+  //         amount: '500.00',
+  //         name: 'Feira',
+  //         year: new Date().getFullYear(),
+  //         userUid: 'NcxuU13pLHMsTPqoHSKYSL03PRb2',
+  //         type: 'expense',
+  //         uuid: 'WrEFWVWN0MtfffffIxmbDavaH',
   //       },
   //     ])
   //   );
@@ -88,16 +100,14 @@ describe('emergency saving simulator', () => {
   //   const monthQuantityInput = container.getByLabelText('Meses para proteger:');
   //   fireEvent.change(monthQuantityInput, { target: { value: '6' } });
 
-  //   const expensesInput = container.getByLabelText('Despesas fixas por mês:');
-  //   fireEvent.change(expensesInput, { target: { value: '2.000,00' } });
+  //   expect(container.getByLabelText('Despesas fixas por mês:').value).toBe('700,00');
 
   //   const recommendedEmergencyInput = container.getByLabelText('Quanto guardará todo mês:');
-  //   fireEvent.change(recommendedEmergencyInput, { target: { value: '1.000,00' } });
+  //   fireEvent.change(recommendedEmergencyInput, { target: { value: '240,00' } });
 
-  //   const previouslySavedAmountInput = container.getByLabelText('Quantia já guardada:');
-  //   fireEvent.change(previouslySavedAmountInput, { target: { value: '5.000,00' } });
+  //   expect(container.getByLabelText('Quantia já guardada:').value).toBe('0,00');
 
-  //   expect(container.getByText(/Ao fim/i).children[0].textContent).toBe('12 meses');
-  //   expect(container.getByText(/Ao fim/i).children[1].textContent).toBe('R$ 12.000,00 reservados');
+  //   expect(container.getByText(/Ao fim/i).children[0].textContent).toBe('18 meses');
+  //   expect(container.getByText(/Ao fim/i).children[1].textContent).toBe('R$ 4.320,00 reservados');
   // });
 });

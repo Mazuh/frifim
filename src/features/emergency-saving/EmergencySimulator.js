@@ -21,12 +21,13 @@ const MoneyText = ({ value }) => (
 );
 
 const EmergencySimulator = () => {
-  const { change, objectiveTime, objective, getValue } = useEmergencySimulator(emergencyFields);
+  const { change, objectiveTime, objective, amountAfterObjetiveTime, getValue } =
+    useEmergencySimulator(emergencyFields);
 
   return (
     <MainSection icon={<BsCalculator />} title="Simulação">
       <p>
-        Não sabe o que fazer?
+        Não sabe o que fazer? Experimente o simulador (ainda em fase de testes).
         <br />
         Preencha a simulação e encontre um valor recomendado para sua reserva, baseado na sua
         realidade!
@@ -66,13 +67,21 @@ const EmergencySimulator = () => {
         <div>
           <h3>Resultado</h3>
           <p>
-            Ao fim de <strong>{objectiveTime} meses</strong>, você terá pelo menos{' '}
-            <strong>{<MoneyText value={objective} />} reservados</strong> para emergência.
+            Você precisa de uma reserva total de{' '}
+            <em>
+              <MoneyText value={objective} />
+            </em>
+            .<br />
+            Ao fim de <em>{objectiveTime} meses</em>, você terá pelo menos{' '}
+            <em>
+              <MoneyText value={amountAfterObjetiveTime} /> reservados
+            </em>{' '}
+            para emergência.
           </p>
           <p>
-            Gostou? Então <strong>salve</strong> o valor da sua reserva como{' '}
+            Gostou? Então <strong>salve a reserva mensal</strong> de
             <strong>
-              <MoneyText value={getValue('recommendedEmergency')} />
+              <MoneyText value={getValue('monthlySavingAmount')} />
             </strong>{' '}
             no campo lá no início desta página.
           </p>

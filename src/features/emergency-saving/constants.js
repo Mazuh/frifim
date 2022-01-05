@@ -16,10 +16,9 @@ export const emergencyFields = [
     legend: 'Quanto você precisa para sobreviver no mês? Por padrão, seu total de despesas mesais.',
   },
   {
-    id: 'recommendedEmergency',
+    id: 'monthlySavingAmount',
     label: 'Quanto guardará todo mês:',
     prepend: 'R$',
-    placeholder: 'o valor recomendado é de 10% de suas despesas mensais',
     decimalScale: 2,
     legend: 'Talvez 10% da sua receita mensal?',
   },

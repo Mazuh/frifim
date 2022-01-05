@@ -45,11 +45,11 @@ export default function EmergencySavingView() {
   return (
     <MainContainer>
       <MainHeader title="Reserva de emergência" />
-      <MainSection icon={<BsPuzzle />} title="Definir valor">
+      <MainSection icon={<BsPuzzle />} title="Definir no orçamento">
         <Form onSubmit={handleSubmit}>
           <Form.Group as={Row} title="Valor da quantia a ser reservada.">
             <Form.Label column sm={2}>
-              Valor da reserva:
+              Reserva mensal:
             </Form.Label>
             <Col sm={12} md={5}>
               <InputGroup>

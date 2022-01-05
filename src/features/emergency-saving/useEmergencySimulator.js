@@ -1,8 +1,8 @@
+import Decimal from 'decimal.js';
 import React, { useEffect } from 'react';
 import useSelectorForMonthlyBudgetStatus, {
   getMonthlyCalcs,
 } from '../monthly-budget/useSelectorForMonthlyBudgetStatus';
-import { calculateObjective, calculateObjectiveTime } from './emergencyCalculations';
 
 export default function useEmergencySimulator(fields) {
   const [formData, setFormData] = React.useState({});
@@ -18,32 +18,36 @@ export default function useEmergencySimulator(fields) {
 
     change('monthQuantity')({ floatValue: 3 });
     change('expenses')({ floatValue: totalExpenses.toNumber() });
-    change('recommendedEmergency')({ floatValue: totalIncomes.times(0.1).toNumber() });
+    change('monthlySavingAmount')({ floatValue: totalIncomes.times(0.1).toNumber() });
   };
 
   useEffect(createInitialState, []);
 
-  const defaultValue = { floatValue: 0 };
   const {
-    expenses = defaultValue,
-    monthQuantity = defaultValue,
-    previouslySavedAmount = defaultValue,
-    recommendedEmergency = defaultValue,
+    expenses = { floatValue: 0 },
+    monthQuantity = { floatValue: 0 },
+    previouslySavedAmount = { floatValue: 0 },
+    monthlySavingAmount = { floatValue: 0 },
   } = formData || {};
 
-  const objective = calculateObjective(expenses.floatValue, monthQuantity.floatValue);
+  const objective = Decimal(expenses.floatValue).times(monthQuantity.floatValue).toString();
 
-  const objectiveTime = calculateObjectiveTime(
-    objective,
-    previouslySavedAmount.floatValue,
-    recommendedEmergency.floatValue
-  );
+  const objectiveTime = Decimal(objective)
+    .minus(previouslySavedAmount.floatValue || 0)
+    .dividedBy(monthlySavingAmount.floatValue)
+    .ceil()
+    .toString();
+
+  const amountAfterObjetiveTime = Decimal(objectiveTime)
+    .times(monthlySavingAmount.floatValue)
+    .toString();
 
   return {
     change,
     getValue,
     objectiveTime,
     objective,
+    amountAfterObjetiveTime,
     formData,
   };
 }

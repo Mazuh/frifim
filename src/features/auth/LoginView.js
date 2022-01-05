@@ -1,7 +1,5 @@
 import React, { useReducer } from 'react';
 import { BsBoxArrowInRight } from 'react-icons/bs';
-import { FcGoogle } from 'react-icons/fc';
-import { GrFacebook } from 'react-icons/gr';
 import { Redirect, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'react-bootstrap/Modal';
@@ -68,9 +66,9 @@ export default function LoginView() {
   };
 
   return (
-    <Container as="main" className="d-flex align-items-center login-view">
-      <Card className="m-auto login-card">
-        <Card.Header as="header" className="text-white bg-dark">
+    <Container as="main" className="d-flex flex-row align-items-center m-auto login-view">
+      <Card className="title-card align-self-lg-center p-5 ml-5">
+        <Card.Body className="title-card h-100" as={Form} onSubmit={handleLoginSubmit}>
           <Row className="align-items-center">
             <Col>
               <Card.Title as="h1">Frifim</Card.Title>
@@ -81,7 +79,9 @@ export default function LoginView() {
               <img src={Logo} alt="Frifim logo" width="100" />
             </Col>
           </Row>
-        </Card.Header>
+        </Card.Body>
+      </Card>
+      <Card className="m-auto login-card ml-5" style={{ width: '31%' }}>
         <Card.Body as={Form} onSubmit={handleLoginSubmit}>
           {!!auth.errorCode && (
             <Alert variant="danger">
@@ -117,66 +117,55 @@ export default function LoginView() {
           <Row>
             <div
               id="login-recaptcha"
-              className="d-flex align-items-center justify-content-center w-100 mt-2 mb-2"
+              className="d-flex align-items-center justify-content-center w-100 mb-2"
             />
+          </Row>
+          <Row>
+            <Col xs="12" className="justify-content-between d-flex w-100">
+              <Button variant="link" onClick={handleSignupClick} disabled={auth.isLoading}>
+                Cadastro
+              </Button>
+              <Button
+                variant="primary"
+                type="submit"
+                disabled={auth.isLoading || !isRecaptchaVerified}
+              >
+                <BsBoxArrowInRight className="mr-2" />
+                <span>{auth.isLoading ? 'Entrando...' : 'Login'}</span>
+              </Button>
+            </Col>
           </Row>
           <Row>
             <Col xs="12">
               <Button
-                variant="primary"
-                type="submit"
-                className="w-100 d-flex align-items-center justify-content-center"
-                disabled={auth.isLoading || !isRecaptchaVerified}
-              >
-                <BsBoxArrowInRight className="mr-2" />
-                <span>{auth.isLoading ? 'Entrando...' : 'Entrar usando e-mail'}</span>
-              </Button>
-            </Col>
-            <Col xs="12">
-              <Button
+                className="align-self-start"
                 variant="link"
-                className="w-100"
                 onClick={redirectToResetPasswordPage}
                 disabled={auth.isLoading}
               >
-                Esqueci minha senha
+                <small>Esqueceu sua senha?</small>
               </Button>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs="12" className="d-flex justify-content-between pt-3">
+              <span className="text-muted p-2">continuar via</span>
+              <div>
+                <Button variant="link" disabled={auth.isLoading} onClick={handleGoogleClick}>
+                  <span>Google</span>
+                </Button>
+                <Button variant="link" disabled={auth.isLoading} onClick={handleFacebookClick}>
+                  <span>Facebook</span>
+                </Button>
+              </div>
             </Col>
             <Col xs="12">
               <Button
                 variant="link"
-                className="w-100"
-                onClick={handleSignupClick}
-                disabled={auth.isLoading}
+                className="text-sm-right text-muted text-justify pt-2 w-100 text"
+                onClick={() => setLegalVisible(true)}
               >
-                Cadastro usando e-mail
-              </Button>
-            </Col>
-            <Col xs="12">
-              <Button
-                variant="link"
-                className="w-100"
-                disabled={auth.isLoading}
-                onClick={handleGoogleClick}
-              >
-                <FcGoogle className="mr-2" />
-                <span>Continuar via Google</span>
-              </Button>
-            </Col>
-            <Col xs="12">
-              <Button
-                variant="link"
-                className="w-100 mb-3 d-flex align-items-center justify-content-center"
-                disabled={auth.isLoading}
-                onClick={handleFacebookClick}
-              >
-                <GrFacebook className="mr-2" />
-                <span>Continuar via Facebook</span>
-              </Button>
-            </Col>
-            <Col xs="12">
-              <Button variant="link" className="w-100" onClick={() => setLegalVisible(true)}>
-                Termos de Uso e Política de Privacidade
+                <small>Termos de Uso e Política de Privacidade</small>
               </Button>
               <Modal show={isLegalVisible} onHide={() => setLegalVisible(false)}>
                 <Modal.Header closeButton>Termos de Uso e Política de Privacidade.</Modal.Header>

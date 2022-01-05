@@ -66,14 +66,13 @@ export default function LoginView() {
   };
 
   return (
-    <Container as="main" className="d-flex flex-row align-items-center m-auto login-view">
-      <Card className="title-card align-self-lg-center p-5 ml-5">
+    <Container as="main" className="d-flex flex-row row align-items-center m-auto login-view">
+      <Card className="title-card col-12 col-lg-6">
         <Card.Body className="title-card h-100" as={Form} onSubmit={handleLoginSubmit}>
           <Row className="align-items-center">
             <Col>
               <Card.Title as="h1">Frifim</Card.Title>
               <Card.Subtitle>Gestão financeira simplificada. Gratuitamente.</Card.Subtitle>
-              <Card.Subtitle className="mt-2">(Em beta!)</Card.Subtitle>
             </Col>
             <Col as="aside" xs="auto">
               <img src={Logo} alt="Frifim logo" width="100" />
@@ -81,8 +80,41 @@ export default function LoginView() {
           </Row>
         </Card.Body>
       </Card>
-      <Card className="m-auto login-card ml-5" style={{ width: '31%' }}>
+      <Card className="m-auto login-card ml-5 col-12 col-lg-4">
+        <Card.Header>
+          <Card.Title className="m-0">Acesse agora!</Card.Title>
+        </Card.Header>
         <Card.Body as={Form} onSubmit={handleLoginSubmit}>
+          <Row>
+            <Col as="p" xs="12" className="text-muted">
+              Continuar via...
+            </Col>
+            <Col xs="12">
+              <div className="col-12">
+                <Button
+                  variant="outline-primary"
+                  className="w-100 mb-1"
+                  disabled={auth.isLoading}
+                  onClick={handleGoogleClick}
+                >
+                  <span>Conta Google</span>
+                </Button>
+                <Button
+                  variant="outline-primary"
+                  className="w-100 d-none"
+                  disabled={auth.isLoading}
+                  onClick={handleFacebookClick}
+                >
+                  <span>Conta Facebook</span>
+                </Button>
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col as="p" xs="12" className="text-muted">
+              Ou usando conta do sistema:
+            </Col>
+          </Row>
           {!!auth.errorCode && (
             <Alert variant="danger">
               {auth.errorCode === 'auth/operation-not-allowed'
@@ -123,22 +155,23 @@ export default function LoginView() {
           <Row>
             <Col xs="12" className="justify-content-between d-flex w-100">
               <Button variant="link" onClick={handleSignupClick} disabled={auth.isLoading}>
-                Cadastro
+                Cadastrar-se
               </Button>
               <Button
                 variant="primary"
                 type="submit"
+                className="w-50"
                 disabled={auth.isLoading || !isRecaptchaVerified}
               >
                 <BsBoxArrowInRight className="mr-2" />
-                <span>{auth.isLoading ? 'Entrando...' : 'Login'}</span>
+                <span>{auth.isLoading ? 'Entrando...' : 'Entrar'}</span>
               </Button>
             </Col>
           </Row>
           <Row>
             <Col xs="12">
               <Button
-                className="align-self-start"
+                className="w-100"
                 variant="link"
                 onClick={redirectToResetPasswordPage}
                 disabled={auth.isLoading}
@@ -148,21 +181,10 @@ export default function LoginView() {
             </Col>
           </Row>
           <Row>
-            <Col xs="12" className="d-flex justify-content-between pt-3">
-              <span className="text-muted p-2">continuar via</span>
-              <div>
-                <Button variant="link" disabled={auth.isLoading} onClick={handleGoogleClick}>
-                  <span>Google</span>
-                </Button>
-                <Button variant="link" disabled={auth.isLoading} onClick={handleFacebookClick}>
-                  <span>Facebook</span>
-                </Button>
-              </div>
-            </Col>
             <Col xs="12">
               <Button
                 variant="link"
-                className="text-sm-right text-muted text-justify pt-2 w-100 text"
+                className="text-muted text-center w-100 text btn btn-link"
                 onClick={() => setLegalVisible(true)}
               >
                 <small>Termos de Uso e Política de Privacidade</small>

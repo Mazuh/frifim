@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { useSelector, useDispatch } from 'react-redux';
-import { BsPlusSquare } from 'react-icons/bs';
+import { BsDownload, BsPlusSquare } from 'react-icons/bs';
 import get from 'lodash.get';
 import LoadingMainContainer from '../loading/LoadingMainContainer';
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
@@ -267,7 +267,7 @@ function MonthlyBudgetExportLink({ monthlyBudgetData }) {
       rel="noopener noreferrer"
       download={`orcamento_mensal.csv`}
     >
-      Exportar dados
+      <BsDownload /> Baixar dados
     </Button>
   );
 }

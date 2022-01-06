@@ -4,12 +4,13 @@ import { Provider } from 'react-redux';
 import MockDate from 'mockdate';
 import ResizeObserver from 'resize-observer-polyfill';
 import { makeConfiguredStore } from '../../app/store';
-import GlobalContextProvider, { MonthContext, ProjectContext } from '../../app/contexts';
+import GlobalContextProvider, { ProjectContext, PeriodContext } from '../../app/contexts';
 import Home from './Home';
 import { monthlyBudgetPlainActions } from '../monthly-budget/monthlyBudgetDuck';
 import { monthlyTransactionsPlainActions } from '../transactions/transactionsDuck';
 import { weeklyBudgetPlainActions } from '../weekly-budget/weeklyBudgetDuck';
 import { projectsPlainActions } from '../projects/projectsDuck';
+import { makePeriod } from '../periods/period-lib';
 
 global.ResizeObserver = ResizeObserver;
 
@@ -388,7 +389,7 @@ describe('home', () => {
 
     const container = render(
       <Provider store={store}>
-        <MonthContext.Provider value={{ month: new Date().getMonth(), setMonth: jest.fn() }}>
+        <PeriodContext.Provider value={{ period: makePeriod(), setPeriod: jest.fn() }}>
           <ProjectContext.Provider
             value={{
               project: {
@@ -402,7 +403,7 @@ describe('home', () => {
           >
             <Home />
           </ProjectContext.Provider>
-        </MonthContext.Provider>
+        </PeriodContext.Provider>
       </Provider>
     );
 

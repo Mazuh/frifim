@@ -1,21 +1,27 @@
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import { MonthContext } from '../../app/contexts';
-import useProjectPeriods, { periodToString } from './useProjectPeriods';
+import { PeriodContext } from '../../app/contexts';
+import { periodToString } from './period-lib';
+import useProjectPeriods from './useProjectPeriods';
 
 export default function PeriodSelector({ className }) {
-  const periods = useProjectPeriods().reverse();
+  const periods = useProjectPeriods();
 
-  const { month, setMonth } = React.useContext(MonthContext);
+  const { period, setPeriod } = React.useContext(PeriodContext);
 
-  const handleMonthsDropdownSelect = (monthKey) => {
-    const selectedMonthIndex = parseInt(monthKey, 10) - 1;
-    if (Number.isNaN(selectedMonthIndex)) {
+  const handleMonthsDropdownSelect = (eventKeyIndexStr) => {
+    const eventKeyIndex = parseInt(eventKeyIndexStr, 10);
+    if (Number.isNaN(eventKeyIndex)) {
       return;
     }
 
-    setMonth(selectedMonthIndex);
+    const selectingPeriod = periods[eventKeyIndex];
+    if (!selectingPeriod) {
+      return;
+    }
+
+    setPeriod(selectingPeriod);
   };
 
   return (
@@ -23,11 +29,11 @@ export default function PeriodSelector({ className }) {
       id="main-month-dropdown"
       variant="secondary"
       className={className}
-      title={periodToString({ month, year: 2021 })}
+      title={periodToString(period)}
       onSelect={handleMonthsDropdownSelect}
     >
       {periods.map((period, index) => (
-        <Dropdown.Item key={index + '/' + period.month + period.year} eventKey={period.month + 1}>
+        <Dropdown.Item key={index + '/' + period.month + period.year} eventKey={index}>
           {periodToString(period)}
         </Dropdown.Item>
       ))}

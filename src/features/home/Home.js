@@ -19,7 +19,7 @@ import getTransactionsCalcs from '../transactions/getTransactionsCalcs';
 import { monthToString } from '../transactions/dates';
 import { checkAnyBudget, copyBudgets } from './multi-month-stats';
 import useBasicRequestData from '../../app/useBasicRequestData';
-import useProjectPeriods, { periodToString } from '../periods/useProjectPeriods';
+import useProjectPeriods from '../periods/useProjectPeriods';
 import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { weeklyBudgetActions } from '../weekly-budget/weeklyBudgetDuck';
 import BudgetsChart from './BudgetsChart';
@@ -27,6 +27,7 @@ import { groupAmountsByCategories } from '../../utils/categories-utils';
 import RelevantCategoriesCard from '../categories/relevant-categories/RelevantCategoriesCard';
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 import PendingBudgetsCard from './PendingBudgetsCard';
+import { periodToString } from '../periods/period-lib';
 
 const renderNumberFormatText = (total) => (amount) =>
   <span className={total.lessThan(0) ? 'text-danger' : ''}>R$ {amount}</span>;
@@ -37,15 +38,14 @@ export default function Home() {
   const history = useHistory();
 
   const basicReqData = useBasicRequestData();
-  const { user, month } = basicReqData;
+  const { user, month, year } = basicReqData;
 
   const [isCopyingPeriod, setCopyingPeriod] = React.useState(false);
 
-  const openPeriod = { month, year: 2021 };
+  const openPeriod = { month, year };
   const lastPeriods = useProjectPeriods()
     .filter((it) => !(it.month === openPeriod.month && it.year === openPeriod.year))
-    .reverse()
-    .splice(0, 6);
+    .splice(0, 3);
 
   const projectUuid = get(basicReqData, 'project.uuid');
   const userUid = get(basicReqData, 'user.uid');

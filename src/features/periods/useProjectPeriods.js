@@ -1,18 +1,23 @@
 import React from 'react';
 import range from 'lodash.range';
-import capitalize from 'lodash.capitalize';
 import { ProjectContext } from '../../app/contexts';
-import { monthToString } from '../transactions/dates';
+import { makePeriod } from './period-lib';
 
-export default function useProjectPeriods() {
+export default function useProjectPeriods(maxMonths = 12) {
   const { project } = React.useContext(ProjectContext);
   if (!project) {
     return [];
   }
 
-  const projectCreationMonth = new Date(project.createdAt).getMonth();
-  const currentMonth = new Date().getMonth();
-  return range(projectCreationMonth, currentMonth + 1).map((it) => ({ month: it, year: 2021 }));
-}
+  const currentDate = new Date();
+  const projectCreationDate = new Date(project.createdAt);
+  const projectPeriods = range(0, maxMonths).reduce((periods, it) => {
+    const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1, 0, 0, 0, 0);
+    date.setMonth(date.getMonth() - it);
+    return date.valueOf() > projectCreationDate.valueOf()
+      ? [...periods, makePeriod(date)]
+      : periods;
+  }, []);
 
-export const periodToString = (period) => capitalize(monthToString(period.month));
+  return projectPeriods;
+}

@@ -411,4 +411,42 @@ describe('home', () => {
     expect(budget).toBeVisible();
     expect(budget.textContent).toBe('Total dos orçamentos: R$ 600,15');
   });
+
+  it('does not render the charts when the project has only emergency saving', async () => {
+    const store = makeConfiguredStore();
+
+    store.dispatch(
+      projectsPlainActions.setRead(null, [
+        {
+          createdAt: '2021-10-08T00:48:51.958Z',
+          name: 'Principal',
+          userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
+          uuid: 'ndBPE5akhKHBcbtHdzce',
+          emergencySaving: '100',
+        },
+      ])
+    );
+
+    const container = render(
+      <Provider store={store}>
+        <PeriodContext.Provider value={{ period: makePeriod(), setPeriod: jest.fn() }}>
+          <ProjectContext.Provider
+            value={{
+              project: {
+                createdAt: '2021-10-08T00:48:51.958Z',
+                name: 'Principal',
+                userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
+                uuid: 'ndBPE5akhKHBcbtHdzce',
+              },
+              setProject: jest.fn(),
+            }}
+          >
+            <Home />
+          </ProjectContext.Provider>
+        </PeriodContext.Provider>
+      </Provider>
+    );
+
+    expect(container.getByText('Começar')).toBeVisible();
+  });
 });

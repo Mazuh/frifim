@@ -76,6 +76,12 @@ export default function Home() {
   const transactionsCalcs = getTransactionsCalcs(transactions);
   const hasFinantialData = !monthlyBudgetCalcs.total.isZero() || !transactionsCalcs.total.isZero();
   const hasPendingBudgets = pendingBudgets.length > 0;
+  const hasOnlyEmergencySaving =
+    monthlySituation.onlyMonthlyExpenses.length === 1 &&
+    get(monthlySituation, 'onlyMonthlyExpenses.0.uuid', '') === 'emergency-value' &&
+    monthlyBudgetCalcs.total
+      .abs()
+      .equals(get(monthlySituation, 'onlyMonthlyExpenses.0.amount', ''));
 
   const handleReuseBudgetSelect = (serializedPeriod) => {
     const selectedPeriod = JSON.parse(serializedPeriod);
@@ -134,7 +140,7 @@ export default function Home() {
                 <BsBarChartFill /> Fluxos do mês
               </Card.Title>
             </Card.Header>
-            {hasFinantialData ? (
+            {hasFinantialData && !hasOnlyEmergencySaving ? (
               <Card.Body>
                 <ul>
                   <li data-monthly-total="budgets">
@@ -222,14 +228,14 @@ export default function Home() {
           </Card>
         </Col>
       </Row>
-      {hasFinantialData && hasPendingBudgets && (
+      {hasFinantialData && !hasOnlyEmergencySaving && hasPendingBudgets && (
         <Row>
           <Col className="mt-3" as="section">
             <PendingBudgetsCard budgets={pendingBudgets} />
           </Col>
         </Row>
       )}
-      {hasFinantialData && (
+      {hasFinantialData && !hasOnlyEmergencySaving && (
         <>
           <Row>
             <Col className="mt-3" as="section">

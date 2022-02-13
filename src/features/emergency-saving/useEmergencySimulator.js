@@ -37,19 +37,26 @@ export default function useEmergencySimulator(fields) {
   const objectiveTime = Decimal(objective)
     .minus(previouslySavedAmount.floatValue || 0)
     .dividedBy(monthlySavingAmount.floatValue || 0)
-    .ceil()
-    .valueOf();
+    .ceil();
 
   const amountAfterObjetiveTime = Decimal(objectiveTime)
     .times(monthlySavingAmount.floatValue || 0)
-    .valueOf();
+    .plus(previouslySavedAmount.floatValue || 0);
 
   return {
     change,
     getValue,
-    objectiveTime,
+    objectiveTime:
+      !objectiveTime.isNaN() && objectiveTime.isFinite() && objectiveTime.isPositive()
+        ? objectiveTime.valueOf()
+        : 0,
     objective,
-    amountAfterObjetiveTime,
+    amountAfterObjetiveTime:
+      !amountAfterObjetiveTime.isNaN() &&
+      amountAfterObjetiveTime.isPositive() &&
+      amountAfterObjetiveTime.greaterThan(previouslySavedAmount.floatValue || 0)
+        ? amountAfterObjetiveTime.valueOf()
+        : previouslySavedAmount.floatValue || 0,
     formData,
   };
 }

@@ -17,7 +17,9 @@ export default function useEmergencySimulator(fields) {
     setFormData(fields.reduce((allFields, field) => ({ ...allFields, [field.id]: 0 }), {}));
 
     change('monthQuantity')({ floatValue: 3 });
-    change('expenses')({ floatValue: totalExpenses.toNumber() });
+    change('expenses')({
+      floatValue: Decimal(totalExpenses).minus(monthlySituation.emergencySaving).toNumber(),
+    });
     change('monthlySavingAmount')({ floatValue: totalIncomes.times(0.1).toNumber() });
   };
 

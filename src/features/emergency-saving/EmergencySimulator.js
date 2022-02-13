@@ -55,6 +55,7 @@ const EmergencySimulator = () => {
                   thousandSeparator={'.'}
                   decimalScale={decimalScale}
                   className="form-control"
+                  allowNegative={false}
                 />
               </InputGroup>
               <Form.Group>

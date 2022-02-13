@@ -79,7 +79,7 @@ const EmergencySimulator = () => {
             para emergência.
           </p>
           <p>
-            Gostou? Então <strong>salve a reserva mensal</strong> de
+            Gostou? Então <strong>salve a reserva mensal</strong> de{' '}
             <strong>
               <MoneyText value={getValue('monthlySavingAmount')} />
             </strong>{' '}

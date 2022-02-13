@@ -30,17 +30,19 @@ export default function useEmergencySimulator(fields) {
     monthlySavingAmount = { floatValue: 0 },
   } = formData || {};
 
-  const objective = Decimal(expenses.floatValue).times(monthQuantity.floatValue).toString();
+  const objective = Decimal(expenses.floatValue || 0)
+    .times(monthQuantity.floatValue || 0)
+    .valueOf();
 
   const objectiveTime = Decimal(objective)
     .minus(previouslySavedAmount.floatValue || 0)
-    .dividedBy(monthlySavingAmount.floatValue)
+    .dividedBy(monthlySavingAmount.floatValue || 0)
     .ceil()
-    .toString();
+    .valueOf();
 
   const amountAfterObjetiveTime = Decimal(objectiveTime)
-    .times(monthlySavingAmount.floatValue)
-    .toString();
+    .times(monthlySavingAmount.floatValue || 0)
+    .valueOf();
 
   return {
     change,

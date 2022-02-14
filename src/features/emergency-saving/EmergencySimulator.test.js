@@ -115,7 +115,7 @@ describe('emergency saving simulator', () => {
     });
 
     expect(container.getByText(/Você precisa de/, { selector: 'p' }).textContent).toBe(
-      'Você precisa de uma reserva total de R$ 4.200,00.Ao fim de 18 meses, você terá pelo menos R$ 4.320,00 reservados para emergência.'
+      'Você precisa de uma reserva total de R$ 4.200,00.Ao fim de 18 meses, você terá pelo menos R$ 4.321,00 reservados para emergência.'
     );
   });
 });

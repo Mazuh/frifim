@@ -4,6 +4,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { BsCalculator } from 'react-icons/bs';
 import { MainSection } from '../main-pages/main-pages';
 import NumberFormat from 'react-number-format';
+import Decimal from 'decimal.js';
 import useEmergencySimulator from './useEmergencySimulator';
 import { emergencyFields } from './constants';
 
@@ -23,6 +24,11 @@ const MoneyText = ({ value }) => (
 const EmergencySimulator = () => {
   const { change, objectiveTime, objective, amountAfterObjetiveTime, getValue } =
     useEmergencySimulator(emergencyFields);
+
+  const shouldShowResult =
+    !Decimal(getValue('monthlySavingAmount')).isZero() &&
+    !Decimal(getValue('monthQuantity')).isZero() &&
+    !Decimal(getValue('expenses')).isZero();
 
   return (
     <MainSection icon={<BsCalculator />} title="Simulação">
@@ -67,25 +73,35 @@ const EmergencySimulator = () => {
 
         <div>
           <h3>Resultado</h3>
-          <p>
-            Você precisa de uma reserva total de{' '}
-            <em>
-              <MoneyText value={objective} />
-            </em>
-            .<br />
-            Ao fim de <em>{objectiveTime} meses</em>, você terá pelo menos{' '}
-            <em>
-              <MoneyText value={amountAfterObjetiveTime} /> reservados
-            </em>{' '}
-            para emergência.
-          </p>
-          <p>
-            Gostou? Então <strong>salve a reserva mensal</strong> de{' '}
-            <strong>
-              <MoneyText value={getValue('monthlySavingAmount')} />
-            </strong>{' '}
-            no campo lá no início desta página.
-          </p>
+          {shouldShowResult ? (
+            <>
+              <p>
+                Você precisa de uma reserva total de{' '}
+                <em>
+                  <MoneyText value={objective} />
+                </em>
+                .<br />
+                Ao fim de <em>{objectiveTime} meses</em>, você terá pelo menos{' '}
+                <em>
+                  <MoneyText value={amountAfterObjetiveTime} /> reservados
+                </em>{' '}
+                para emergência.
+              </p>
+              <p>
+                Gostou? Então <strong>salve a reserva mensal</strong> de{' '}
+                <strong>
+                  <MoneyText value={getValue('monthlySavingAmount')} />
+                </strong>{' '}
+                no campo lá no início desta página.
+              </p>
+            </>
+          ) : (
+            <span>
+              Por favor, informe os valores de <strong>meses para proteger</strong>,{' '}
+              <strong>despesas fixas por mês</strong> e <strong>quanto guardará todo mês</strong>
+              para obter um resultado.
+            </span>
+          )}
         </div>
       </Form>
     </MainSection>

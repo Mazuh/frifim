@@ -17,7 +17,9 @@ export default function useEmergencySimulator(fields) {
     setFormData(fields.reduce((allFields, field) => ({ ...allFields, [field.id]: 0 }), {}));
 
     change('monthQuantity')({ floatValue: 3 });
-    change('expenses')({ floatValue: totalExpenses.toNumber() });
+    change('expenses')({
+      floatValue: Decimal(totalExpenses).minus(monthlySituation.emergencySaving).toNumber(),
+    });
     change('monthlySavingAmount')({ floatValue: totalIncomes.times(0.1).toNumber() });
   };
 
@@ -30,24 +32,33 @@ export default function useEmergencySimulator(fields) {
     monthlySavingAmount = { floatValue: 0 },
   } = formData || {};
 
-  const objective = Decimal(expenses.floatValue).times(monthQuantity.floatValue).toString();
+  const objective = Decimal(expenses.floatValue || 0)
+    .times(monthQuantity.floatValue || 0)
+    .valueOf();
 
   const objectiveTime = Decimal(objective)
     .minus(previouslySavedAmount.floatValue || 0)
-    .dividedBy(monthlySavingAmount.floatValue)
-    .ceil()
-    .toString();
+    .dividedBy(monthlySavingAmount.floatValue || 0)
+    .ceil();
 
   const amountAfterObjetiveTime = Decimal(objectiveTime)
-    .times(monthlySavingAmount.floatValue)
-    .toString();
+    .times(monthlySavingAmount.floatValue || 0)
+    .plus(previouslySavedAmount.floatValue || 0);
 
   return {
     change,
     getValue,
-    objectiveTime,
+    objectiveTime:
+      !objectiveTime.isNaN() && objectiveTime.isFinite() && objectiveTime.isPositive()
+        ? objectiveTime.valueOf()
+        : 0,
     objective,
-    amountAfterObjetiveTime,
+    amountAfterObjetiveTime:
+      !amountAfterObjetiveTime.isNaN() &&
+      amountAfterObjetiveTime.isPositive() &&
+      amountAfterObjetiveTime.greaterThan(previouslySavedAmount.floatValue || 0)
+        ? amountAfterObjetiveTime.valueOf()
+        : previouslySavedAmount.floatValue || 0,
     formData,
   };
 }

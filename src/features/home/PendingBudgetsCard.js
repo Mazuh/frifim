@@ -10,6 +10,7 @@ import { MdOutlinePendingActions } from 'react-icons/md';
 import useBasicRequestData from '../../app/useBasicRequestData';
 import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { transactionsActions } from '../transactions/transactionsDuck';
+import { EXPENSE_TYPE } from '../categories/constants';
 
 export default function PendingBudgetsCard({ budgets }) {
   const [showOthers, setShowOthers] = React.useState(false);
@@ -26,14 +27,26 @@ export default function PendingBudgetsCard({ budgets }) {
   };
 
   const onConsolidateBudget = (budgetData) => () => {
-    const transactionData = {
+    const defaultData = {
       amount: budgetData.amount,
-      category: budgetData.category,
       datetime: new Date().toISOString(),
       name: budgetData.name,
-      project: budgetData.project,
-      type: budgetData.type,
     };
+
+    const transactionData =
+      budgetData.uuid === 'emergency-value'
+        ? {
+            ...defaultData,
+            category: '',
+            project: basicRequestData.project,
+            type: EXPENSE_TYPE.value,
+          }
+        : {
+            ...defaultData,
+            category: budgetData.category,
+            project: budgetData.project,
+            type: budgetData.type,
+          };
     dispatch(transactionsActions.create(transactionData, basicRequestData));
   };
 

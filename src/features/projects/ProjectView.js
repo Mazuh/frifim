@@ -26,7 +26,7 @@ export default function ProjectView() {
   );
   const loadedProjectName = get(project, 'name', selectedProjectName);
   const loadedProjectUuid = get(project, 'uuid', selectedProjectUuid);
-  const originalLoadedProjectRef = React.useRef(project);
+  const originalLoadedProjectRef = React.useRef(project || {});
   const [name, setName] = React.useState(loadedProjectName);
   const [isDeletionModalOpen, setDeletionModalOpen] = React.useState(false);
   const handleNameChange = (event) => setName(event.target.value);
@@ -80,6 +80,7 @@ export default function ProjectView() {
                   maxLength={20}
                   autoComplete="off"
                   required
+                  data-testid="name"
                 />
               </Col>
             </Form.Group>
@@ -92,7 +93,7 @@ export default function ProjectView() {
                 Identificador:
               </Form.Label>
               <Col sm={10}>
-                <Form.Control value={loadedProjectUuid} disabled />
+                <Form.Control data-testid="uuid" value={loadedProjectUuid} disabled />
               </Col>
             </Form.Group>
             <Form.Group as={Row}>

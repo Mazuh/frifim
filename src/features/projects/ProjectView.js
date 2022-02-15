@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import get from 'lodash.get';
 import { BsFolderFill, BsGear, BsTrash } from 'react-icons/bs';
 import { ProjectContext } from '../../app/contexts';
 import { MainContainer, MainHeader, MainSection } from '../main-pages/main-pages';
@@ -23,13 +24,14 @@ export default function ProjectView() {
   const othersProjects = useSelector((state) =>
     state.projects.items.filter((it) => it.uuid !== selectedProjectUuid)
   );
-  const { name: loadedProjectName } = project;
+  const loadedProjectName = get(project, 'name', selectedProjectName);
+  const loadedProjectUuid = get(project, 'uuid', selectedProjectUuid);
   const originalLoadedProjectRef = React.useRef(project);
-  const [name, setName] = React.useState(project.name);
+  const [name, setName] = React.useState(loadedProjectName);
   const [isDeletionModalOpen, setDeletionModalOpen] = React.useState(false);
   const handleNameChange = (event) => setName(event.target.value);
-  const noDiff = project.name.trim() === name.trim();
-  const isEditing = useSelector((state) => state.projects.updating.includes(project.uuid));
+  const noDiff = loadedProjectName.trim() === name.trim();
+  const isEditing = useSelector((state) => state.projects.updating.includes(loadedProjectUuid));
   const isLoading = useSelector((state) => state.projects.isLoading);
 
   const openDeletionModal = () => setDeletionModalOpen(true);
@@ -42,7 +44,7 @@ export default function ProjectView() {
       return;
     }
 
-    dispatch(projectsActions.update(project.uuid, { name }));
+    dispatch(projectsActions.update(loadedProjectUuid, { name }));
   };
 
   React.useEffect(() => {
@@ -90,7 +92,7 @@ export default function ProjectView() {
                 Identificador:
               </Form.Label>
               <Col sm={10}>
-                <Form.Control value={project.uuid} disabled />
+                <Form.Control value={loadedProjectUuid} disabled />
               </Col>
             </Form.Group>
             <Form.Group as={Row}>
@@ -147,11 +149,17 @@ const projectHint = (
 
 export function DeletionModal({ isVisible, project, fallbackProject, close }) {
   const dispatch = useDispatch();
-  const projectContext = React.useContext(ProjectContext);
+  const {
+    project: { uuid: selectedProjectUuid, name: selectedProjectName },
+    setProject,
+  } = React.useContext(ProjectContext);
+
+  const projectName = get(project, 'name', selectedProjectName);
+  const projectUuid = get(project, 'uuid', selectedProjectUuid);
 
   const handleDeleteProject = (uuid, fallbackProject) => () => {
     dispatch(projectsActions.delete(uuid));
-    projectContext.setProject(fallbackProject);
+    setProject(fallbackProject);
     close();
   };
 
@@ -161,14 +169,14 @@ export function DeletionModal({ isVisible, project, fallbackProject, close }) {
         <Modal.Title>Deletar projeto</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Tem certeza que deletar o projeto <strong>{project.name}</strong>? Todos os registros
+        Tem certeza que deletar o projeto <strong>{projectName}</strong>? Todos os registros
         relacionados à esse projeto também serão deletados.
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={close}>
           Cancelar
         </Button>
-        <Button variant="primary" onClick={handleDeleteProject(project.uuid, fallbackProject)}>
+        <Button variant="primary" onClick={handleDeleteProject(projectUuid, fallbackProject)}>
           Deletar
         </Button>
       </Modal.Footer>

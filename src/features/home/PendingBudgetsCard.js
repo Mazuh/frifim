@@ -51,7 +51,7 @@ export default function PendingBudgetsCard({ budgets }) {
             aria-controls="collapse-list"
             aria-expanded={showOthers}
           >
-            {!showOthers ? 'Ver mais' : 'Ver menos'}
+            {!showOthers ? 'Ver todos' : 'Ver menos'}
           </Button>
         )}
       </Card.Header>
@@ -71,9 +71,11 @@ export default function PendingBudgetsCard({ budgets }) {
                   >
                     Feito
                   </Button>
-                  <Button className="text-danger" variant="link" onClick={onHideBudget(budget)}>
-                    Não lembrar
-                  </Button>
+                  {budget.uuid !== 'emergency-value' && (
+                    <Button className="text-danger" variant="link" onClick={onHideBudget(budget)}>
+                      Não lembrar
+                    </Button>
+                  )}
                 </Col>
               </Row>
             </ListGroup.Item>

@@ -5,12 +5,16 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Collapse from 'react-bootstrap/Collapse';
+import Badge from 'react-bootstrap/Badge';
 import { useDispatch } from 'react-redux';
+import NumberFormat from 'react-number-format';
 import { MdOutlinePendingActions } from 'react-icons/md';
 import useBasicRequestData from '../../app/useBasicRequestData';
 import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { transactionsActions } from '../transactions/transactionsDuck';
 import { EXPENSE_TYPE } from '../categories/constants';
+
+const renderMoneyBadge = (value) => <Badge variant="primary">R$ {value}</Badge>;
 
 export default function PendingBudgetsCard({ budgets }) {
   const [showOthers, setShowOthers] = React.useState(false);
@@ -74,7 +78,17 @@ export default function PendingBudgetsCard({ budgets }) {
             <ListGroup.Item key={budget.uuid}>
               <Row className="d-flex align-items-center" key={budget.uuid}>
                 <Col sm={9}>
-                  <span>{budget.name}</span>
+                  <span className="mr-1">{budget.name}</span>
+                  <NumberFormat
+                    value={Number(budget.amount)}
+                    defaultValue={Number(budget.amount)}
+                    displayType="text"
+                    fixedDecimalScale
+                    decimalSeparator={','}
+                    thousandSeparator={'.'}
+                    decimalScale={2}
+                    renderText={renderMoneyBadge}
+                  />
                 </Col>
                 <Col sm={3}>
                   <Button
@@ -101,7 +115,17 @@ export default function PendingBudgetsCard({ budgets }) {
                 <ListGroup.Item key={budget.uuid}>
                   <Row className="d-flex align-items-center" key={budget.uuid}>
                     <Col sm={9}>
-                      <span>{budget.name}</span>
+                      <span className="mr-1">{budget.name}</span>
+                      <NumberFormat
+                        value={Number(budget.amount)}
+                        defaultValue={Number(budget.amount)}
+                        displayType="text"
+                        fixedDecimalScale
+                        decimalSeparator={','}
+                        thousandSeparator={'.'}
+                        decimalScale={2}
+                        renderText={renderMoneyBadge}
+                      />
                     </Col>
                     <Col sm={3}>
                       <Button

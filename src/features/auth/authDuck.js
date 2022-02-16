@@ -8,6 +8,7 @@ import firebaseApp, {
   signInWithPopup,
   sendPasswordResetEmail,
 } from '../../app/firebase-configs';
+import { createCollectionsOnBatch, initialCategories } from '../../utils/auth-utils';
 
 const authSlice = createSlice({
   name: 'auth',
@@ -200,18 +201,19 @@ export const signupAndLogin = (email, password, displayName) => (dispatch) => {
     .then((credentials) =>
       Promise.all([
         credentials,
-        credentials.user.updateProfile({ displayName }),
-        credentials.user.sendEmailVerification(),
         firebaseApp.firestore().collection('projects').add({
           name: 'Principal',
           userUid: credentials.user.uid,
           createdAt: new Date().toISOString(),
         }),
+        credentials.user.updateProfile({ displayName }),
+        credentials.user.sendEmailVerification(),
       ])
     )
-    .then(([credentials, ...responses]) =>
-      dispatch(authSlice.actions.setUser(credentials.user.toJSON()))
-    )
+    .then(([credentials, projectRef, ...responses]) => {
+      dispatch(authSlice.actions.setUser(credentials.user.toJSON()));
+      createCollectionsOnBatch(credentials.user.uid, projectRef, 'categories', initialCategories);
+    })
     .then(() =>
       iziToast.show({
         title: 'Verificação',

@@ -12,9 +12,18 @@ import { MdOutlinePendingActions } from 'react-icons/md';
 import useBasicRequestData from '../../app/useBasicRequestData';
 import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { transactionsActions } from '../transactions/transactionsDuck';
-import { EXPENSE_TYPE } from '../categories/constants';
+import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
 
-const renderMoneyBadge = (value) => <Badge variant="primary">R$ {value}</Badge>;
+const renderMoneyBadge = (budget) => (value) =>
+  budget.type === EXPENSE_TYPE.value || budget.uuid === 'emergency-value' ? (
+    <Badge variant="danger" title={EXPENSE_TYPE.label}>
+      R$ {value} <EXPENSE_TYPE.Icon />
+    </Badge>
+  ) : (
+    <Badge variant="info" title={INCOME_TYPE.label}>
+      R$ {value} <INCOME_TYPE.Icon />
+    </Badge>
+  );
 
 export default function PendingBudgetsCard({ budgets }) {
   const [showOthers, setShowOthers] = React.useState(false);
@@ -87,7 +96,7 @@ export default function PendingBudgetsCard({ budgets }) {
                     decimalSeparator={','}
                     thousandSeparator={'.'}
                     decimalScale={2}
-                    renderText={renderMoneyBadge}
+                    renderText={renderMoneyBadge(budget)}
                   />
                 </Col>
                 <Col sm={3}>
@@ -124,7 +133,7 @@ export default function PendingBudgetsCard({ budgets }) {
                         decimalSeparator={','}
                         thousandSeparator={'.'}
                         decimalScale={2}
-                        renderText={renderMoneyBadge}
+                        renderText={renderMoneyBadge(budget)}
                       />
                     </Col>
                     <Col sm={3}>

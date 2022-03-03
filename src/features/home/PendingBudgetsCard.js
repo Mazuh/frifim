@@ -5,11 +5,25 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Collapse from 'react-bootstrap/Collapse';
+import Badge from 'react-bootstrap/Badge';
 import { useDispatch } from 'react-redux';
+import NumberFormat from 'react-number-format';
 import { MdOutlinePendingActions } from 'react-icons/md';
 import useBasicRequestData from '../../app/useBasicRequestData';
 import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { transactionsActions } from '../transactions/transactionsDuck';
+import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
+
+const renderMoneyBadge = (budget) => (value) =>
+  budget.type === EXPENSE_TYPE.value || budget.uuid === 'emergency-value' ? (
+    <Badge variant="danger" title={EXPENSE_TYPE.label}>
+      R$ {value} <EXPENSE_TYPE.Icon />
+    </Badge>
+  ) : (
+    <Badge variant="info" title={INCOME_TYPE.label}>
+      R$ {value} <INCOME_TYPE.Icon />
+    </Badge>
+  );
 
 export default function PendingBudgetsCard({ budgets }) {
   const [showOthers, setShowOthers] = React.useState(false);
@@ -26,14 +40,26 @@ export default function PendingBudgetsCard({ budgets }) {
   };
 
   const onConsolidateBudget = (budgetData) => () => {
-    const transactionData = {
+    const defaultData = {
       amount: budgetData.amount,
-      category: budgetData.category,
       datetime: new Date().toISOString(),
       name: budgetData.name,
-      project: budgetData.project,
-      type: budgetData.type,
     };
+
+    const transactionData =
+      budgetData.uuid === 'emergency-value'
+        ? {
+            ...defaultData,
+            category: '',
+            project: basicRequestData.project,
+            type: EXPENSE_TYPE.value,
+          }
+        : {
+            ...defaultData,
+            category: budgetData.category,
+            project: budgetData.project,
+            type: budgetData.type,
+          };
     dispatch(transactionsActions.create(transactionData, basicRequestData));
   };
 
@@ -51,7 +77,7 @@ export default function PendingBudgetsCard({ budgets }) {
             aria-controls="collapse-list"
             aria-expanded={showOthers}
           >
-            {!showOthers ? 'Ver mais' : 'Ver menos'}
+            {!showOthers ? 'Ver todos' : 'Ver menos'}
           </Button>
         )}
       </Card.Header>
@@ -61,7 +87,17 @@ export default function PendingBudgetsCard({ budgets }) {
             <ListGroup.Item key={budget.uuid}>
               <Row className="d-flex align-items-center" key={budget.uuid}>
                 <Col sm={9}>
-                  <span>{budget.name}</span>
+                  <span className="mr-1">{budget.name}</span>
+                  <NumberFormat
+                    value={Number(budget.amount)}
+                    defaultValue={Number(budget.amount)}
+                    displayType="text"
+                    fixedDecimalScale
+                    decimalSeparator={','}
+                    thousandSeparator={'.'}
+                    decimalScale={2}
+                    renderText={renderMoneyBadge(budget)}
+                  />
                 </Col>
                 <Col sm={3}>
                   <Button
@@ -71,9 +107,11 @@ export default function PendingBudgetsCard({ budgets }) {
                   >
                     Feito
                   </Button>
-                  <Button className="text-danger" variant="link" onClick={onHideBudget(budget)}>
-                    Não lembrar
-                  </Button>
+                  {budget.uuid !== 'emergency-value' && (
+                    <Button className="text-danger" variant="link" onClick={onHideBudget(budget)}>
+                      Não lembrar
+                    </Button>
+                  )}
                 </Col>
               </Row>
             </ListGroup.Item>
@@ -86,7 +124,17 @@ export default function PendingBudgetsCard({ budgets }) {
                 <ListGroup.Item key={budget.uuid}>
                   <Row className="d-flex align-items-center" key={budget.uuid}>
                     <Col sm={9}>
-                      <span>{budget.name}</span>
+                      <span className="mr-1">{budget.name}</span>
+                      <NumberFormat
+                        value={Number(budget.amount)}
+                        defaultValue={Number(budget.amount)}
+                        displayType="text"
+                        fixedDecimalScale
+                        decimalSeparator={','}
+                        thousandSeparator={'.'}
+                        decimalScale={2}
+                        renderText={renderMoneyBadge(budget)}
+                      />
                     </Col>
                     <Col sm={3}>
                       <Button

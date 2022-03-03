@@ -148,4 +148,38 @@ describe('projects', () => {
       firebase.initializeApp.mock.results[0].value.firestore.mock.results[0].value.batch
     ).toHaveBeenCalled();
   });
+
+  it('render the new project while the project state is not updated yet', async () => {
+    const store = makeConfiguredStore();
+    store.dispatch(
+      projectsPlainActions.setRead(null, [
+        {
+          createdAt: '2021-10-08T00:48:51.958Z',
+          name: 'Principal',
+          userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
+          uuid: '8R17MZDN5FHWPwRWPWX6',
+        },
+      ])
+    );
+    const container = render(
+      <Provider store={store}>
+        <ProjectContext.Provider
+          value={{
+            project: {
+              createdAt: '2021-10-08T10:48:51.958Z',
+              name: 'Secundário',
+              userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
+              uuid: 'sLws1rQ970rv813cqEIA',
+            },
+            setProject: jest.fn(),
+          }}
+        >
+          <ProjectView />
+        </ProjectContext.Provider>
+      </Provider>
+    );
+
+    expect(container.getByTestId('name').getAttribute('value')).toBe('Secundário');
+    expect(container.getByTestId('uuid').getAttribute('value')).toBe('sLws1rQ970rv813cqEIA');
+  });
 });

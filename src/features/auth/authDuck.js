@@ -90,6 +90,7 @@ const handlePotentialNewOAuthUser = (credentials) =>
         name: 'Principal',
         userUid: credentials.user.uid,
         createdAt: new Date().toISOString(),
+        guestsUids: [],
       }),
     credentials.additionalUserInfo.isNewUser && credentials.user.sendEmailVerification(),
   ]);
@@ -205,6 +206,7 @@ export const signupAndLogin = (email, password, displayName) => (dispatch) => {
           name: 'Principal',
           userUid: credentials.user.uid,
           createdAt: new Date().toISOString(),
+          guestsUids: [],
         }),
         credentials.user.updateProfile({ displayName }),
         credentials.user.sendEmailVerification(),

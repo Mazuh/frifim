@@ -8,13 +8,7 @@ const projectsResource = makeReduxAssets({
   idKey: 'uuid',
   makeMessageText: makeResourceMessageTextFn('projeto', 'projetos'),
   gateway: {
-    fetchMany: (ids, basicData) => {
-      return firedb
-        .collection('projects')
-        .where('userUid', '==', basicData.user.uid)
-        .get()
-        .then(parseQuerySnapshot);
-    },
+    fetchMany: (ids, basicData) => retrieveProjects(basicData),
     update: (uuid, project) =>
       firedb
         .collection('projects')
@@ -33,6 +27,22 @@ const projectsResource = makeReduxAssets({
     delete: (uuid) => batchedDelete(uuid).then(() => ({ uuid })),
   },
 });
+
+async function retrieveProjects(basicData) {
+  const myProjects = await firedb
+    .collection('projects')
+    .where('userUid', '==', basicData.user.uid)
+    .get()
+    .then(parseQuerySnapshot);
+
+  const sharedProjects = await firedb
+    .collection('projects')
+    .where('guestsUids', 'array-contains', basicData.user.uid)
+    .get()
+    .then(parseQuerySnapshot);
+
+  return myProjects.concat(sharedProjects);
+}
 
 async function batchedDelete(uuid) {
   const batch = firedb.batch();

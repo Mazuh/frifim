@@ -5,6 +5,7 @@ import {
   makeLastDateOfMonth,
   parseQuerySnapshot,
 } from '../../app/firebase-adapters';
+import { queryByClient } from '../../utils/query-utils';
 import makeResourceMessageTextFn from '../izitoast-for-resources/makeResourceMessageTextFn';
 
 const client = makeFirestoreApiClient('transactions');
@@ -15,8 +16,7 @@ const transactionsResource = makeReduxAssets({
   makeMessageText: makeResourceMessageTextFn('transação', 'transações'),
   gateway: {
     fetchMany: (ids, basicData) =>
-      client
-        .query(basicData)
+      queryByClient(client, basicData)
         .where('datetime', '>=', makeFirstDateOfMonth(basicData.month, basicData.year))
         .where('datetime', '<=', makeLastDateOfMonth(basicData.month, basicData.year))
         .get()

@@ -40,7 +40,11 @@ export function fireContextQuery(collection, basicData) {
  * but already including all basic filters (from `useBasicRequestData`).
  */
 export function fireContextQuerySharedData(collection, basicData) {
-  return firedb.collection(collection).where('project', '==', basicData.project.uuid);
+  const userUids = basicData.project.guestsUids.concat(basicData.project.userUid);
+  return firedb
+    .collection(collection)
+    .where('userUid', 'in', userUids)
+    .where('project', '==', basicData.project.uuid);
 }
 
 /**

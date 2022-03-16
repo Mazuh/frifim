@@ -5,17 +5,26 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Alert from 'react-bootstrap/Alert';
 import get from 'lodash.get';
 import { BsFolderFill, BsGear, BsTrash } from 'react-icons/bs';
 import { ProjectContext } from '../../app/contexts';
+import useBasicRequestData from '../../app/useBasicRequestData';
 import { MainContainer, MainHeader, MainSection } from '../main-pages/main-pages';
 import { projectsActions } from './projectsDuck';
 
 export default function ProjectView() {
   const dispatch = useDispatch();
+  const {
+    user: { uid: userUid },
+  } = useBasicRequestData();
 
   const {
-    project: { uuid: selectedProjectUuid, name: selectedProjectName },
+    project: {
+      uuid: selectedProjectUuid,
+      name: selectedProjectName,
+      userUid: selectedProjectUserUid,
+    },
     setProject,
   } = React.useContext(ProjectContext);
   const project = useSelector((state) =>
@@ -26,6 +35,7 @@ export default function ProjectView() {
   );
   const loadedProjectName = get(project, 'name', selectedProjectName);
   const loadedProjectUuid = get(project, 'uuid', selectedProjectUuid);
+  const loadedProjectUserUid = get(project, 'userUid', selectedProjectUserUid);
   const originalLoadedProjectRef = React.useRef(project || {});
   const [name, setName] = React.useState(loadedProjectName);
   const [isDeletionModalOpen, setDeletionModalOpen] = React.useState(false);
@@ -56,6 +66,8 @@ export default function ProjectView() {
     }
   }, [selectedProjectUuid, selectedProjectName, loadedProjectName, setProject]);
 
+  const isProjectOwner = userUid.toString() === loadedProjectUserUid.toString();
+
   return (
     <>
       <MainContainer>
@@ -81,6 +93,7 @@ export default function ProjectView() {
                   autoComplete="off"
                   required
                   data-testid="name"
+                  disabled={!isProjectOwner}
                 />
               </Col>
             </Form.Group>
@@ -98,21 +111,30 @@ export default function ProjectView() {
             </Form.Group>
             <Form.Group as={Row}>
               <Col className="d-flex justify-content-between" sm={{ span: 10, offset: 2 }}>
-                <Button
-                  type="submit"
-                  variant="outline-success"
-                  disabled={isEditing || noDiff}
-                  title={noDiff ? 'Digite algum nome diferente antes de tentar salvar.' : ''}
-                >
-                  {isEditing ? 'Salvando...' : 'Salvar'}
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={openDeletionModal}
-                  disabled={othersProjects.length === 0}
-                >
-                  <BsTrash /> Deletar
-                </Button>
+                {isProjectOwner ? (
+                  <>
+                    <Button
+                      type="submit"
+                      variant="outline-success"
+                      disabled={isEditing || noDiff}
+                      title={noDiff ? 'Digite algum nome diferente antes de tentar salvar.' : ''}
+                    >
+                      {isEditing ? 'Salvando...' : 'Salvar'}
+                    </Button>
+                    <Button
+                      variant="danger"
+                      onClick={openDeletionModal}
+                      disabled={othersProjects.length === 0}
+                    >
+                      <BsTrash /> Deletar
+                    </Button>
+                  </>
+                ) : (
+                  <Alert variant="info" className="w-100">
+                    Projeto compartilhado. Somente o criador do projeto tem permissão para
+                    alterá-lo.
+                  </Alert>
+                )}
               </Col>
             </Form.Group>
           </Form>

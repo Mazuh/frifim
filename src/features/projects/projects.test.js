@@ -79,6 +79,45 @@ describe('projects', () => {
     expect(container.getByText('Deletar')).not.toBeDisabled();
   });
 
+  it("does not render delete button when I'm a guest user", () => {
+    const store = makeConfiguredStore();
+    store.dispatch(
+      projectsPlainActions.setRead(null, [
+        {
+          createdAt: '2021-10-08T00:48:51.958Z',
+          name: 'Principal',
+          userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g3',
+          uuid: '8R17MZDN5FHWPwRWPWX6',
+        },
+      ])
+    );
+    const container = render(
+      <Provider store={store}>
+        <PeriodContext.Provider value={{ period: makePeriod(), setPeriod: jest.fn() }}>
+          <ProjectContext.Provider
+            value={{
+              project: {
+                createdAt: '2021-10-08T00:48:51.958Z',
+                name: 'Principal',
+                userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g3',
+                uuid: '8R17MZDN5FHWPwRWPWX6',
+              },
+              setProject: jest.fn(),
+            }}
+          >
+            <ProjectView />
+          </ProjectContext.Provider>
+        </PeriodContext.Provider>
+      </Provider>
+    );
+
+    expect(
+      container.getByText(
+        'Projeto compartilhado. Somente o criador do projeto tem permissão para alterá-lo.'
+      )
+    ).toBeVisible();
+  });
+
   it('renders disabled delete button when there is a single project', () => {
     const store = makeConfiguredStore();
     store.dispatch(

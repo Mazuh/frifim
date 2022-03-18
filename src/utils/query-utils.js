@@ -1,4 +1,7 @@
-export const queryByClient = (client, basicData) =>
-  basicData.project.guestsUids.length > 0
+import get from 'lodash.get';
+
+export const queryByClient = (client, basicData) => {
+  return get(basicData, 'project.guestsEmails', []).length > 0
     ? client.querySharedData(basicData)
     : client.query(basicData);
+};

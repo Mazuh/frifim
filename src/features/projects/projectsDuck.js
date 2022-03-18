@@ -37,7 +37,7 @@ async function retrieveProjects(basicData) {
 
   const sharedProjects = await firedb
     .collection('projects')
-    .where('guestsUids', 'array-contains', basicData.user.uid)
+    .where('guestsEmails', 'array-contains', basicData.user.email)
     .get()
     .then(parseQuerySnapshot);
 

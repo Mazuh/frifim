@@ -20,11 +20,7 @@ export default function ProjectView() {
   } = useBasicRequestData();
 
   const {
-    project: {
-      uuid: selectedProjectUuid,
-      name: selectedProjectName,
-      userUid: selectedProjectUserUid,
-    },
+    project: { uuid: selectedProjectUuid, name: selectedProjectName },
     setProject,
   } = React.useContext(ProjectContext);
   const project = useSelector((state) =>
@@ -35,7 +31,7 @@ export default function ProjectView() {
   );
   const loadedProjectName = get(project, 'name', selectedProjectName);
   const loadedProjectUuid = get(project, 'uuid', selectedProjectUuid);
-  const loadedProjectUserUid = get(project, 'userUid', selectedProjectUserUid);
+  const loadedProjectUserUid = get(project, 'userUid', userUid);
   const originalLoadedProjectRef = React.useRef(project || {});
   const [name, setName] = React.useState(loadedProjectName);
   const [isDeletionModalOpen, setDeletionModalOpen] = React.useState(false);

@@ -71,6 +71,16 @@ export default function ProjectView() {
     );
   };
 
+  const removeGuest = (guestEmail) => () => {
+    const updatedGuestsList = loadedProjectGuests.filter((guest) => guest !== guestEmail);
+
+    dispatch(
+      projectsActions.update(loadedProjectUuid, {
+        guestsEmails: updatedGuestsList,
+      })
+    );
+  };
+
   React.useEffect(() => {
     if (selectedProjectUuid !== originalLoadedProjectRef.current.uuid) {
       originalLoadedProjectRef.current = { uuid: selectedProjectUuid, name: selectedProjectName };
@@ -184,21 +194,23 @@ export default function ProjectView() {
                   </Button>
                 </Col>
               </Form.Group>
-              <Form.Group as={Row}>
-                <Col className="d-flex flex-column" sm={{ span: 10, offset: 2 }}>
-                  <span>
-                    <strong>Usuários convidados:</strong>
-                  </span>
-                  <ul>
-                    {loadedProjectGuests.map((guest) => (
-                      <li key={`${guest}_${uuidv4()}`}>
-                        <span>{guest}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </Col>
-              </Form.Group>
             </Form>
+            <span>
+              <strong>Usuários convidados:</strong>
+            </span>
+            <ul>
+              {loadedProjectGuests.map((guest) => (
+                <li
+                  className="d-flex justify-content-between align-items-center my-1"
+                  key={`${guest}_${uuidv4()}`}
+                >
+                  <span>{guest}</span>
+                  <Button variant="danger" onClick={removeGuest(guest)}>
+                    Remover
+                  </Button>
+                </li>
+              ))}
+            </ul>
           </MainSection>
         )}
         <MainSection icon={<BsFolderFill />} title="Criar ou trocar">

@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 import get from 'lodash.get';
+import { v4 as uuidv4 } from 'uuid';
 import { BsFolderFill, BsGear, BsTrash } from 'react-icons/bs';
 import { ProjectContext } from '../../app/contexts';
 import useBasicRequestData from '../../app/useBasicRequestData';
@@ -32,6 +33,7 @@ export default function ProjectView() {
   const loadedProjectName = get(project, 'name', selectedProjectName);
   const loadedProjectUuid = get(project, 'uuid', selectedProjectUuid);
   const loadedProjectUserUid = get(project, 'userUid', userUid);
+  const loadedProjectGuests = get(project, 'guestsEmails', []);
   const originalLoadedProjectRef = React.useRef(project || {});
   const [name, setName] = React.useState(loadedProjectName);
   const [isDeletionModalOpen, setDeletionModalOpen] = React.useState(false);
@@ -135,6 +137,20 @@ export default function ProjectView() {
             </Form.Group>
           </Form>
         </MainSection>
+        {isProjectOwner && (
+          <MainSection icon={<BsFolderFill />} title="Compartilhamento">
+            <span>
+              <strong>Usuários convidados:</strong>
+            </span>
+            <ul>
+              {loadedProjectGuests.map((guest) => (
+                <li key={`${guest}_${uuidv4()}`}>
+                  <span>{guest}</span>
+                </li>
+              ))}
+            </ul>
+          </MainSection>
+        )}
         <MainSection icon={<BsFolderFill />} title="Criar ou trocar">
           <p>
             Use o <strong>seletor de projetos</strong> no menu principal do sistema. ⬆️

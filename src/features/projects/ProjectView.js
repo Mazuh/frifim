@@ -36,8 +36,10 @@ export default function ProjectView() {
   const loadedProjectGuests = get(project, 'guestsEmails', []);
   const originalLoadedProjectRef = React.useRef(project || {});
   const [name, setName] = React.useState(loadedProjectName);
+  const [guestEmail, setGuestEmail] = React.useState('');
   const [isDeletionModalOpen, setDeletionModalOpen] = React.useState(false);
   const handleNameChange = (event) => setName(event.target.value);
+  const handleGuestEmailChange = (event) => setGuestEmail(event.target.value);
   const noDiff = loadedProjectName.trim() === name.trim();
   const isEditing = useSelector((state) => state.projects.updating.includes(loadedProjectUuid));
   const isLoading = useSelector((state) => state.projects.isLoading);
@@ -53,6 +55,20 @@ export default function ProjectView() {
     }
 
     dispatch(projectsActions.update(loadedProjectUuid, { name }));
+  };
+
+  const addGuestUser = (event) => {
+    event.preventDefault();
+
+    if (!guestEmail) {
+      return;
+    }
+
+    dispatch(
+      projectsActions.update(loadedProjectUuid, {
+        guestsEmails: loadedProjectGuests.concat(guestEmail),
+      })
+    );
   };
 
   React.useEffect(() => {
@@ -139,16 +155,50 @@ export default function ProjectView() {
         </MainSection>
         {isProjectOwner && (
           <MainSection icon={<BsShare />} title="Compartilhamento">
-            <span>
-              <strong>Usuários convidados:</strong>
-            </span>
-            <ul>
-              {loadedProjectGuests.map((guest) => (
-                <li key={`${guest}_${uuidv4()}`}>
-                  <span>{guest}</span>
-                </li>
-              ))}
-            </ul>
+            <Form onSubmit={addGuestUser}>
+              <Form.Group
+                as={Row}
+                title="Digite o e-mail da pessoa com quem deseja compartilhar o projeto."
+                controlId="formProjectShare"
+              >
+                <Form.Label column sm={2}>
+                  Email:
+                </Form.Label>
+                <Col sm={10}>
+                  <Form.Control
+                    name="guestEmail"
+                    value={guestEmail}
+                    onChange={handleGuestEmailChange}
+                    placeholder="Email do usuário convidado"
+                    minLength={3}
+                    autoComplete="off"
+                    required
+                    data-testid="guestEmail"
+                  />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Col className="d-flex justify-content-between" sm={{ span: 10, offset: 2 }}>
+                  <Button type="submit" variant="outline-success" disabled={isEditing}>
+                    Compartilhar
+                  </Button>
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Col className="d-flex flex-column" sm={{ span: 10, offset: 2 }}>
+                  <span>
+                    <strong>Usuários convidados:</strong>
+                  </span>
+                  <ul>
+                    {loadedProjectGuests.map((guest) => (
+                      <li key={`${guest}_${uuidv4()}`}>
+                        <span>{guest}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Col>
+              </Form.Group>
+            </Form>
           </MainSection>
         )}
         <MainSection icon={<BsFolderFill />} title="Criar ou trocar">

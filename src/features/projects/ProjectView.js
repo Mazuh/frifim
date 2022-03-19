@@ -8,7 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 import get from 'lodash.get';
 import { v4 as uuidv4 } from 'uuid';
-import { BsFolderFill, BsGear, BsTrash } from 'react-icons/bs';
+import { BsFolderFill, BsGear, BsTrash, BsShare } from 'react-icons/bs';
 import { ProjectContext } from '../../app/contexts';
 import useBasicRequestData from '../../app/useBasicRequestData';
 import { MainContainer, MainHeader, MainSection } from '../main-pages/main-pages';
@@ -138,7 +138,7 @@ export default function ProjectView() {
           </Form>
         </MainSection>
         {isProjectOwner && (
-          <MainSection icon={<BsFolderFill />} title="Compartilhamento">
+          <MainSection icon={<BsShare />} title="Compartilhamento">
             <span>
               <strong>Usuários convidados:</strong>
             </span>

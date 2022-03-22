@@ -16,9 +16,7 @@ import { projectsActions } from './projectsDuck';
 
 export default function ProjectView() {
   const dispatch = useDispatch();
-  const {
-    user: { uid: userUid },
-  } = useBasicRequestData();
+  const basicData = useBasicRequestData();
 
   const {
     project: { uuid: selectedProjectUuid, name: selectedProjectName },
@@ -32,7 +30,7 @@ export default function ProjectView() {
   );
   const loadedProjectName = get(project, 'name', selectedProjectName);
   const loadedProjectUuid = get(project, 'uuid', selectedProjectUuid);
-  const loadedProjectUserUid = get(project, 'userUid', userUid);
+  const loadedProjectUserUid = get(project, 'userUid', basicData.user.uid);
   const loadedProjectGuests = get(project, 'guestsEmails', []);
   const originalLoadedProjectRef = React.useRef(project || {});
   const [name, setName] = React.useState(loadedProjectName);
@@ -81,6 +79,21 @@ export default function ProjectView() {
     );
   };
 
+  const leaveProject = (basicData, fallbackProject, projectUserId) => () => {
+    const {
+      user: { email: guestEmail },
+    } = basicData;
+    const updatedGuestsList = loadedProjectGuests.filter((guest) => guest !== guestEmail);
+    dispatch(
+      projectsActions.update(loadedProjectUuid, {
+        userUid: projectUserId,
+        guestsEmails: updatedGuestsList,
+      })
+    );
+    dispatch(projectsActions.readAll(basicData));
+    setProject(fallbackProject);
+  };
+
   React.useEffect(() => {
     if (selectedProjectUuid !== originalLoadedProjectRef.current.uuid) {
       originalLoadedProjectRef.current = { uuid: selectedProjectUuid, name: selectedProjectName };
@@ -90,7 +103,7 @@ export default function ProjectView() {
     }
   }, [selectedProjectUuid, selectedProjectName, loadedProjectName, setProject]);
 
-  const isProjectOwner = userUid.toString() === loadedProjectUserUid.toString();
+  const isProjectOwner = basicData.user.uid.toString() === loadedProjectUserUid.toString();
 
   return (
     <>
@@ -154,10 +167,19 @@ export default function ProjectView() {
                     </Button>
                   </>
                 ) : (
-                  <Alert variant="info" className="w-100">
-                    Projeto compartilhado. Somente o criador do projeto tem permissão para
-                    alterá-lo.
-                  </Alert>
+                  <div>
+                    <Alert variant="info" className="w-100">
+                      Projeto compartilhado. Somente o criador do projeto tem permissão para
+                      alterá-lo.
+                    </Alert>
+                    <Button
+                      variant="danger"
+                      onClick={leaveProject(basicData, othersProjects[0], loadedProjectUserUid)}
+                      disabled={othersProjects.length === 0}
+                    >
+                      Deixar projeto
+                    </Button>
+                  </div>
                 )}
               </Col>
             </Form.Group>

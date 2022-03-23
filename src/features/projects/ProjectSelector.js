@@ -137,9 +137,7 @@ function CreationModal({ isVisible, isBlocked, close }) {
       return;
     }
 
-    dispatch(
-      createAndSelectProject({ name, createdAt: new Date().toISOString(), guestsEmails: [] })
-    );
+    dispatch(createAndSelectProject({ name, createdAt: new Date().toISOString() }));
     close();
   };
 

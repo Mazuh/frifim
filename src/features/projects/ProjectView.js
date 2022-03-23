@@ -31,7 +31,7 @@ export default function ProjectView() {
   const loadedProjectName = get(project, 'name', selectedProjectName);
   const loadedProjectUuid = get(project, 'uuid', selectedProjectUuid);
   const loadedProjectUserUid = get(project, 'userUid', basicData.user.uid);
-  const loadedProjectGuests = get(project, 'guestsEmails', []);
+  const loadedProjectGuests = get(project, 'guestsEmails', null);
   const originalLoadedProjectRef = React.useRef(project || {});
   const [name, setName] = React.useState(loadedProjectName);
   const [guestEmail, setGuestEmail] = React.useState('');
@@ -59,6 +59,16 @@ export default function ProjectView() {
     event.preventDefault();
 
     if (!guestEmail) {
+      return;
+    }
+
+    if (!loadedProjectGuests) {
+      dispatch(
+        projectsActions.update(loadedProjectUuid, {
+          guestsEmails: [guestEmail],
+        })
+      );
+
       return;
     }
 
@@ -217,22 +227,7 @@ export default function ProjectView() {
                 </Col>
               </Form.Group>
             </Form>
-            <span>
-              <strong>Usuários convidados:</strong>
-            </span>
-            <ul>
-              {loadedProjectGuests.map((guest) => (
-                <li
-                  className="d-flex justify-content-between align-items-center my-1"
-                  key={`${guest}_${uuidv4()}`}
-                >
-                  <span>{guest}</span>
-                  <Button variant="danger" onClick={removeGuest(guest)}>
-                    Remover
-                  </Button>
-                </li>
-              ))}
-            </ul>
+            <GuestsList guests={loadedProjectGuests} removeGuest={removeGuest} />
           </MainSection>
         )}
         <MainSection icon={<BsFolderFill />} title="Criar ou trocar">
@@ -265,6 +260,33 @@ const projectHint = (
     </p>
   </>
 );
+
+function GuestsList({ guests, removeGuest }) {
+  if (!guests || !guests.length) {
+    return <></>;
+  }
+
+  return (
+    <>
+      <span>
+        <strong>Usuários convidados:</strong>
+      </span>
+      <ul>
+        {guests.map((guest) => (
+          <li
+            className="d-flex justify-content-between align-items-center my-1"
+            key={`${guest}_${uuidv4()}`}
+          >
+            <span>{guest}</span>
+            <Button variant="danger" onClick={removeGuest(guest)}>
+              Remover
+            </Button>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
 
 export function DeletionModal({ isVisible, project, fallbackProject, close }) {
   const dispatch = useDispatch();

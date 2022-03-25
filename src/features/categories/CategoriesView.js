@@ -15,11 +15,14 @@ import LoadingMainContainer from '../loading/LoadingMainContainer';
 import { categoriesActions } from './categoriesDuck';
 import useBasicRequestData from '../../app/useBasicRequestData';
 import { defaultCategories } from './constants';
+import { invalidActionToast, validateProject } from '../../utils/project-utils';
+import { ViewportContext } from '../../app/contexts';
 
 export default function CategoriesView() {
   const dispatch = useDispatch();
   const categoriesState = useSelector((s) => s.categories);
   const basicRequestData = useBasicRequestData();
+  const { isMobile } = React.useContext(ViewportContext);
 
   const [isHelpVisible, setHelpVisible] = React.useState(false);
 
@@ -27,8 +30,14 @@ export default function CategoriesView() {
     return <LoadingMainContainer />;
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    const isValidProject = await validateProject(basicRequestData);
+    if (!isValidProject) {
+      invalidActionToast(isMobile);
+      return;
+    }
 
     const creatingCategory = {
       name: event.target.name.value,
@@ -39,10 +48,22 @@ export default function CategoriesView() {
     event.target.reset();
   };
 
-  const addCategorySuggested = (suggestedCategory) =>
+  const addCategorySuggested = async (suggestedCategory) => {
+    const isValidProject = await validateProject(basicRequestData);
+    if (!isValidProject) {
+      invalidActionToast(isMobile);
+      return;
+    }
     dispatch(categoriesActions.create(suggestedCategory, basicRequestData));
+  };
 
-  const handleDelete = (category) => {
+  const handleDelete = async (category) => {
+    const isValidProject = await validateProject(basicRequestData);
+    if (!isValidProject) {
+      invalidActionToast(isMobile);
+      return;
+    }
+
     if (window.confirm(`Deletar categoria "${category.name}"?`)) {
       dispatch(categoriesActions.delete(category.uuid, basicRequestData));
     }

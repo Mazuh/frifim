@@ -84,7 +84,7 @@ export default function MonthlyBudgetView() {
   const handleDelete = async (budget) => {
     const isValidProject = await validateProject(basicRequestData);
     if (!isValidProject) {
-      window.alert('Operação não autorizada. Você não faz parte desse projeto.');
+      invalidActionToast(isMobile);
       return;
     }
 

@@ -1,6 +1,7 @@
 import { makeReduxAssets } from 'resource-toolkit';
 import { parseQuerySnapshot, toFirestoreDocData } from '../../app/firebase-adapters';
 import { firedb } from '../../app/firebase-configs';
+import { retrieveProjects } from '../../utils/project-utils';
 import makeResourceMessageTextFn from '../izitoast-for-resources/makeResourceMessageTextFn';
 
 const projectsResource = makeReduxAssets({
@@ -27,22 +28,6 @@ const projectsResource = makeReduxAssets({
     delete: (uuid) => batchedDelete(uuid).then(() => ({ uuid })),
   },
 });
-
-async function retrieveProjects(basicData) {
-  const myProjects = await firedb
-    .collection('projects')
-    .where('userUid', '==', basicData.user.uid)
-    .get()
-    .then(parseQuerySnapshot);
-
-  const sharedProjects = await firedb
-    .collection('projects')
-    .where('guestsEmails', 'array-contains', basicData.user.email)
-    .get()
-    .then(parseQuerySnapshot);
-
-  return myProjects.concat(sharedProjects);
-}
 
 async function batchedDelete(uuid) {
   const batch = firedb.batch();

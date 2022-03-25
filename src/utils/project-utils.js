@@ -1,3 +1,4 @@
+import iziToast from 'izitoast';
 import { parseQuerySnapshot } from '../app/firebase-adapters';
 import { firedb } from '../app/firebase-configs';
 
@@ -22,3 +23,12 @@ export async function validateProject(basicData) {
 
   return projects.some((project) => project.uuid === basicData.project.uuid);
 }
+
+export const invalidActionToast = (isMobile) =>
+  iziToast.show({
+    title: 'Erro',
+    message: 'Operação não autorizada. Você não faz parte desse projeto.',
+    color: 'red',
+    position: isMobile ? 'bottomCenter' : 'topRight',
+    timeout: 2500,
+  });

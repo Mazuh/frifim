@@ -16,12 +16,15 @@ import BudgetTable from '../monthly-budget/BudgetTable';
 import BudgetForm from '../monthly-budget/BudgetForm';
 import { WEEK_DAYS } from './constants';
 import useBasicRequestData from '../../app/useBasicRequestData';
+import { invalidActionToast, validateProject } from '../../utils/project-utils';
+import { ViewportContext } from '../../app/contexts';
 
 export default function WeeklyBudgetView() {
   const dispatch = useDispatch();
   const basicRequestData = useBasicRequestData();
   const weeklyBudgetState = useSelector((state) => state.weeklyBudget);
   const [enabledUpdateUuid, setEnabledUpdateUuid] = React.useState(null);
+  const { isMobile } = React.useContext(ViewportContext);
 
   const [isHelpVisible, setHelpVisible] = React.useState(false);
 
@@ -29,7 +32,13 @@ export default function WeeklyBudgetView() {
     return <LoadingMainContainer />;
   }
 
-  const handleSubmit = (budgetFormData, event, resetParent) => {
+  const handleSubmit = async (budgetFormData, event, resetParent) => {
+    const isValidProject = await validateProject(basicRequestData);
+    if (!isValidProject) {
+      invalidActionToast(isMobile);
+      return;
+    }
+
     const creatingBudget = {
       ...budgetFormData,
       day: parseInt(event.target.day.value, 10),
@@ -45,7 +54,13 @@ export default function WeeklyBudgetView() {
     setEnabledUpdateUuid(enabledUpdateUuid === budget.uuid ? null : budget.uuid);
   };
 
-  const handleDelete = (budget) => {
+  const handleDelete = async (budget) => {
+    const isValidProject = await validateProject(basicRequestData);
+    if (!isValidProject) {
+      invalidActionToast(isMobile);
+      return;
+    }
+
     if (window.confirm(`Deletar do orçamento "${budget.name}"?`)) {
       dispatch(weeklyBudgetActions.delete(budget.uuid, basicRequestData));
     }
@@ -183,8 +198,15 @@ function WeeklyBudgetTableRowExtension({ budget }) {
   const basicRequestData = useBasicRequestData();
   const isUpdating = useSelector((state) => state.weeklyBudget.updating.includes(budget.uuid));
   const isLoading = useSelector((state) => state.weeklyBudget.isLoading);
+  const { isMobile } = React.useContext(ViewportContext);
 
-  const handleSubmit = (budgetFormData, event) => {
+  const handleSubmit = async (budgetFormData, event) => {
+    const isValidProject = await validateProject(basicRequestData);
+    if (!isValidProject) {
+      invalidActionToast(isMobile);
+      return;
+    }
+
     const updatingBudget = {
       ...budgetFormData,
       uuid: budget.uuid,

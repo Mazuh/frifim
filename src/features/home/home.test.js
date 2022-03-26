@@ -4,7 +4,11 @@ import { Provider } from 'react-redux';
 import MockDate from 'mockdate';
 import ResizeObserver from 'resize-observer-polyfill';
 import { makeConfiguredStore } from '../../app/store';
-import GlobalContextProvider, { ProjectContext, PeriodContext } from '../../app/contexts';
+import GlobalContextProvider, {
+  ProjectContext,
+  PeriodContext,
+  ViewportContext,
+} from '../../app/contexts';
 import Home from './Home';
 import { monthlyBudgetPlainActions } from '../monthly-budget/monthlyBudgetDuck';
 import { monthlyTransactionsPlainActions } from '../transactions/transactionsDuck';
@@ -401,7 +405,9 @@ describe('home', () => {
               setProject: jest.fn(),
             }}
           >
-            <Home />
+            <ViewportContext.Provider value={{ isMobile: false }}>
+              <Home />
+            </ViewportContext.Provider>
           </ProjectContext.Provider>
         </PeriodContext.Provider>
       </Provider>

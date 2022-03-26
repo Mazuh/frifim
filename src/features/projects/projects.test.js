@@ -118,6 +118,44 @@ describe('projects', () => {
     ).toBeVisible();
   });
 
+  it('render delete button when sharing my project', () => {
+    const store = makeConfiguredStore();
+    store.dispatch(
+      projectsPlainActions.setRead(null, [
+        {
+          createdAt: '2021-10-08T00:48:51.958Z',
+          name: 'Principal',
+          userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
+          uuid: '8R17MZDN5FHWPwRWPWX6',
+          guestsEmails: ['rodrigo_frifrim@mailinator.com'],
+        },
+      ])
+    );
+    const container = render(
+      <Provider store={store}>
+        <PeriodContext.Provider value={{ period: makePeriod(), setPeriod: jest.fn() }}>
+          <ProjectContext.Provider
+            value={{
+              project: {
+                createdAt: '2021-10-08T00:48:51.958Z',
+                name: 'Principal',
+                userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
+                uuid: '8R17MZDN5FHWPwRWPWX6',
+                guestsEmails: ['rodrigo_frifrim@mailinator.com'],
+              },
+              setProject: jest.fn(),
+            }}
+          >
+            <ProjectView />
+          </ProjectContext.Provider>
+        </PeriodContext.Provider>
+      </Provider>
+    );
+
+    expect(container.getByText('Usuários convidados:')).toBeVisible();
+    expect(container.getByText('rodrigo_frifrim@mailinator.com')).toBeVisible();
+  });
+
   it('renders disabled delete button when there is a single project', () => {
     const store = makeConfiguredStore();
     store.dispatch(

@@ -2,29 +2,35 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsArrowRepeat } from 'react-icons/bs';
-import { LastUpdateContext } from '../../app/contexts';
+import { LastUpdateContext, ProjectContext } from '../../app/contexts';
 import useBasicRequestData from '../../app/useBasicRequestData';
 import { categoriesActions } from '../categories/categoriesDuck';
 import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { transactionsActions } from '../transactions/transactionsDuck';
 import { weeklyBudgetActions } from '../weekly-budget/weeklyBudgetDuck';
+import { projectsActions } from '../projects/projectsDuck';
+import { verifyBasicData } from '../../utils/query-utils';
 
 const RESOURCES = ['transactions', 'monthlyBudget', 'weeklyBudget', 'categories', 'projects'];
 
 export default function ButtonUpdateData({ className }) {
   const dispatch = useDispatch();
   const { setLastUpdate } = React.useContext(LastUpdateContext);
+  const { setProject } = React.useContext(ProjectContext);
   const [disabled, setDisabled] = React.useState(false);
   const messages = useSelector((state) =>
     RESOURCES.map((resource) => state[resource].currentMessage)
   );
   const basicRequestData = useBasicRequestData();
 
-  const handleUpdateData = () => {
-    dispatch(categoriesActions.readAll(basicRequestData));
-    dispatch(monthlyBudgetActions.readAll(basicRequestData));
-    dispatch(weeklyBudgetActions.readAll(basicRequestData));
-    dispatch(transactionsActions.readAll(basicRequestData));
+  const handleUpdateData = async () => {
+    const newBasicData = await verifyBasicData(basicRequestData);
+    dispatch(projectsActions.readAll(newBasicData));
+    dispatch(categoriesActions.readAll(newBasicData));
+    dispatch(monthlyBudgetActions.readAll(newBasicData));
+    dispatch(weeklyBudgetActions.readAll(newBasicData));
+    dispatch(transactionsActions.readAll(newBasicData));
+    setProject(newBasicData.project);
     setDisabled(true);
     const isAnyError = messages.some((message) => !message || message.isError);
 

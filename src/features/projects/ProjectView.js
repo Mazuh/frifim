@@ -5,14 +5,18 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Alert from 'react-bootstrap/Alert';
 import get from 'lodash.get';
-import { BsFolderFill, BsGear, BsTrash } from 'react-icons/bs';
+import { v4 as uuidv4 } from 'uuid';
+import { BsFolderFill, BsGear, BsTrash, BsShare } from 'react-icons/bs';
 import { ProjectContext } from '../../app/contexts';
+import useBasicRequestData from '../../app/useBasicRequestData';
 import { MainContainer, MainHeader, MainSection } from '../main-pages/main-pages';
 import { projectsActions } from './projectsDuck';
 
 export default function ProjectView() {
   const dispatch = useDispatch();
+  const basicData = useBasicRequestData();
 
   const {
     project: { uuid: selectedProjectUuid, name: selectedProjectName },
@@ -26,10 +30,14 @@ export default function ProjectView() {
   );
   const loadedProjectName = get(project, 'name', selectedProjectName);
   const loadedProjectUuid = get(project, 'uuid', selectedProjectUuid);
+  const loadedProjectUserUid = get(project, 'userUid', basicData.user.uid);
+  const loadedProjectGuests = get(project, 'guestsEmails', null);
   const originalLoadedProjectRef = React.useRef(project || {});
   const [name, setName] = React.useState(loadedProjectName);
+  const [guestEmail, setGuestEmail] = React.useState('');
   const [isDeletionModalOpen, setDeletionModalOpen] = React.useState(false);
   const handleNameChange = (event) => setName(event.target.value);
+  const handleGuestEmailChange = (event) => setGuestEmail(event.target.value);
   const noDiff = loadedProjectName.trim() === name.trim();
   const isEditing = useSelector((state) => state.projects.updating.includes(loadedProjectUuid));
   const isLoading = useSelector((state) => state.projects.isLoading);
@@ -47,6 +55,55 @@ export default function ProjectView() {
     dispatch(projectsActions.update(loadedProjectUuid, { name }));
   };
 
+  const addGuestUser = (event) => {
+    event.preventDefault();
+
+    if (!guestEmail) {
+      return;
+    }
+
+    if (!loadedProjectGuests) {
+      dispatch(
+        projectsActions.update(loadedProjectUuid, {
+          guestsEmails: [guestEmail],
+        })
+      );
+
+      return;
+    }
+
+    dispatch(
+      projectsActions.update(loadedProjectUuid, {
+        guestsEmails: loadedProjectGuests.concat(guestEmail),
+      })
+    );
+  };
+
+  const removeGuest = (guestEmail) => () => {
+    const updatedGuestsList = loadedProjectGuests.filter((guest) => guest !== guestEmail);
+
+    dispatch(
+      projectsActions.update(loadedProjectUuid, {
+        guestsEmails: updatedGuestsList,
+      })
+    );
+  };
+
+  const leaveProject = (basicData, fallbackProject, projectUserId) => () => {
+    const {
+      user: { email: guestEmail },
+    } = basicData;
+    const updatedGuestsList = loadedProjectGuests.filter((guest) => guest !== guestEmail);
+    dispatch(
+      projectsActions.update(loadedProjectUuid, {
+        userUid: projectUserId,
+        guestsEmails: updatedGuestsList,
+      })
+    );
+    dispatch(projectsActions.readAll(basicData));
+    setProject(fallbackProject);
+  };
+
   React.useEffect(() => {
     if (selectedProjectUuid !== originalLoadedProjectRef.current.uuid) {
       originalLoadedProjectRef.current = { uuid: selectedProjectUuid, name: selectedProjectName };
@@ -55,6 +112,8 @@ export default function ProjectView() {
       setProject({ uuid: selectedProjectUuid, name: loadedProjectName });
     }
   }, [selectedProjectUuid, selectedProjectName, loadedProjectName, setProject]);
+
+  const isProjectOwner = basicData.user.uid.toString() === loadedProjectUserUid.toString();
 
   return (
     <>
@@ -81,6 +140,7 @@ export default function ProjectView() {
                   autoComplete="off"
                   required
                   data-testid="name"
+                  disabled={!isProjectOwner}
                 />
               </Col>
             </Form.Group>
@@ -98,25 +158,78 @@ export default function ProjectView() {
             </Form.Group>
             <Form.Group as={Row}>
               <Col className="d-flex justify-content-between" sm={{ span: 10, offset: 2 }}>
-                <Button
-                  type="submit"
-                  variant="outline-success"
-                  disabled={isEditing || noDiff}
-                  title={noDiff ? 'Digite algum nome diferente antes de tentar salvar.' : ''}
-                >
-                  {isEditing ? 'Salvando...' : 'Salvar'}
-                </Button>
-                <Button
-                  variant="danger"
-                  onClick={openDeletionModal}
-                  disabled={othersProjects.length === 0}
-                >
-                  <BsTrash /> Deletar
-                </Button>
+                {isProjectOwner ? (
+                  <>
+                    <Button
+                      type="submit"
+                      variant="outline-success"
+                      disabled={isEditing || noDiff}
+                      title={noDiff ? 'Digite algum nome diferente antes de tentar salvar.' : ''}
+                    >
+                      {isEditing ? 'Salvando...' : 'Salvar'}
+                    </Button>
+                    <Button
+                      variant="danger"
+                      onClick={openDeletionModal}
+                      disabled={othersProjects.length === 0}
+                    >
+                      <BsTrash /> Deletar
+                    </Button>
+                  </>
+                ) : (
+                  <div>
+                    <Alert variant="info" className="w-100">
+                      Projeto compartilhado. Somente o criador do projeto tem permissão para
+                      alterá-lo.
+                    </Alert>
+                    <Button
+                      variant="danger"
+                      onClick={leaveProject(basicData, othersProjects[0], loadedProjectUserUid)}
+                      disabled={othersProjects.length === 0}
+                    >
+                      Deixar projeto
+                    </Button>
+                  </div>
+                )}
               </Col>
             </Form.Group>
           </Form>
         </MainSection>
+        {isProjectOwner && (
+          <MainSection icon={<BsShare />} title="Compartilhamento">
+            <Form onSubmit={addGuestUser}>
+              <Form.Group
+                as={Row}
+                title="Digite o e-mail da pessoa com quem deseja compartilhar o projeto."
+                controlId="formProjectShare"
+              >
+                <Form.Label column sm={2}>
+                  Email:
+                </Form.Label>
+                <Col sm={10}>
+                  <Form.Control
+                    name="guestEmail"
+                    value={guestEmail}
+                    onChange={handleGuestEmailChange}
+                    placeholder="Email do usuário convidado"
+                    minLength={3}
+                    autoComplete="off"
+                    required
+                    data-testid="guestEmail"
+                  />
+                </Col>
+              </Form.Group>
+              <Form.Group as={Row}>
+                <Col className="d-flex justify-content-between" sm={{ span: 10, offset: 2 }}>
+                  <Button type="submit" variant="outline-success" disabled={isEditing}>
+                    Compartilhar
+                  </Button>
+                </Col>
+              </Form.Group>
+            </Form>
+            <GuestsList guests={loadedProjectGuests} removeGuest={removeGuest} />
+          </MainSection>
+        )}
         <MainSection icon={<BsFolderFill />} title="Criar ou trocar">
           <p>
             Use o <strong>seletor de projetos</strong> no menu principal do sistema. ⬆️
@@ -147,6 +260,33 @@ const projectHint = (
     </p>
   </>
 );
+
+function GuestsList({ guests, removeGuest }) {
+  if (!guests || !guests.length) {
+    return <></>;
+  }
+
+  return (
+    <>
+      <span>
+        <strong>Usuários convidados:</strong>
+      </span>
+      <ul>
+        {guests.map((guest) => (
+          <li
+            className="d-flex justify-content-between align-items-center my-1"
+            key={`${guest}_${uuidv4()}`}
+          >
+            <span>{guest}</span>
+            <Button variant="danger" onClick={removeGuest(guest)}>
+              Remover
+            </Button>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
 
 export function DeletionModal({ isVisible, project, fallbackProject, close }) {
   const dispatch = useDispatch();

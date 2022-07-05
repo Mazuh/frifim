@@ -8,23 +8,27 @@ import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { BsPuzzle } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
-import { ProjectContext } from '../../app/contexts';
+import { ViewportContext } from '../../app/contexts';
 import { MainContainer, MainHeader, MainSection } from '../main-pages/main-pages';
 import { projectsActions } from '../projects/projectsDuck';
 import NumberFormat from 'react-number-format';
 import EmergencySimulator from './EmergencySimulator';
+import { invalidActionToast, validateProject } from '../../utils/project-utils';
+import useBasicRequestData from '../../app/useBasicRequestData';
 
 export default function EmergencySavingView() {
   const dispatch = useDispatch();
+  const basicRequestData = useBasicRequestData();
   const [emergencySaving, setEmergencySaving] = React.useState('');
 
-  const {
-    project: { uuid: selectedProjectUuid },
-  } = React.useContext(ProjectContext);
+  const selectedProjectUuid = get(basicRequestData, 'project.uuid', '');
+  const { isMobile } = React.useContext(ViewportContext);
   const project = useSelector((state) =>
     state.projects.items.find((it) => it.uuid === selectedProjectUuid)
   );
-  const isEditing = useSelector((state) => state.projects.updating.includes(project.uuid));
+  const isEditing = useSelector((state) =>
+    state.projects.updating.includes(get(project, 'uuid', ''))
+  );
 
   const projectEmergencySavingValue = get(project, 'emergencySaving', '');
   React.useEffect(() => {
@@ -33,8 +37,14 @@ export default function EmergencySavingView() {
 
   const handleSavingChange = (value) => setEmergencySaving(value);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+
+    const isValidProject = await validateProject(basicRequestData);
+    if (!isValidProject) {
+      invalidActionToast(isMobile);
+      return;
+    }
 
     const emergencySavingValue = new Decimal(get(emergencySaving, 'floatValue', 0))
       .toFixed(2)

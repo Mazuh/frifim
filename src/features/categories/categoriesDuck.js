@@ -1,5 +1,6 @@
 import { makeReduxAssets } from 'resource-toolkit';
-import { makeFirestoreApiClient } from '../../app/firebase-adapters';
+import { makeFirestoreApiClient, parseQuerySnapshot } from '../../app/firebase-adapters';
+import { queryByClient } from '../../utils/query-utils';
 import makeResourceMessageTextFn from '../izitoast-for-resources/makeResourceMessageTextFn';
 
 const client = makeFirestoreApiClient('categories');
@@ -9,7 +10,7 @@ const categoriesResource = makeReduxAssets({
   idKey: 'uuid',
   makeMessageText: makeResourceMessageTextFn('categoria', 'categorias'),
   gateway: {
-    fetchMany: (ids, basicData) => client.read(basicData),
+    fetchMany: (ids, basicData) => queryByClient(client, basicData).get().then(parseQuerySnapshot),
     create: (category, basicData) => client.create(basicData, category),
     delete: (uuid) => client.delete(uuid),
   },

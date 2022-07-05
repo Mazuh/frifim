@@ -13,6 +13,8 @@ import useBasicRequestData from '../../app/useBasicRequestData';
 import { monthlyBudgetActions } from '../monthly-budget/monthlyBudgetDuck';
 import { transactionsActions } from '../transactions/transactionsDuck';
 import { EXPENSE_TYPE, INCOME_TYPE } from '../categories/constants';
+import { invalidActionToast, validateProject } from '../../utils/project-utils';
+import { ViewportContext } from '../../app/contexts';
 
 const renderMoneyBadge = (budget) => (value) =>
   budget.type === EXPENSE_TYPE.value || budget.uuid === 'emergency-value' ? (
@@ -29,8 +31,15 @@ export default function PendingBudgetsCard({ budgets }) {
   const [showOthers, setShowOthers] = React.useState(false);
   const dispatch = useDispatch();
   const basicRequestData = useBasicRequestData();
+  const { isMobile } = React.useContext(ViewportContext);
 
-  const onHideBudget = (budgetData) => () => {
+  const onHideBudget = (budgetData) => async () => {
+    const isValidProject = await validateProject(basicRequestData);
+    if (!isValidProject) {
+      invalidActionToast(isMobile);
+      return;
+    }
+
     const updatingBudget = {
       ...budgetData,
       rememberOnDashboard: false,
@@ -39,7 +48,13 @@ export default function PendingBudgetsCard({ budgets }) {
     dispatch(monthlyBudgetActions.update(budgetData.uuid, updatingBudget, basicRequestData));
   };
 
-  const onConsolidateBudget = (budgetData) => () => {
+  const onConsolidateBudget = (budgetData) => async () => {
+    const isValidProject = await validateProject(basicRequestData);
+    if (!isValidProject) {
+      invalidActionToast(isMobile);
+      return;
+    }
+
     const defaultData = {
       amount: budgetData.amount,
       datetime: new Date().toISOString(),

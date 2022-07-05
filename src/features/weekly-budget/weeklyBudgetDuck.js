@@ -1,5 +1,6 @@
 import { makeReduxAssets } from 'resource-toolkit';
 import { makeFirestoreApiClient, parseQuerySnapshot } from '../../app/firebase-adapters';
+import { queryByClient } from '../../utils/query-utils';
 import makeResourceMessageTextFn from '../izitoast-for-resources/makeResourceMessageTextFn';
 
 const client = makeFirestoreApiClient('weekly_budgets');
@@ -10,8 +11,7 @@ const weeklyBudgetResource = makeReduxAssets({
   makeMessageText: makeResourceMessageTextFn('planejamento semanal', 'planejamentos semanais'),
   gateway: {
     fetchMany: (uuids, basicData) =>
-      client
-        .query(basicData)
+      queryByClient(client, basicData)
         .where('year', '==', basicData.year)
         .where('month', '==', basicData.month)
         .get()

@@ -1,6 +1,7 @@
 import { makeReduxAssets } from 'resource-toolkit';
 import { parseQuerySnapshot, toFirestoreDocData } from '../../app/firebase-adapters';
 import { firedb } from '../../app/firebase-configs';
+import { retrieveProjects } from '../../utils/project-utils';
 import makeResourceMessageTextFn from '../izitoast-for-resources/makeResourceMessageTextFn';
 
 const projectsResource = makeReduxAssets({
@@ -8,13 +9,7 @@ const projectsResource = makeReduxAssets({
   idKey: 'uuid',
   makeMessageText: makeResourceMessageTextFn('projeto', 'projetos'),
   gateway: {
-    fetchMany: (ids, basicData) => {
-      return firedb
-        .collection('projects')
-        .where('userUid', '==', basicData.user.uid)
-        .get()
-        .then(parseQuerySnapshot);
-    },
+    fetchMany: (ids, basicData) => retrieveProjects(basicData),
     update: (uuid, project) =>
       firedb
         .collection('projects')

@@ -15,6 +15,7 @@ import { firedb } from './firebase-configs';
  */
 export function makeFirestoreApiClient(collection) {
   return {
+    querySharedData: (basicData) => fireContextQuerySharedData(collection, basicData),
     query: (basicData) => fireContextQuery(collection, basicData),
     create: (basicData, creatingData) => fireContextCreation(collection, basicData, creatingData),
     read: (basicData) => fireContextQuery(collection, basicData).get().then(parseQuerySnapshot),
@@ -32,6 +33,14 @@ export function fireContextQuery(collection, basicData) {
     .collection(collection)
     .where('userUid', '==', basicData.user.uid)
     .where('project', '==', basicData.project.uuid);
+}
+
+/**
+ * Build a `firebase.firestore.Query` for the data shared between user to a given `collection` name,
+ * but already including all basic filters (from `useBasicRequestData`).
+ */
+export function fireContextQuerySharedData(collection, basicData) {
+  return firedb.collection(collection).where('project', '==', basicData.project.uuid);
 }
 
 /**

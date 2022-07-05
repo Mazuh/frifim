@@ -17,10 +17,14 @@ import BudgetForm from './BudgetForm';
 import useSelectorForMonthlyBudgetStatus from './useSelectorForMonthlyBudgetStatus';
 import useBasicRequestData from '../../app/useBasicRequestData';
 import { generateMonthlyBudgetCSV } from '../../utils/monthly-budget-utils';
+import { ViewportContext } from '../../app/contexts';
+import { invalidActionToast, validateProject } from '../../utils/project-utils';
 
 export default function MonthlyBudgetView() {
   const dispatch = useDispatch();
   const basicRequestData = useBasicRequestData();
+
+  const { isMobile } = React.useContext(ViewportContext);
 
   const [isHelpVisible, setHelpVisible] = React.useState(false);
 
@@ -56,13 +60,18 @@ export default function MonthlyBudgetView() {
     return <LoadingMainContainer />;
   }
 
-  const handleSubmit = (budgetFormData, event, resetParent) => {
+  const handleSubmit = async (budgetFormData, event, resetParent) => {
     const budget = {
       ...budgetFormData,
       rememberOnDashboard: !event.target['pending-budget'].checked,
       year: basicRequestData.year,
       month: basicRequestData.month,
     };
+    const isValidProject = await validateProject(basicRequestData);
+    if (!isValidProject) {
+      invalidActionToast(isMobile);
+      return;
+    }
     dispatch(monthlyBudgetActions.create(budget, basicRequestData));
 
     resetParent();
@@ -72,7 +81,13 @@ export default function MonthlyBudgetView() {
     setEnabledUpdateUuid(enabledUpdateUuid === budget.uuid ? null : budget.uuid);
   };
 
-  const handleDelete = (budget) => {
+  const handleDelete = async (budget) => {
+    const isValidProject = await validateProject(basicRequestData);
+    if (!isValidProject) {
+      invalidActionToast(isMobile);
+      return;
+    }
+
     if (window.confirm(`Deletar do orçamento "${budget.name}"?`)) {
       dispatch(monthlyBudgetActions.delete(budget.uuid, basicRequestData));
     }
@@ -202,13 +217,19 @@ function MonthlyBudgetTableRowExtension({ budget }) {
   const basicRequestData = useBasicRequestData();
   const isUpdating = useSelector((state) => state.monthlyBudget.updating.includes(budget.uuid));
   const isLoading = useSelector((state) => state.monthlyBudget.isLoading);
+  const { isMobile } = React.useContext(ViewportContext);
 
-  const handleSubmit = (budgetFormData, event) => {
+  const handleSubmit = async (budgetFormData, event) => {
     const updatingBudget = {
       ...budgetFormData,
       rememberOnDashboard: !event.target['pending-budget'].checked,
       uuid: budget.uuid,
     };
+    const isValidProject = await validateProject(basicRequestData);
+    if (!isValidProject) {
+      invalidActionToast(isMobile);
+      return;
+    }
     dispatch(monthlyBudgetActions.update(budget.uuid, updatingBudget, basicRequestData));
   };
 

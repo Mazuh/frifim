@@ -2,11 +2,13 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
-import { ProjectContext } from '../../app/contexts';
+import MockDate from 'mockdate';
+import { PeriodContext, ProjectContext } from '../../app/contexts';
 import { makeConfiguredStore } from '../../app/store';
 import ProjectView, { DeletionModal } from './ProjectView';
 import { projectsPlainActions } from './projectsDuck';
 import firebase from 'firebase/app';
+import { makePeriod } from '../periods/period-lib';
 
 jest.mock('firebase/app', () => ({
   __esModule: true,
@@ -14,6 +16,11 @@ jest.mock('firebase/app', () => ({
     initializeApp: jest.fn(() => ({
       firestore: jest.fn(() => ({
         batch: jest.fn(),
+        app: {
+          auth: jest.fn(() => ({
+            currentUser: { displayName: 'Marcell', uid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2' },
+          })),
+        },
       })),
       auth: jest.fn(() => ({})),
     })),
@@ -26,6 +33,7 @@ jest.mock('firebase/app', () => ({
 
 describe('projects', () => {
   beforeEach(() => {
+    MockDate.set(new Date('08/10/2021'));
     firebase.initializeApp.mock.results[0].value.auth.mockClear();
   });
 
@@ -49,24 +57,103 @@ describe('projects', () => {
     );
     const container = render(
       <Provider store={store}>
-        <ProjectContext.Provider
-          value={{
-            project: {
-              createdAt: '2021-10-08T00:48:51.958Z',
-              name: 'Principal',
-              userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
-              uuid: '8R17MZDN5FHWPwRWPWX6',
-            },
-            setProject: jest.fn(),
-          }}
-        >
-          <ProjectView />
-        </ProjectContext.Provider>
+        <PeriodContext.Provider value={{ period: makePeriod(), setPeriod: jest.fn() }}>
+          <ProjectContext.Provider
+            value={{
+              project: {
+                createdAt: '2021-10-08T00:48:51.958Z',
+                name: 'Principal',
+                userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
+                uuid: '8R17MZDN5FHWPwRWPWX6',
+              },
+              setProject: jest.fn(),
+            }}
+          >
+            <ProjectView />
+          </ProjectContext.Provider>
+        </PeriodContext.Provider>
       </Provider>
     );
 
     expect(container.getByText('Deletar')).toBeVisible();
     expect(container.getByText('Deletar')).not.toBeDisabled();
+  });
+
+  it("does not render delete button when I'm a guest user", () => {
+    const store = makeConfiguredStore();
+    store.dispatch(
+      projectsPlainActions.setRead(null, [
+        {
+          createdAt: '2021-10-08T00:48:51.958Z',
+          name: 'Principal',
+          userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g3',
+          uuid: '8R17MZDN5FHWPwRWPWX6',
+        },
+      ])
+    );
+    const container = render(
+      <Provider store={store}>
+        <PeriodContext.Provider value={{ period: makePeriod(), setPeriod: jest.fn() }}>
+          <ProjectContext.Provider
+            value={{
+              project: {
+                createdAt: '2021-10-08T00:48:51.958Z',
+                name: 'Principal',
+                userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g3',
+                uuid: '8R17MZDN5FHWPwRWPWX6',
+              },
+              setProject: jest.fn(),
+            }}
+          >
+            <ProjectView />
+          </ProjectContext.Provider>
+        </PeriodContext.Provider>
+      </Provider>
+    );
+
+    expect(
+      container.getByText(
+        'Projeto compartilhado. Somente o criador do projeto tem permissão para alterá-lo.'
+      )
+    ).toBeVisible();
+  });
+
+  it('render delete button when sharing my project', () => {
+    const store = makeConfiguredStore();
+    store.dispatch(
+      projectsPlainActions.setRead(null, [
+        {
+          createdAt: '2021-10-08T00:48:51.958Z',
+          name: 'Principal',
+          userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
+          uuid: '8R17MZDN5FHWPwRWPWX6',
+          guestsEmails: ['rodrigo_frifrim@mailinator.com'],
+        },
+      ])
+    );
+    const container = render(
+      <Provider store={store}>
+        <PeriodContext.Provider value={{ period: makePeriod(), setPeriod: jest.fn() }}>
+          <ProjectContext.Provider
+            value={{
+              project: {
+                createdAt: '2021-10-08T00:48:51.958Z',
+                name: 'Principal',
+                userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
+                uuid: '8R17MZDN5FHWPwRWPWX6',
+                guestsEmails: ['rodrigo_frifrim@mailinator.com'],
+              },
+              setProject: jest.fn(),
+            }}
+          >
+            <ProjectView />
+          </ProjectContext.Provider>
+        </PeriodContext.Provider>
+      </Provider>
+    );
+
+    expect(container.getByText('Usuários convidados:')).toBeVisible();
+    expect(container.getByText('rodrigo_frifrim@mailinator.com')).toBeVisible();
   });
 
   it('renders disabled delete button when there is a single project', () => {
@@ -83,19 +170,21 @@ describe('projects', () => {
     );
     const container = render(
       <Provider store={store}>
-        <ProjectContext.Provider
-          value={{
-            project: {
-              createdAt: '2021-10-08T00:48:51.958Z',
-              name: 'Principal',
-              userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
-              uuid: '8R17MZDN5FHWPwRWPWX6',
-            },
-            setProject: jest.fn(),
-          }}
-        >
-          <ProjectView />
-        </ProjectContext.Provider>
+        <PeriodContext.Provider value={{ period: makePeriod(), setPeriod: jest.fn() }}>
+          <ProjectContext.Provider
+            value={{
+              project: {
+                createdAt: '2021-10-08T00:48:51.958Z',
+                name: 'Principal',
+                userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
+                uuid: '8R17MZDN5FHWPwRWPWX6',
+              },
+              setProject: jest.fn(),
+            }}
+          >
+            <ProjectView />
+          </ProjectContext.Provider>
+        </PeriodContext.Provider>
       </Provider>
     );
 
@@ -163,19 +252,21 @@ describe('projects', () => {
     );
     const container = render(
       <Provider store={store}>
-        <ProjectContext.Provider
-          value={{
-            project: {
-              createdAt: '2021-10-08T10:48:51.958Z',
-              name: 'Secundário',
-              userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
-              uuid: 'sLws1rQ970rv813cqEIA',
-            },
-            setProject: jest.fn(),
-          }}
-        >
-          <ProjectView />
-        </ProjectContext.Provider>
+        <PeriodContext.Provider value={{ period: makePeriod(), setPeriod: jest.fn() }}>
+          <ProjectContext.Provider
+            value={{
+              project: {
+                createdAt: '2021-10-08T10:48:51.958Z',
+                name: 'Secundário',
+                userUid: '0dwe96bbnSRYiyEPJ7ojfSNi21g2',
+                uuid: 'sLws1rQ970rv813cqEIA',
+              },
+              setProject: jest.fn(),
+            }}
+          >
+            <ProjectView />
+          </ProjectContext.Provider>
+        </PeriodContext.Provider>
       </Provider>
     );
 

@@ -25,11 +25,14 @@ import CategoryIndicator from '../categories/CategoryIndicator';
 import { ViewportContext } from '../../app/contexts';
 import useBasicRequestData from '../../app/useBasicRequestData';
 import TransationDatetime from './TransactionDatetime';
+import { invalidActionToast, validateProject } from '../../utils/project-utils';
 
 export default function TransactionsView() {
   const dispatch = useDispatch();
   const basicRequestData = useBasicRequestData();
   const transactionsState = useSelector((s) => s.transactions);
+
+  const { isMobile } = React.useContext(ViewportContext);
 
   const [isHelpVisible, setHelpVisible] = React.useState(false);
 
@@ -37,11 +40,21 @@ export default function TransactionsView() {
     return <LoadingMainContainer />;
   }
 
-  const handleSubmitData = (data) => {
+  const handleSubmitData = async (data) => {
+    const isValidProject = await validateProject(basicRequestData);
+    if (!isValidProject) {
+      invalidActionToast(isMobile);
+      return;
+    }
     dispatch(transactionsActions.create(data, basicRequestData));
   };
 
-  const handleDelete = (transaction) => {
+  const handleDelete = async (transaction) => {
+    const isValidProject = await validateProject(basicRequestData);
+    if (!isValidProject) {
+      invalidActionToast(isMobile);
+      return;
+    }
     const what = transaction.name;
     const when = humanizeDatetime(transaction.datetime, { month: 'long', year: 'numeric' });
     if (window.confirm(`Deletar transação "${what}" de ${when}?`)) {

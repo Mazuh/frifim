@@ -9,10 +9,10 @@ using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolk
 
 ### Installing dependencies
 
-With Node 12 installed and `yarn` globally available, clone the project and inside its directory run:
+With Node 14, clone the project and inside its directory run:
 
 ```sh
-yarn
+npm install
 ```
 
 ### Hosting Firebase instance
@@ -42,7 +42,7 @@ it's ignored by git, so you won't need to share your own data while contributing
 Runs the app in the development mode:
 
 ```sh
-yarn start
+npm start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -82,9 +82,15 @@ prodcution, then prepare the static dist folder and publish it with Firebase CLI
 ```js
 npm install firebase-tools -g
 firebase login
-yarn build
+npm run build
 firebase deploy
 ```
+
+For code administrators, if everything worked fine with the build
+and tests steps, remember to use `npm version x.y.z` where "x.y.z" is the
+version number following [semantic versioning](https://semver.org/). Then
+push this created tagged commit and write the changelog
+on [release](https://github.com/Mazuh/frifim/releases) page.
 
 ## What does Frifim mean?
 

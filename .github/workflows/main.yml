@@ -12,19 +12,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Install dependencies
-        uses: borales/actions-yarn@v2.3.0
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
-          cmd: install
-      - name: Create bundles
-        uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: build
-      - name: Run tests
-        uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: test
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
